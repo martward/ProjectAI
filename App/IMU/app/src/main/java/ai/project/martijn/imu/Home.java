@@ -7,6 +7,8 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.DataInputStream;
@@ -25,6 +27,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     TextView thetax;
     TextView thetay;
     TextView thetaz;
+    Button button;
     float x,y,z;
     float thetaX,thetaY,thetaZ;
     // X = Pitch , Y = Roll, Z = Azimut
@@ -43,11 +46,19 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         thetax = (TextView) findViewById(R.id.thetax);
         thetay = (TextView) findViewById(R.id.thetay);
         thetaz = (TextView) findViewById(R.id.thetaz);
+        button = (Button) findViewById(R.id.calibration);
+        this.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new StreamAbsolutes().execute();
+            }
+        });
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
 
     public void onSensorChanged(SensorEvent event) {
         // Set values in textvield
@@ -79,6 +90,51 @@ public class Home extends AppCompatActivity implements SensorEventListener {
             theta = value;
         }
         return theta;
+    }
+
+    private class StreamAbsolutes extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Socket socket = null;
+            DataOutputStream dataOutputStream = null;
+            try {
+                System.out.println( "testerino");
+                socket = new Socket("192.168.0.123", 9090);
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                String out = x + "/" + y + "/" + z;
+                dataOutputStream.writeUTF(out);
+                //dataOutputStream.writeFloat(thetaX);
+                //dataOutputStream.writeFloat(thetaY);
+                //dataOutputStream.writeFloat(thetaZ);
+            } catch (UnknownHostException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            finally{
+                if (socket != null){
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                if (dataOutputStream != null){
+                    try {
+                        dataOutputStream.close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            return null;
+        }
     }
 
     private class StreamThetas extends AsyncTask<Void, Void, Void> {
@@ -129,5 +185,6 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         protected void onPostExecute(Void result) {
         }
     }
+
 
 }
