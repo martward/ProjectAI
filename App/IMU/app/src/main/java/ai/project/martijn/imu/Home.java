@@ -102,7 +102,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
                 System.out.println( "testerino");
                 socket = new Socket("192.168.0.123", 9090);
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                String out = x + "/" + y + "/" + z;
+                String out = "absolute/" + x + "/" + y + "/" + z;
                 dataOutputStream.writeUTF(out);
                 //dataOutputStream.writeFloat(thetaX);
                 //dataOutputStream.writeFloat(thetaY);
@@ -147,7 +147,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
                 System.out.println( "testerino");
                 socket = new Socket("192.168.0.123", 9090);
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                String out = thetaX + "/" + thetaY + "/" + thetaZ;
+                String out = "relative/" + thetaX + "/" + thetaY + "/" + thetaZ;
                 dataOutputStream.writeUTF(out);
                 //dataOutputStream.writeFloat(thetaX);
                 //dataOutputStream.writeFloat(thetaY);
