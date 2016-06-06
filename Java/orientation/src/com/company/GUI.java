@@ -33,6 +33,7 @@ public class GUI {
     private void initPoints()
     {
         points = new Point[4];
+        originalPoints = new Point[4];
 
         points[0] = new Point(0, 0, 0);
         points[1] = new Point(100, 0, 0);
