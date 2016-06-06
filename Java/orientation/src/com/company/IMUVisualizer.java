@@ -30,11 +30,20 @@ public class IMUVisualizer {
                 try (Socket socket = listener.accept()) {
 
                     DataInputStream in = new DataInputStream(socket.getInputStream());
+                    String msg;
+                    while(true)
+                    {
+                        while( (msg = in.readUTF()) != null )
+                        {
+                            Transform transform = parseMessage(msg);
+                            theGUI.setRotationMatrix(transform);
+                        }
+                    }
 
-                    String msg = in.readUTF();
-                    Transform transform = parseMessage(msg);
+                    //String msg = in.readUTF();
 
-                    theGUI.setRotationMatrix(transform);
+
+
                 } catch (Exception e)
                 {
                     e.printStackTrace();
@@ -50,6 +59,8 @@ public class IMUVisualizer {
 
     private Transform parseMessage(String msg)
     {
+        System.out.println(msg);
+        System.out.flush();
         String[] arguments = msg.split("/");
 
         Transform transform = new Transform(Double.parseDouble(arguments[1]),
@@ -65,7 +76,7 @@ public class IMUVisualizer {
             transform.mode = Transform.Mode.ABSOLUTE;
         }
 
-        System.out.println(transform);
+        //System.out.println(transform);
         return transform;
     }
 
