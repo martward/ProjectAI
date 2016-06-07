@@ -10,12 +10,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+
 public class Home extends AppCompatActivity implements SensorEventListener {
+
 
     SensorManager sMgr;
     Sensor orientation;
@@ -25,11 +29,16 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     TextView thetax;
     TextView thetay;
     TextView thetaz;
+    TextView xdist;
+    TextView ydist;
+    TextView zdist;
     Button button;
+    Button buttonStop;
+    float dx, dy, dz;
     float x,y,z;
     float thetaX,thetaY,thetaZ;
     // X = Pitch , Y = Roll, Z = Azimut
-    String ip = "192.168.0.123";
+    String ip = "192.168.0.100";
     StreamThetas streamThetas;
 
     @Override
@@ -46,10 +55,18 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         thetay = (TextView) findViewById(R.id.thetay);
         thetaz = (TextView) findViewById(R.id.thetaz);
         button = (Button) findViewById(R.id.calibration);
+        buttonStop = (Button) findViewById(R.id.stop);
         streamThetas = new StreamThetas();
         streamThetas.start();
 
 
+        this.buttonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                streamThetas.stop = true;
+
+            }
+        });
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +93,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         thetax.setText(thetaX + "");
         thetay.setText(thetaY + "");
         thetaz.setText(thetaZ + "");
+
         streamThetas.newData = true;
         // Update the x,y and z values for the next iteration
         x = event.values[0]*180;
@@ -100,6 +118,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
 
         boolean newData = false;
         boolean calibrate = false;
+        boolean stop = false;
         Socket socket;
         DataOutputStream dataOutputStream;
 
@@ -110,9 +129,12 @@ public class Home extends AppCompatActivity implements SensorEventListener {
 
         protected Void send(int type){
             String out;
+
             if(type == 0) {
                 out = "relative/" + thetaX + "/" + thetaY + "/" + thetaZ ;
-            }else{
+            }else if(type == 2){
+                out = "stop/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+            } else{
                 out = "absolute/" + x + "/" + y + "/" + z ;
             }
             try {
@@ -161,6 +183,9 @@ public class Home extends AppCompatActivity implements SensorEventListener {
                 } else if(calibrate) {
                     send(1);
                     calibrate = false;
+                } else if(stop){
+                    send(2);
+                    stop = false;
                 }
             }
         }
