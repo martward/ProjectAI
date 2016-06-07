@@ -4,20 +4,22 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.DataInputStream;
+import org.w3c.dom.Text;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+
 public class Home extends AppCompatActivity implements SensorEventListener {
+
 
     SensorManager sMgr;
     Sensor orientation;
@@ -27,16 +29,22 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     TextView thetax;
     TextView thetay;
     TextView thetaz;
+    TextView xdist;
+    TextView ydist;
+    TextView zdist;
     Button button;
+    Button buttonStop;
+    float dx, dy, dz;
     float x,y,z;
     float thetaX,thetaY,thetaZ;
     // X = Pitch , Y = Roll, Z = Azimut
+    String ip = "192.168.0.100";
+    StreamThetas streamThetas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         sMgr = (SensorManager)this.getSystemService(SENSOR_SERVICE);
         orientation = sMgr.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         sMgr.registerListener(this, orientation, SensorManager.SENSOR_DELAY_NORMAL);
@@ -47,10 +55,23 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         thetay = (TextView) findViewById(R.id.thetay);
         thetaz = (TextView) findViewById(R.id.thetaz);
         button = (Button) findViewById(R.id.calibration);
+        buttonStop = (Button) findViewById(R.id.stop);
+        streamThetas = new StreamThetas();
+        streamThetas.start();
+
+
+        this.buttonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                streamThetas.stop = true;
+
+            }
+        });
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new StreamAbsolutes().execute();
+                streamThetas.calibrate = true;
+
             }
         });
     }
@@ -72,7 +93,8 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         thetax.setText(thetaX + "");
         thetay.setText(thetaY + "");
         thetaz.setText(thetaZ + "");
-        new StreamThetas().execute();
+
+        streamThetas.newData = true;
         // Update the x,y and z values for the next iteration
         x = event.values[0]*180;
         y = event.values[1]*180;
@@ -92,99 +114,80 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         return theta;
     }
 
-    private class StreamAbsolutes extends AsyncTask<Void, Void, Void> {
+    private class StreamThetas extends Thread {
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            Socket socket = null;
-            DataOutputStream dataOutputStream = null;
+        boolean newData = false;
+        boolean calibrate = false;
+        boolean stop = false;
+        Socket socket;
+        DataOutputStream dataOutputStream;
+
+        public StreamThetas() {
+
+        }
+
+
+        protected Void send(int type){
+            String out;
+
+            if(type == 0) {
+                out = "relative/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+            }else if(type == 2){
+                out = "stop/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+            } else{
+                out = "absolute/" + x + "/" + y + "/" + z ;
+            }
             try {
-                System.out.println( "testerino");
-                socket = new Socket("192.168.0.123", 9090);
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                String out = "absolute/" + x + "/" + y + "/" + z;
                 dataOutputStream.writeUTF(out);
-                //dataOutputStream.writeFloat(thetaX);
-                //dataOutputStream.writeFloat(thetaY);
-                //dataOutputStream.writeFloat(thetaZ);
             } catch (UnknownHostException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }
-            finally{
-                if (socket != null){
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-                if (dataOutputStream != null){
-                    try {
-                        dataOutputStream.close();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-            return null;
-        }
-    }
-
-    private class StreamThetas extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Socket socket = null;
-            DataOutputStream dataOutputStream = null;
-            try {
-                System.out.println( "testerino");
-                socket = new Socket("192.168.0.123", 9090);
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                String out = "relative/" + thetaX + "/" + thetaY + "/" + thetaZ;
-                dataOutputStream.writeUTF(out);
-                //dataOutputStream.writeFloat(thetaX);
-                //dataOutputStream.writeFloat(thetaY);
-                //dataOutputStream.writeFloat(thetaZ);
-            } catch (UnknownHostException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
+            } catch (Exception e){
                 e.printStackTrace();
             }
-            finally{
-                if (socket != null){
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-                if (dataOutputStream != null){
-                    try {
-                        dataOutputStream.close();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-
-            }
+            System.out.println(out);
             return null;
         }
 
+
+
         @Override
-        protected void onPostExecute(Void result) {
+        public void run() {
+            System.out.println("Started other thread");
+            while(true)
+            {
+                if(socket == null)
+                {
+                    try {
+                        socket = new Socket(ip, 9090);
+                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    } catch (UnknownHostException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        socket = null;
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        socket = null;
+                        e.printStackTrace();
+                    }
+                }
+                if(newData) {
+                    //System.out.println("send");
+                    send(0);
+                    newData = false;
+                } else if(calibrate) {
+                    send(1);
+                    calibrate = false;
+                } else if(stop){
+                    send(2);
+                    stop = false;
+                }
+            }
         }
     }
-
-
 }
