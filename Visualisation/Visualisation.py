@@ -10,7 +10,7 @@ from mpl_toolkits.mplot3d import Axes3D
 class Visualizer:
 
     queue = []
-    calibrated = False
+    calibrated = True
 
     calibratedPose = np.matrix([0.0, 0.0, 0.0])
 
@@ -28,6 +28,7 @@ class Visualizer:
             readIP.close()
 
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             print "binding"
 
             try:
@@ -41,27 +42,35 @@ class Visualizer:
             print "Connected"
             while 1:
                 try:
-                    msg, address = c.recvfrom(1024)
-                    msg = msg[2:]
-                    msg = msg.split("/")
+                    while 1:
+                        msg, address = c.recvfrom(1024)
+                        msg = msg[2:]
+                        msg = msg.split("/")
 
-                    if msg[0] == "stop":
-                        print "Receiving messages stopped."
-                        break
-                    else:
-                        self.queue.insert(0,msg)
+                        if msg[0] == "stop":
+                            print "Receiving messages stopped."
+                            break
+                        else:
+                            self.queue.insert(0,msg)
 
                 except:
                     print "Connection Lost"
+                    c.shutdown()
+                    s.shutdown()
                     c.close()
                     s.close()
                     break
+                finally:
+                    c.shutdown()
+                    s.shutdown()
+                    c.close()
+                    s.close()
         except:
             "No connection found"
 
     def updateGUI(self):
 
-        points = np.matrix([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
+        points = np.matrix([[0, 2.5, 5], [0, 2.5, -5], [0, -2.5, -5], [0, -2.5, 5]])
 
         plt.ion()
         fig = plt.figure()
@@ -76,25 +85,22 @@ class Visualizer:
 
         [xs, ys, zs] = self.rotatePoint(points, [0, 0, 0])
 
-        ax.scatter(xs, ys, zs, c=colors)
+        plot = ax.scatter(xs, ys, zs, c=colors)
         fig.canvas.draw()
 
         while True:
             if len(self.queue) > 0:
 
                 msg = self.queue.pop()
+                print msg
                 if msg[0] == "absolute" and self.calibrated:
 
                     try:
-                        theta = [float(msg[3]), float(msg[1]), float(msg[2])]
+                        theta = [float(msg[1]), float(msg[2]), float(msg[3])]
 
                         [xs, ys, zs] = self.rotatePoint(points, theta)
 
-                        ax.clear()
-                        ax.set_xlim([-10, 10])
-                        ax.set_ylim([-10, 10])
-                        ax.set_zlim([-10, 10])
-                        ax.scatter(xs, ys, zs, c=colors)
+                        plot._offsets3d = (xs,ys,zs)
                         fig.canvas.draw()
 
                     except ValueError:
@@ -106,9 +112,9 @@ class Visualizer:
                 elif msg[0] == "calibrate":
                     try:
                         print "Calibrating"
-                        self.calibratedPose[0, 0] = float(msg[3])
-                        self.calibratedPose[0, 1] = float(msg[1])
-                        self.calibratedPose[0, 2] = float(msg[2])
+                        self.calibratedPose[0, 0] = float(msg[1])
+                        self.calibratedPose[0, 1] = float(msg[2])
+                        self.calibratedPose[0, 2] = float(msg[3])
                         self.calibrated = True
                     except ValueError:
                         print repr(msg[1])
@@ -120,7 +126,7 @@ class Visualizer:
         plt.show()
 
     def rotatePoint(self, points, theta):
-        rads = np.radians(np.matrix(theta) - self.calibratedPose )
+        rads = np.matrix(theta) - self.calibratedPose
         r = rads[0, 0]
         p = rads[0, 1]
         y = rads[0, 2]
