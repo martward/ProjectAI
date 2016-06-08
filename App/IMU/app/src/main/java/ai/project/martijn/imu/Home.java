@@ -20,9 +20,10 @@ import java.net.UnknownHostException;
 
 public class Home extends AppCompatActivity implements SensorEventListener {
 
-
+    long time;
     SensorManager sMgr;
     Sensor orientation;
+    Sensor translation;
     TextView xvalue;
     TextView yvalue;
     TextView zvalue;
@@ -40,6 +41,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     // X = Pitch , Y = Roll, Z = Azimut
     String ip = "192.168.0.100";
     StreamThetas streamThetas;
+    SensorEventListener sensListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +49,25 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         setContentView(R.layout.activity_home);
         sMgr = (SensorManager)this.getSystemService(SENSOR_SERVICE);
         orientation = sMgr.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        translation = sMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sMgr.registerListener(this, orientation, SensorManager.SENSOR_DELAY_NORMAL);
+        sMgr.registerListener(this, translation, SensorManager.SENSOR_DELAY_NORMAL);
+        //sensListener = new SensorEventListener();
         xvalue = (TextView) findViewById(R.id.xvalue);
         yvalue = (TextView) findViewById(R.id.yvalue);
         zvalue = (TextView) findViewById(R.id.zvalue);
         thetax = (TextView) findViewById(R.id.thetax);
         thetay = (TextView) findViewById(R.id.thetay);
         thetaz = (TextView) findViewById(R.id.thetaz);
+        xdist = (TextView) findViewById(R.id.xdist);
+        ydist = (TextView) findViewById(R.id.ydist);
+        zdist = (TextView) findViewById(R.id.zdist);
+
         button = (Button) findViewById(R.id.calibration);
         buttonStop = (Button) findViewById(R.id.stop);
         streamThetas = new StreamThetas();
         streamThetas.start();
-
+        time = System.currentTimeMillis();
 
         this.buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,23 +91,40 @@ public class Home extends AppCompatActivity implements SensorEventListener {
 
 
     public void onSensorChanged(SensorEvent event) {
-        // Set values in textvield
-        xvalue.setText(event.values[0]*180 + "");
-        yvalue.setText(event.values[1]*180 + "");
-        zvalue.setText(event.values[2]*180 + "");
-        // Calculate the angles of rotation along all axes
-        thetaX = calcTheta(x, event.values[0]*180);
-        thetaY = calcTheta(y, event.values[1]*180);
-        thetaZ = calcTheta(z, event.values[2]*180);
-        thetax.setText(thetaX + "");
-        thetay.setText(thetaY + "");
-        thetaz.setText(thetaZ + "");
 
-        streamThetas.newData = true;
-        // Update the x,y and z values for the next iteration
-        x = event.values[0]*180;
-        y = event.values[1]*180;
-        z = event.values[2]*180;
+        Sensor sensor = event.sensor;
+        if(sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            long tempTime = System.currentTimeMillis();
+            long deltaTime = tempTime- time;
+            time = tempTime;
+            System.out.println(deltaTime);
+            System.out.println(event.values[0]);
+            dx = event.values[0]*(deltaTime/10);
+            dy = event.values[1]*(deltaTime/10);
+            dz = event.values[2]*(deltaTime/10);
+            xdist.setText(dx + "");
+            ydist.setText(dy + "");
+            zdist.setText(dz + "");
+        }else {
+            // Set values in textvield
+            xvalue.setText(event.values[0]*180 + "");
+            yvalue.setText(event.values[1]*180 + "");
+            zvalue.setText(event.values[2]*180 + "");
+            // Calculate the angles of rotation along all axes
+            thetaX = calcTheta(x, event.values[0]*180);
+            thetaY = calcTheta(y, event.values[1]*180);
+            thetaZ = calcTheta(z, event.values[2]*180);
+            thetax.setText(thetaX + "");
+            thetay.setText(thetaY + "");
+            thetaz.setText(thetaZ + "");
+
+            streamThetas.newData = true;
+            // Update the x,y and z values for the next iteration
+            x = event.values[0]*180;
+            y = event.values[1]*180;
+            z = event.values[2]*180;
+        }
+
     }
 
     public float calcTheta(float oldValue, float newValue){
@@ -145,10 +171,9 @@ public class Home extends AppCompatActivity implements SensorEventListener {
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println(out);
             return null;
         }
 
