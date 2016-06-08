@@ -39,7 +39,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     float x,y,z;
     float thetaX,thetaY,thetaZ;
     // X = Pitch , Y = Roll, Z = Azimut
-    String ip = "192.168.0.100";
+
     StreamThetas streamThetas;
     SensorEventListener sensListener;
     float speedx, speedy, speedz;
@@ -198,7 +198,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
                 if(socket == null)
                 {
                     try {
-                        socket = new Socket(ip, 9090);
+                        socket = new Socket(Settings.IP, 9090);
                         dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     } catch (UnknownHostException e) {
                         // TODO Auto-generated catch block
