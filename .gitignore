@@ -1,2 +1,6 @@
-out/*
-.idea
+Java/orientation/out/
+App/IMU/build/
+App/IMU/.idea/
+Python/read_sensors/.idea/
+Python/read_sensors/.idea
+
