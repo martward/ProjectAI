@@ -23,8 +23,8 @@ class Visualizer:
         print "Started GUI thread"
         self.handle_connection()
 
-
     def handle_connection(self):
+
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print "binding"
