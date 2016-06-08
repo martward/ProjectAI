@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/layout/ui_view_embed.xml",
+        "source": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-commonwidget/unspecified/res/layout/ui_view_embed.xml"
+    },
+    {
+        "merged": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/layout/ui_layer.xml",
+        "source": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/layout/ui_layer.xml"
+    },
+    {
+        "merged": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/layout/transition_view.xml",
+        "source": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/layout/transition_view.xml"
+    },
+    {
+        "merged": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/layout/back_button.xml",
+        "source": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/layout/back_button.xml"
+    },
+    {
+        "merged": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/layout/main_layout.xml",
+        "source": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/src/main/res/layout/main_layout.xml"
+    },
+    {
+        "merged": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/layout/ui_layer_with_portrait_support.xml",
+        "source": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/layout/ui_layer_with_portrait_support.xml"
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/values-v21/values-v21.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 92,
+                    "endOffset": 143
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-v21/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 195,
+                        "endColumn": 92,
+                        "endOffset": 283
+                    }
+                }
+            }
+        ]
+    }
+]
