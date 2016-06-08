@@ -1,94 +1,144 @@
 import socket
 import matplotlib.pyplot as plt
 import numpy as np
-import math, time
+import math
+import thread
+from time import sleep
 
-#from mpl_toolkits.mplot3d import axes3d
-#from matplotlib.path import Path
-#import matplotlib.patches as patches
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from mpl_toolkits.mplot3d import Axes3D
 
-ip = "192.168.0.105"
+ip = "192.168.0.106"
 port = 9090
 
-THETAS = np.radians([[10.,10.,10.], [-10.,35.,35.], [180.,-45.,90.]])
 
-ax = 0
+class Visualizer:
 
-x = [-5,-5,5,5]
-y = [-2.5,2.5,2.5,-2.5]
-z = [0,0,0,0,0]
+    queue = []
+    calibrated = False
 
-verts = [zip(x, y,z)]
+    calibratedPose = np.matrix([0.0, 0.0, 0.0])
 
-def main():
-    initPlot()
-    plotPoints(0, 0, 0)
-    handle_connection()
+    def __init__(self):
+        thread.start_new_thread(self.updateGUI, ())
+        print "Started GUI thread"
+        self.handle_connection()
 
-
-def handle_connection():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print "binding"
+    def handle_connection(self):
         try:
-            s.bind((ip,port))
-        except socket.error, msg:
-            print msg
-        print "Listening"
-        s.listen(1)
-        c,addr = s.accept()
-        print c
-        print "jup"
-        while 1:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print "binding"
             try:
-                msg, addr = c.recvfrom(1024)
-                msg = msg[2:]
+                s.bind((ip,port))
+            except socket.error, msg:
                 print msg
-                msg = msg.split("/")
-                if msg[0] == "stop":
-                    print "Receiving messages stopped."
+            print "Waiting"
+            s.listen(1)
+            c,addr = s.accept()
+            print c
+            print "Connected"
+            while 1:
+                try:
+                    msg, addr = c.recvfrom(1024)
+                    msg = msg[2:]
+                    msg = msg.split("/")
+
+                    if msg[0] == "stop":
+                        print "Receiving messages stopped."
+                        break
+                    else:
+                        self.queue.insert(0,msg)
+
+                except:
+                    print "Connection Lost"
+                    c.close()
+                    s.close()
                     break
-                elif msg[0] == "relative":
-                    plotPoints(float(msg[1]), float(msg[2]), float(msg[3]))
-                    continue
-                else:
-                    continue
-            except:
-                print "Connection Lost"
-                c.close()
-                s.close()
-                break
-    except:
-        "No connection found"
+        except:
+            "No connection found"
 
-def initPlot():
-    global ax
-    fig = plt.figure(figsize = (22,15))
-    ax = fig.add_subplot(111, projection='3d')
-    ax.set_xlim([-10,10])
-    ax.set_ylim([-10,10])
-    ax.set_zlim([-10,10])
+    def updateGUI(self):
 
-def plotPoints(THETA_X, THETA_Y, THETA_Z):
-    ROTX = np.array([[1,0,0],[0,math.cos(THETA_X),-math.sin(THETA_X)],[0,math.sin(THETA_X),math.cos(THETA_X)]])
-    ROTY = np.array([[math.cos(THETA_Y),0,math.sin(THETA_Y)],[0,1,0],[-math.sin(THETA_Y),0,math.cos(THETA_Y)]])
-    ROTZ = np.array([[math.cos(THETA_Z),-math.sin(THETA_Z),0],[math.sin(THETA_Z),math.cos(THETA_Z),0],[0,0,1]])
-    ROT = ROTX.dot(ROTY.dot(ROTZ))
+        points = np.matrix([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
 
-    downLeft = np.asarray(verts[0][0]).dot(ROT)
-    upLeft = np.asarray(verts[0][1]).dot(ROT)
-    upRight = np.asarray(verts[0][2]).dot(ROT)
-    downRight = np.asarray(verts[0][3]).dot(ROT)
+        plt.ion()
+        fig = plt.figure()
 
-    verts[0][0] = tuple(map(tuple, [downLeft]))[0]
-    verts[0][1] = tuple(map(tuple, [upLeft]))[0]
-    verts[0][2] = tuple(map(tuple, [upRight]))[0]
-    verts[0][3] = tuple(map(tuple, [downRight]))[0]
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter([], [], [])
+        colors = "black"
 
-    ax.cla()
-    surface = ax.add_collection3d(Poly3DCollection(verts))
-    #plt.pause(1)
+        ax.set_xlim([-10, 10])
+        ax.set_ylim([-10, 10])
+        ax.set_zlim([-10, 10])
+
+        [xs, ys, zs] = self.rotatePoint(points, [0, 0, 0])
+
+        ax.scatter(xs, ys, zs, c=colors )
+        fig.canvas.draw()
+
+        while(True):
+            if len(self.queue) > 0:
+
+                msg = self.queue.pop()
+                if msg[0] == "absolute" and self.calibrated:
+
+                    try:
+                        theta = [float(msg[3]), float(msg[1]), float(msg[2])]
+
+                        [xs, ys, zs] = self.rotatePoint(points, theta)
+
+                        ax.clear()
+                        ax.set_xlim([-10, 10])
+                        ax.set_ylim([-10, 10])
+                        ax.set_zlim([-10, 10])
+                        ax.scatter(xs, ys, zs, c=colors )
+                        fig.canvas.draw()
+
+                    except ValueError:
+                        print repr(msg[1])
+                        print repr(msg[2])
+                        print repr(msg[3])
+                        print "Non float value in message"
+
+                elif msg[0] == "calibrate":
+                    try:
+                        self.calibratedPose[0, 0] = float(msg[1])
+                        self.calibratedPose[0, 1] = float(msg[2])
+                        self.calibratedPose[0, 2] = float(msg[3])
+
+                        self.calibrated = True
+
+                        print "Calibrating"
+
+                    except ValueError:
+                        print repr(msg[1])
+                        print repr(msg[2])
+                        print repr(msg[3])
+                        print "Non float value in message"
+
+
+
+
+            else:
+                sleep(0.01)
+
+        plt.show()
+
+    def rotatePoint(self, points, theta):
+        rads = np.divide(np.matrix(theta) - self.calibratedPose, np.matrix([180.0, 180.0, 180.0]))
+        r = rads[0,0]
+        p = rads[0,1]
+        y = rads[0,2]
+        R = np.matrix([[math.cos(r)*math.cos(p), math.cos(r)*math.sin(p)*math.sin(y) - math.sin(r) * math.cos(y), math.cos(r)*math.sin(p)*math.cos(y) + math.sin(r)*math.sin(y)],
+                        [math.sin(r)*math.cos(p), math.cos(r)*math.sin(p)*math.sin(y) + math.cos(r) * math.cos(y), math.sin(r)*math.sin(p)*math.cos(y) - math.cos(r)*math.sin(y)],
+                        [-math.sin(p), math.cos(p)*math.sin(y), math.cos(p)*math.cos(y)]])
+
+        transformed = points*R
+        xs = np.squeeze(np.asarray( transformed[:, 0]))
+        ys = np.squeeze(np.asarray( transformed[:, 1]))
+        zs = np.squeeze(np.asarray( transformed[:, 2]))
+
+        return [xs, ys, zs]
 
 if __name__ == '__main__':
-    main()
+    vis = Visualizer()
