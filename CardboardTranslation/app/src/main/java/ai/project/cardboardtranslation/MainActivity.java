@@ -108,24 +108,28 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         @Override
         public void run()
         {
+            log("Trying to connect");
             while(true)
             {
                 if (outputStream == null || socket == null) {
                     try {
                         socket = new Socket(IP, 9090);
                         outputStream = new DataOutputStream(socket.getOutputStream());
+
+                        log("Connected");
                     } catch (IOException e) {
-                        e.printStackTrace();
+
                     }
                 }
 
-                if (data != null) {
+                if (data != null && outputStream != null ) {
                     try {
-                        log("send data: " + data);
+                        log("Send data: " + data);
                         outputStream.writeUTF(data);
                         data = null;
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log("Connection lost");
+
                         socket = null;
                         outputStream = null;
                     }
