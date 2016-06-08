@@ -28,10 +28,9 @@ def handle_connection():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(('8.8.8.8', 0))
-        ip = s.getsockname()[0]
         print "binding"
         try:
-            s.bind((ip, 9090))
+            s.bind((s.getsockname()[0], 9090))
         except socket.error, msg:
             print msg
         print "Listening"
