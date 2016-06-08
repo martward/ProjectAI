@@ -42,6 +42,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     String ip = "192.168.0.100";
     StreamThetas streamThetas;
     SensorEventListener sensListener;
+    float speedx, speedy, speedz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,9 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         streamThetas = new StreamThetas();
         streamThetas.start();
         time = System.currentTimeMillis();
-
+        speedx = 0;
+        speedy = 0;
+        speedz = 0;
         this.buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,11 +100,16 @@ public class Home extends AppCompatActivity implements SensorEventListener {
             long tempTime = System.currentTimeMillis();
             long deltaTime = tempTime- time;
             time = tempTime;
+
             System.out.println(deltaTime);
             System.out.println(event.values[0]);
-            dx = event.values[0]*(deltaTime/10);
-            dy = event.values[1]*(deltaTime/10);
-            dz = event.values[2]*(deltaTime/10);
+            speedx += event.values[0]*(deltaTime/10);
+            speedy += event.values[1]*(deltaTime/10);
+            speedz += event.values[2]*(deltaTime/10);
+            dx = speedx * (deltaTime/10);
+            dy = speedy * (deltaTime/10);
+            dy = speedz * (deltaTime/10);
+
             xdist.setText(dx + "");
             ydist.setText(dy + "");
             zdist.setText(dz + "");
