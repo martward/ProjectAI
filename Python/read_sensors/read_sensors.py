@@ -8,9 +8,6 @@ import math, time
 #import matplotlib.patches as patches
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-ip = "192.168.0.105"
-port = 9090
-
 THETAS = np.radians([[10.,10.,10.], [-10.,35.,35.], [180.,-45.,90.]])
 
 ax = 0
@@ -30,9 +27,11 @@ def main():
 def handle_connection():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('8.8.8.8', 0))
+        ip = s.getsockname()[0]
         print "binding"
         try:
-            s.bind((ip,port))
+            s.bind((ip, 9090))
         except socket.error, msg:
             print msg
         print "Listening"
