@@ -1,6 +1,6 @@
-Java/orientation/out/*
-.idea
-App/IMU/build/*
-App/IMU/.idea/*
-Python/read_sensors/.idea/*
+Java/orientation/out/
+App/IMU/build/
+App/IMU/.idea/
+Python/read_sensors/.idea/
+Python/read_sensors/.idea
 
