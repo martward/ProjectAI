@@ -7,9 +7,9 @@ from time import sleep
 
 from mpl_toolkits.mplot3d import Axes3D
 
+
 ip = "192.168.0.106"
 port = 9090
-
 
 class Visualizer:
 
@@ -23,10 +23,12 @@ class Visualizer:
         print "Started GUI thread"
         self.handle_connection()
 
+
     def handle_connection(self):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print "binding"
+
             try:
                 s.bind((ip,port))
             except socket.error, msg:
@@ -102,9 +104,9 @@ class Visualizer:
 
                 elif msg[0] == "calibrate":
                     try:
-                        self.calibratedPose[0, 0] = float(msg[1])
-                        self.calibratedPose[0, 1] = float(msg[2])
-                        self.calibratedPose[0, 2] = float(msg[3])
+                        self.calibratedPose[0, 0] = float(msg[3])
+                        self.calibratedPose[0, 1] = float(msg[1])
+                        self.calibratedPose[0, 2] = float(msg[2])
 
                         self.calibrated = True
 
@@ -125,7 +127,7 @@ class Visualizer:
         plt.show()
 
     def rotatePoint(self, points, theta):
-        rads = np.divide(np.matrix(theta) - self.calibratedPose, np.matrix([180.0, 180.0, 180.0]))
+        rads = np.radians(np.matrix(theta) - self.calibratedPose )
         r = rads[0,0]
         p = rads[0,1]
         y = rads[0,2]
