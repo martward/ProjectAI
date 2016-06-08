@@ -20,7 +20,7 @@ import java.net.UnknownHostException;
 
 public class Home extends AppCompatActivity implements SensorEventListener {
 
-    long time;
+    double time;
     SensorManager sMgr;
     Sensor orientation;
     Sensor translation;
@@ -35,7 +35,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     TextView zdist;
     Button button;
     Button buttonStop;
-    float dx, dy, dz;
+    double dx, dy, dz;
     float x,y,z;
     float thetaX,thetaY,thetaZ;
     // X = Pitch , Y = Roll, Z = Azimut
@@ -50,7 +50,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         setContentView(R.layout.activity_home);
         sMgr = (SensorManager)this.getSystemService(SENSOR_SERVICE);
         orientation = sMgr.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        translation = sMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        translation = sMgr.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         sMgr.registerListener(this, orientation, SensorManager.SENSOR_DELAY_NORMAL);
         sMgr.registerListener(this, translation, SensorManager.SENSOR_DELAY_NORMAL);
         //sensListener = new SensorEventListener();
@@ -96,23 +96,34 @@ public class Home extends AppCompatActivity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
         Sensor sensor = event.sensor;
-        if(sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-            long tempTime = System.currentTimeMillis();
+        if(sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION){
+            double tempTime = System.currentTimeMillis()/1000.0;
+            double deltaTime = time - tempTime;
+            time = tempTime;
+            dx = (event.values[0] * Math.pow(deltaTime,2))/1000.0;
+            dy = (event.values[1] * Math.pow(deltaTime,2))/1000.0;
+            dz = (event.values[2] * Math.pow(deltaTime,2))/1000.0;
+            System.out.println(event.values[0]);
+            System.out.println(event.values[1]);
+            System.out.println(event.values[2]);
+            /*
             long deltaTime = tempTime- time;
             time = tempTime;
-
-            System.out.println(deltaTime);
-            System.out.println(event.values[0]);
+            //System.out.println(event.values[0]);
+            //System.out.println(event.values[1]);
+            //System.out.println(event.values[2]);
             speedx += event.values[0]*(deltaTime/10);
             speedy += event.values[1]*(deltaTime/10);
             speedz += event.values[2]*(deltaTime/10);
-            dx = speedx * (deltaTime/10);
-            dy = speedy * (deltaTime/10);
-            dy = speedz * (deltaTime/10);
-
+            dx = speedx * (deltaTime/1000.0);
+            dy = speedy * (deltaTime/1000.0);
+            dz = speedz * (deltaTime/1000.0);
+            */
+            streamThetas.newTranslation = true;
             xdist.setText(dx + "");
             ydist.setText(dy + "");
             zdist.setText(dz + "");
+
         }else {
             // Set values in textvield
             xvalue.setText(event.values[0]*180 + "");
@@ -153,6 +164,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
         boolean newData = false;
         boolean calibrate = false;
         boolean stop = false;
+        boolean newTranslation = false;
         Socket socket;
         DataOutputStream dataOutputStream;
 
@@ -171,6 +183,8 @@ public class Home extends AppCompatActivity implements SensorEventListener {
 
                 out = "absolute/" + x + "/" + y + "/" + z ;
                 //out = "stop/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+            } else if(type == 3){
+                out = "translation/" + dx + "/" + dy + "/" + dz;
             } else{
                 out = "calibrate/" + x + "/" + y + "/" + z ;
             }
@@ -222,6 +236,9 @@ public class Home extends AppCompatActivity implements SensorEventListener {
                 } else if(stop){
                     send(2);
                     stop = false;
+                } else if(newTranslation){
+                    send(3);
+                    newTranslation = false;
                 }
             }
         }
