@@ -8,13 +8,24 @@ import com.google.vr.sdk.base.GvrView;
 import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.Viewport;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer {
 
+    public static String IP = "192.168.0.100";
+
+    NetworkThread networkThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkThread = new NetworkThread();
+        networkThread.start();
 
         setContentView(R.layout.ui_common);
 
@@ -37,7 +48,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
         msg = msg + rot[0] + "/" + rot[1] + "/" +rot[2] + "/" +rot[3];
 
-        log(msg);
+        networkThread.setData(msg);
 
     }
 
@@ -69,5 +80,57 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     private void log(String s)
     {
         System.out.println(s);
+    }
+
+    class NetworkThread extends Thread
+    {
+        private Socket socket;
+        private DataOutputStream outputStream;
+
+        String data;
+
+        public NetworkThread()
+        {
+
+        }
+
+        public void setData(String data)
+        {
+            this.data = data;
+        }
+
+        @Override
+        public void start()
+        {
+            super.start();
+        }
+
+        @Override
+        public void run()
+        {
+            while(true)
+            {
+                if (outputStream == null || socket == null) {
+                    try {
+                        socket = new Socket(IP, 9090);
+                        outputStream = new DataOutputStream(socket.getOutputStream());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (data != null) {
+                    try {
+                        log("send data: " + data);
+                        outputStream.writeUTF(data);
+                        data = null;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        socket = null;
+                        outputStream = null;
+                    }
+                }
+            }
+        }
     }
 }
