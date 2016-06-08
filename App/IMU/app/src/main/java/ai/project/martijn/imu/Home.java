@@ -165,9 +165,12 @@ public class Home extends AppCompatActivity implements SensorEventListener {
             String out;
 
             if(type == 0) {
-                out = "relative/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+                //out = "relative/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+                out = "absolute/" + x + "/" + y + "/" + z ;
             }else if(type == 2){
-                out = "stop/" + thetaX + "/" + thetaY + "/" + thetaZ ;
+
+                out = "absolute/" + x + "/" + y + "/" + z ;
+                //out = "stop/" + thetaX + "/" + thetaY + "/" + thetaZ ;
             } else{
                 out = "absolute/" + x + "/" + y + "/" + z ;
             }
