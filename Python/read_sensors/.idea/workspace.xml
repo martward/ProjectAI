@@ -28,8 +28,8 @@
       <file leaf-file-name="read_sensors.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/read_sensors.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.61204">
-              <caret line="120" column="42" selection-start-line="120" selection-start-column="42" selection-end-line="120" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.36789298">
+              <caret line="150" column="48" selection-start-line="150" selection-start-column="48" selection-end-line="150" selection-end-column="48" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -38,13 +38,6 @@
         </entry>
       </file>
     </leaf>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -112,9 +105,6 @@
         </subPane>
       </pane>
     </panes>
-  </component>
-  <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="RunManager" selected="Python.read_sensors">
     <configuration default="false" name="read_sensors" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -386,8 +376,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/read_sensors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.61204">
-          <caret line="120" column="42" selection-start-line="120" selection-start-column="42" selection-end-line="120" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.36789298">
+          <caret line="150" column="48" selection-start-line="150" selection-start-column="48" selection-end-line="150" selection-end-column="48" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>

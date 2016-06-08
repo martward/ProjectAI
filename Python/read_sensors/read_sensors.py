@@ -6,9 +6,6 @@ import thread
 from time import sleep
 from mpl_toolkits.mplot3d import Axes3D
 
-ip = "192.168.0.106"
-port = 9090
-
 
 class Visualizer:
 
@@ -28,21 +25,30 @@ class Visualizer:
     def handle_connection(self):
 
         try:
+            readIP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            readIP.connect(("8.8.8.8", 0))
+            ip = readIP.getsockname()[0]
+            readIP.close()
+
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print "binding"
 
             try:
-                s.bind((ip, port))
+
+                s.bind((ip, 9090))
+
             except socket.error, msg:
                 print msg
             print "Waiting"
             s.listen(1)
-            c, addr = s.accept()
+
+            c, address = s.accept()
+
             print c
             print "Connected"
             while 1:
                 try:
-                    msg, addr = c.recvfrom(1024)
+                    msg, address = c.recvfrom(1024)
                     msg = msg[2:]
                     msg = msg.split("/")
 
@@ -107,11 +113,12 @@ class Visualizer:
 
                 elif msg[0] == "calibrate":
                     try:
+                        print "Calibrating"
                         self.calibratedPose[0, 0] = float(msg[3])
                         self.calibratedPose[0, 1] = float(msg[1])
                         self.calibratedPose[0, 2] = float(msg[2])
-
                         self.calibrated = True
+
                         print "Calibrated"
 
                         continue
@@ -132,11 +139,6 @@ class Visualizer:
                     ax.scatter(xs, ys, zs, c=colors)
                     fig.canvas.draw()
 
-            else:
-                sleep(0.01)
-
-        plt.show()
-
     def rotatePoint(self, points, theta, translation):
         print theta, self.calibratedPose
         rads = np.radians(np.matrix(theta) - self.calibratedPose)
@@ -151,7 +153,6 @@ class Visualizer:
         transformed = points*r
 
         #translated = np.add(transformed, translation)
-
         translated = transformed
 
         xs = np.squeeze(np.asarray(translated[:, 0]))

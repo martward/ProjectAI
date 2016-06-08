@@ -1,0 +1,311 @@
+[
+    {
+        "outputFile": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/res/merged/debug/values-nl/values-nl.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 105,
+                    "endColumn": 95,
+                    "endOffset": 196
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 316,
+                        "endColumn": 95,
+                        "endOffset": 407
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 201,
+                    "endColumn": 81,
+                    "endOffset": 278
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 412,
+                        "endColumn": 81,
+                        "endOffset": 489
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 283,
+                    "endColumn": 139,
+                    "endOffset": 418
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 494,
+                        "endColumn": 139,
+                        "endOffset": 629
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 423,
+                    "endColumn": 132,
+                    "endOffset": 551
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 634,
+                        "endColumn": 132,
+                        "endOffset": 762
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 556,
+                    "endColumn": 83,
+                    "endOffset": 635
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 767,
+                        "endColumn": 83,
+                        "endOffset": 846
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 640,
+                    "endColumn": 99,
+                    "endOffset": 735
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 851,
+                        "endColumn": 99,
+                        "endOffset": 946
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 740,
+                    "endColumn": 66,
+                    "endOffset": 802
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 951,
+                        "endColumn": 66,
+                        "endOffset": 1013
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 807,
+                    "endColumn": 107,
+                    "endOffset": 910
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1018,
+                        "endColumn": 107,
+                        "endOffset": 1121
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 915,
+                    "endColumn": 129,
+                    "endOffset": 1040
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1126,
+                        "endColumn": 129,
+                        "endOffset": 1251
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 1045,
+                    "endColumn": 159,
+                    "endOffset": 1200
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1256,
+                        "endColumn": 159,
+                        "endOffset": 1411
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 1205,
+                    "endColumn": 106,
+                    "endOffset": 1307
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1416,
+                        "endColumn": 106,
+                        "endOffset": 1518
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 1312,
+                    "endColumn": 80,
+                    "endOffset": 1388
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 1523,
+                        "endColumn": 80,
+                        "endOffset": 1599
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 1393,
+                    "endColumn": 87,
+                    "endOffset": 1476
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1604,
+                        "endColumn": 87,
+                        "endOffset": 1687
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 1481,
+                    "endColumn": 95,
+                    "endOffset": 1572
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1692,
+                        "endColumn": 95,
+                        "endOffset": 1783
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 1577,
+                    "endColumn": 108,
+                    "endOffset": 1681
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1788,
+                        "endColumn": 108,
+                        "endOffset": 1892
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 1686,
+                    "endColumn": 168,
+                    "endOffset": 1850
+                },
+                "from": {
+                    "file": "/home/joost/Documents/ProjectAI/gvr-android-sdk/samples/simplepanowidget/build/intermediates/exploded-aar/gvr-android-sdk/libraries-common/unspecified/res/values-nl/values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1897,
+                        "endColumn": 168,
+                        "endOffset": 2061
+                    }
+                }
+            }
+        ]
+    }
+]
