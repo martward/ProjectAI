@@ -172,7 +172,7 @@ public class Home extends AppCompatActivity implements SensorEventListener {
                 out = "absolute/" + x + "/" + y + "/" + z ;
                 //out = "stop/" + thetaX + "/" + thetaY + "/" + thetaZ ;
             } else{
-                out = "absolute/" + x + "/" + y + "/" + z ;
+                out = "calibrate/" + x + "/" + y + "/" + z ;
             }
             try {
                 dataOutputStream.writeUTF(out);
