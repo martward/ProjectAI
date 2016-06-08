@@ -11,7 +11,6 @@ import com.google.vr.sdk.base.Viewport;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
@@ -42,11 +41,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
         String msg = "absolute/";
-        float[] rot = new float[4];
+        float[] rot = new float[3];
 
-        headTransform.getQuaternion(rot, 0);
+        headTransform.getEulerAngles(rot, 0);
 
-        msg = msg + rot[0] + "/" + rot[1] + "/" +rot[2] + "/" +rot[3];
+        msg = msg + rot[0] + "/" + rot[1] + "/" +rot[2];
 
         networkThread.setData(msg);
 
@@ -74,7 +73,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
     @Override
     public void onRendererShutdown() {
-
+        networkThread.shutdown();
     }
 
     private void log(String s)
@@ -86,12 +85,18 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     {
         private Socket socket;
         private DataOutputStream outputStream;
+        private boolean running;
 
         String data;
 
         public NetworkThread()
         {
+            running = true;
+        }
 
+        public void shutdown()
+        {
+            running = false;
         }
 
         public void setData(String data)
@@ -109,7 +114,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         public void run()
         {
             log("Trying to connect");
-            while(true)
+            while(running)
             {
                 if (outputStream == null || socket == null) {
                     try {
@@ -118,7 +123,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
                         log("Connected");
                     } catch (IOException e) {
-
+                        try {
+                            sleep(100);
+                        } catch (InterruptedException e1) {
+                            log("Could not sleep");
+                        }
                     }
                 }
 
@@ -126,6 +135,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
                     try {
                         log("Send data: " + data);
                         outputStream.writeUTF(data);
+                        //sleep( 100 );
+                        
                         data = null;
                     } catch (IOException e) {
                         log("Connection lost");
