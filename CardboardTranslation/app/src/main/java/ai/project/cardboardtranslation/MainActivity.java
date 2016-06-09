@@ -41,11 +41,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
         String msg = "absolute/";
-        float[] rot = new float[3];
+        float[] quat = new float[4];
 
-        headTransform.getEulerAngles(rot, 0);
+        headTransform.getQuaternion(quat, 0);
 
-        msg = msg + rot[0] + "/" + rot[1] + "/" +rot[2];
+        msg = msg + quat[0] + "/" + quat[1] + "/" + quat[2] + "/" + quat[3];
 
         networkThread.setData(msg);
 
