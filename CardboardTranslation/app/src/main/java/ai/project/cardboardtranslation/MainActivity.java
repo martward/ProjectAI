@@ -135,8 +135,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
                     try {
                         log("Send data: " + data);
                         outputStream.writeUTF(data);
-                        //sleep( 100 );
-                        
                         data = null;
                     } catch (IOException e) {
                         log("Connection lost");
