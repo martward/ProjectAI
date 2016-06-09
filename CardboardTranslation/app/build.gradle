@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile project(':base')
     compile project(':common')
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

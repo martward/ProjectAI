@@ -1,10 +1,14 @@
 package ai.project.cardboardtranslation;
 
+import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrActivity;
 import com.google.vr.sdk.base.GvrView;
@@ -20,13 +24,12 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.0.118";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
@@ -56,11 +59,16 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     private float[] camera;
 
     // We keep the light always position just above the user.
-    private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[] {0.0f, 2.0f, 0.0f, 1.0f};
+    private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[]{0.0f, 2.0f, 0.0f, 1.0f};
 
     private static final int COORDS_PER_VERTEX = 3;
 
     NetworkThread networkThread;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +82,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
         setContentView(R.layout.ui_common);
 
-        GvrView gvrView = (GvrView)findViewById(R.id.gvr_view);
+        GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
 
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
 
@@ -86,6 +94,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         networkThread = new NetworkThread();
         networkThread.start();
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -104,7 +115,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     /**
      * Converts a raw text file, saved as a resource, into an OpenGL ES shader.
      *
-     * @param type The type of shader we will be creating.
+     * @param type  The type of shader we will be creating.
      * @param resId The resource ID of the raw text file about to be turned into a shader.
      * @return The shader object handler.
      */
@@ -161,8 +172,15 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         float[] quaternion = new float[4];
         float[] translation = new float[3];
         headTransform.getQuaternion(quaternion, 0);
-        headTransform.getTranslation(translation, 0);
-        System.out.println(Arrays.toString(translation));
+
+        // Translation from headTransform (what the .. is it?!)
+        //headTransform.getTranslation(translation, 0);
+        //System.out.println(Arrays.toString(translation));
+        translation[0] = 0;
+        translation[1] = 0;
+        translation[2] = 0;
+
+        // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
                 + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
                 + translation[2];
@@ -282,7 +300,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
     /**
      * Draw the floor.
-     *
+     * <p/>
      * <p>This feeds in data for the floor into the shader. Note that this doesn't feed in data about
      * position of the light, so if we rewrite our code to draw the floor first, the lighting might
      * look strange.
@@ -314,46 +332,78 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         networkThread.shutdown();
     }
 
-    private void log(String s)
-    {
+    private void log(String s) {
         System.out.println(s);
     }
 
-    class NetworkThread extends Thread
-    {
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://ai.project.cardboardtranslation/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://ai.project.cardboardtranslation/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+    class NetworkThread extends Thread {
         private Socket socket;
         private DataOutputStream outputStream;
         private boolean running;
 
         String data;
 
-        public NetworkThread()
-        {
+        public NetworkThread() {
             running = true;
         }
 
-        public void shutdown()
-        {
+        public void shutdown() {
             running = false;
         }
 
-        public void setData(String data)
-        {
+        public void setData(String data) {
             this.data = data;
         }
 
         @Override
-        public void start()
-        {
+        public void start() {
             super.start();
         }
 
         @Override
-        public void run()
-        {
+        public void run() {
             log("Trying to connect");
-            while(running)
-            {
+            while (running) {
                 if (outputStream == null || socket == null) {
                     try {
                         socket = new Socket(IP, 9090);
@@ -369,7 +419,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
                     }
                 }
 
-                if (data != null && outputStream != null ) {
+                if (data != null && outputStream != null) {
                     try {
                         log("Send data: " + data);
                         outputStream.writeUTF(data);

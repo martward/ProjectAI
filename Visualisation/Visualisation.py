@@ -87,7 +87,7 @@ class Visualizer:
                 if self.data[0] == "absolute":
                     try:
                         quaternion = np.array([float(self.data[1]), float(self.data[2]),
-                                               float(self.data[3]), float(self.data[4])])
+                                               -float(self.data[3]), float(self.data[4])])
                         translation = np.array([float(self.data[5]), float(self.data[6]), float(self.data[7])])
                         [xs, ys, zs] = self.rotatePoint(points, quaternion, translation)
                         plot._offsets3d = (xs, zs, ys)
