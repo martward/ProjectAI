@@ -16,7 +16,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer {
 
-    public static String IP = "192.168.0.100";
+    public static String IP = "192.168.0.105";
 
     NetworkThread networkThread;
 
