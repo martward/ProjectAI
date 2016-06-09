@@ -9,7 +9,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 class Visualizer:
 
-    queue = []
+    data = []
 
     def __init__(self):
         thread.start_new_thread(self.updateGUI, ())
@@ -49,7 +49,7 @@ class Visualizer:
                             print "Receiving messages stopped."
                             break
                         else:
-                            self.queue.insert(0, msg)
+                            self.data = msg;
                 except:
                     print "Connection Lost"
                     c.shutdown()
@@ -84,18 +84,18 @@ class Visualizer:
         fig.canvas.draw()
 
         while True:
-            if len(self.queue) > 0:
-                msg = self.queue.pop()
-                if msg[0] == "absolute":
+            if self.data:
+                if self.data[0] == "absolute":
                     try:
-                        euler = [float(msg[1]), float(msg[2]), float(msg[3])]
+                        euler = [float(self.data[1]), float(self.data[2]), float(self.data[3])]
                         [xs, ys, zs] = self.rotatePoint(points, euler)
                         plot._offsets3d = (xs, ys, zs)
                         fig.canvas.draw()
+                        self.data = []
                     except ValueError:
-                        print repr(msg[1])
-                        print repr(msg[2])
-                        print repr(msg[3])
+                        print repr(self.data[1])
+                        print repr(self.data[2])
+                        print repr(self.data[3])
                         print "Non float value in message"
                 else:
                     continue
