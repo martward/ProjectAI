@@ -1,7 +1,6 @@
 import socket
 import matplotlib.pyplot as plt
 import numpy as np
-import math
 import thread
 from time import sleep
 from mpl_toolkits.mplot3d import Axes3D
@@ -67,10 +66,10 @@ class Visualizer:
 
     def updateGUI(self):
 
-        points = np.matrix([[0, 2.5, 5], [0, 2.5, -5], [0, -2.5, -5], [0, -2.5, 5]])
+        points = np.matrix([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
 
         plt.ion()
-        fig = plt.figure(figsize=(22,15))
+        fig = plt.figure(figsize=(22, 15))
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter([], [], [])
         colors = "black"
@@ -78,7 +77,7 @@ class Visualizer:
         ax.set_ylim([-10, 10])
         ax.set_zlim([-10, 10])
 
-        [xs, ys, zs] = self.rotatePoint(points, [0, 0, 0])
+        [xs, ys, zs] = self.rotatePoint(points, [0, 0, 0, 0])
 
         plot = ax.scatter(xs, ys, zs, c=colors)
         fig.canvas.draw()
@@ -87,8 +86,9 @@ class Visualizer:
             if self.data:
                 if self.data[0] == "absolute":
                     try:
-                        euler = [float(self.data[1]), float(self.data[2]), float(self.data[3])]
-                        [xs, ys, zs] = self.rotatePoint(points, euler)
+                        quaternion = [float(self.data[1]), float(self.data[2]),
+                                      float(self.data[3]), float(self.data[4])]
+                        [xs, ys, zs] = self.rotatePoint(points, quaternion)
                         plot._offsets3d = (xs, ys, zs)
                         fig.canvas.draw()
                         self.data = []
@@ -96,6 +96,7 @@ class Visualizer:
                         print repr(self.data[1])
                         print repr(self.data[2])
                         print repr(self.data[3])
+                        print repr(self.data[4])
                         print "Non float value in message"
                 else:
                     continue
@@ -103,16 +104,28 @@ class Visualizer:
                 sleep(0.01)
         plt.show()
 
-    def rotatePoint(self, points, euler):
-        rads = np.matrix(euler)
-        r = rads[0, 0]
-        p = rads[0, 1]
-        y = rads[0, 2]
-        R = np.matrix([[math.cos(r)*math.cos(p), math.cos(r)*math.sin(p)*math.sin(y) - math.sin(r) * math.cos(y),
-                        math.cos(r)*math.sin(p)*math.cos(y) + math.sin(r)*math.sin(y)],
-                       [math.sin(r)*math.cos(p), math.cos(r)*math.sin(p)*math.sin(y) + math.cos(r) * math.cos(y),
-                        math.sin(r)*math.sin(p)*math.cos(y) - math.cos(r)*math.sin(y)],
-                       [-math.sin(p), math.cos(p)*math.sin(y), math.cos(p)*math.cos(y)]])
+    def rotatePoint(self, points, quaternion):
+        x = quaternion[0]
+        y = quaternion[1]
+        z = quaternion[2]
+        w = quaternion[3]
+
+        n = x*x + y*y + z*z + w*w
+        s = 0
+        if n != 0:
+            s = 2/n
+        wx = s * x * w
+        wy = s * y * w
+        wz = s * z * w
+        xx = s * x * x
+        xy = s * x * y
+        xz = s * x * z
+        yy = s * y * y
+        yz = s * y * z
+        zz = s * z * z
+        R = [[1 - (yy + zz), xy - wz, xz + wy],
+             [xy + wz, 1 - (xx + zz), yz - wx],
+             [xz - wy, yz + wx, 1 - (xx + yy)]]
         transformed = points * R
         xs = np.squeeze(np.asarray(transformed[:, 0]))
         ys = np.squeeze(np.asarray(transformed[:, 1]))
