@@ -79,7 +79,7 @@ class Visualizer:
 
         [xs, ys, zs] = self.rotatePoint(points, [0, 0, 0, 0])
 
-        plot = ax.scatter(xs, ys, zs, c=colors)
+        plot = ax.scatter(xs, zs, ys, c=colors)
         fig.canvas.draw()
 
         while True:
@@ -89,7 +89,7 @@ class Visualizer:
                         quaternion = [float(self.data[1]), float(self.data[2]),
                                       float(self.data[3]), float(self.data[4])]
                         [xs, ys, zs] = self.rotatePoint(points, quaternion)
-                        plot._offsets3d = (xs, ys, zs)
+                        plot._offsets3d = (xs, zs, ys)
                         fig.canvas.draw()
                         self.data = []
                     except ValueError:
