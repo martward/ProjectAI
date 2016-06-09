@@ -20,6 +20,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
@@ -158,11 +159,13 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     public void onNewFrame(HeadTransform headTransform) {
         String msg = "absolute/";
         float[] quaternion = new float[4];
-
+        float[] translation = new float[3];
         headTransform.getQuaternion(quaternion, 0);
-
-        msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/" + quaternion[3];
-
+        headTransform.getTranslation(translation, 0);
+        System.out.println(Arrays.toString(translation));
+        msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
+                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
+                + translation[2];
         networkThread.setData(msg);
 
         // Build the camera matrix and apply it to the ModelView.

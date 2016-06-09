@@ -66,7 +66,7 @@ class Visualizer:
 
     def updateGUI(self):
 
-        points = np.matrix([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
+        points = np.array([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
 
         plt.ion()
         fig = plt.figure(figsize=(22, 15))
@@ -77,7 +77,7 @@ class Visualizer:
         ax.set_ylim([-10, 10])
         ax.set_zlim([-10, 10])
 
-        [xs, ys, zs] = self.rotatePoint(points, [0, 0, 0, 0])
+        [xs, ys, zs] = self.rotatePoint(points, np.array([0, 0, 0, 0]), np.array([0, 0, 0]))
 
         plot = ax.scatter(xs, zs, ys, c=colors)
         fig.canvas.draw()
@@ -86,17 +86,14 @@ class Visualizer:
             if self.data:
                 if self.data[0] == "absolute":
                     try:
-                        quaternion = [float(self.data[1]), float(self.data[2]),
-                                      float(self.data[3]), float(self.data[4])]
-                        [xs, ys, zs] = self.rotatePoint(points, quaternion)
+                        quaternion = np.array([float(self.data[1]), float(self.data[2]),
+                                               float(self.data[3]), float(self.data[4])])
+                        translation = np.array([float(self.data[5]), float(self.data[6]), float(self.data[7])])
+                        [xs, ys, zs] = self.rotatePoint(points, quaternion, translation)
                         plot._offsets3d = (xs, zs, ys)
                         fig.canvas.draw()
                         self.data = []
                     except ValueError:
-                        print repr(self.data[1])
-                        print repr(self.data[2])
-                        print repr(self.data[3])
-                        print repr(self.data[4])
                         print "Non float value in message"
                 else:
                     continue
@@ -104,7 +101,7 @@ class Visualizer:
                 sleep(0.01)
         plt.show()
 
-    def rotatePoint(self, points, quaternion):
+    def rotatePoint(self, points, quaternion, translation):
         x = quaternion[0]
         y = quaternion[1]
         z = quaternion[2]
@@ -123,10 +120,11 @@ class Visualizer:
         yy = s * y * y
         yz = s * y * z
         zz = s * z * z
-        R = [[1 - (yy + zz), xy - wz, xz + wy],
-             [xy + wz, 1 - (xx + zz), yz - wx],
-             [xz - wy, yz + wx, 1 - (xx + yy)]]
-        transformed = points * R
+        R = np.array([[1 - (yy + zz), xy - wz, xz + wy],
+                      [xy + wz, 1 - (xx + zz), yz - wx],
+                      [xz - wy, yz + wx, 1 - (xx + yy)]])
+        transformed = points.dot(R) + translation * 100
+        print translation * 100
         xs = np.squeeze(np.asarray(transformed[:, 0]))
         ys = np.squeeze(np.asarray(transformed[:, 1]))
         zs = np.squeeze(np.asarray(transformed[:, 2]))
