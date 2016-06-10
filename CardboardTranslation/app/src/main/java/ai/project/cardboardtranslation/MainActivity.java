@@ -459,7 +459,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
                 if (data != null && outputStream != null) {
                     try {
-                        log("Send data: " + data);
+                        //log("Send data: " + data);
                         outputStream.writeUTF(data);
                         data = null;
                     } catch (IOException e) {
