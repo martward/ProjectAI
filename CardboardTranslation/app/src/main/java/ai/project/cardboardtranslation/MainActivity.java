@@ -5,6 +5,10 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Bundle;
 import android.util.Log;
+import android.hardware.SensorEvent;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -24,12 +28,13 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
-public class MainActivity extends GvrActivity implements GvrView.StereoRenderer {
+public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.118";
+    public static String IP = "192.168.0.105";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
@@ -58,6 +63,13 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     private float[] view;
     private float[] camera;
 
+    private float[] translation = new float[3];
+    private float[] velocity = new float[3];
+    private long time;
+
+    SensorManager sMgr;
+    Sensor translationSensor;
+
     // We keep the light always position just above the user.
     private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[]{0.0f, 2.0f, 0.0f, 1.0f};
 
@@ -80,6 +92,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         view = new float[16];
         camera = new float[16];
 
+        time = System.currentTimeMillis();
+
         setContentView(R.layout.ui_common);
 
         GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
@@ -90,6 +104,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         gvrView.setTransitionViewEnabled(true);
 
         setGvrView(gvrView);
+
+        sMgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
+        translationSensor = sMgr.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        sMgr.registerListener(this, translationSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         networkThread = new NetworkThread();
         networkThread.start();
@@ -170,15 +188,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     public void onNewFrame(HeadTransform headTransform) {
         String msg = "absolute/";
         float[] quaternion = new float[4];
-        float[] translation = new float[3];
         headTransform.getQuaternion(quaternion, 0);
-
-        // Translation from headTransform (what the .. is it?!)
-        //headTransform.getTranslation(translation, 0);
-        //System.out.println(Arrays.toString(translation));
-        translation[0] = 0;
-        translation[1] = 0;
-        translation[2] = 0;
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
@@ -190,7 +200,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         Matrix.setLookAtM(camera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
         //headTransform.getHeadView(headView, 0);
-
 
         checkGLError("onReadyToDraw");
 
@@ -374,6 +383,35 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float accX = event.values[0];
+        float accY = event.values[1];
+        float accZ = event.values[2];
+        long currentTime = System.currentTimeMillis();
+        float dt = (float)(currentTime - time) / (float)1000.0;
+        time = currentTime;
+
+        if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
+            velocity[0] = velocity[0] + accX * dt;
+            velocity[1] = velocity[1] + accY * dt;
+            velocity[2] = velocity[2] + accZ * dt;
+        } else {
+            velocity[0] = 0;
+            velocity[1] = 0;
+            velocity[2] = 0;
+        }
+
+        translation[0] = translation[0] + velocity[0] * dt;
+        translation[1] = translation[1] + velocity[1] * dt;
+        translation[2] = translation[2] + velocity[2] * dt;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     class NetworkThread extends Thread {
