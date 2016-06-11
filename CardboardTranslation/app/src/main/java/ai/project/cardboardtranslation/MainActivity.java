@@ -54,6 +54,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     private float[] view;
     private float[] camera;
 
+    private float[] position;
+    private double exampleState;
+
     // We keep the light always position just above the user.
     private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[] {0.0f, 2.0f, 0.0f, 1.0f};
 
@@ -70,6 +73,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         modelView = new float[16];
         view = new float[16];
         camera = new float[16];
+        position = new float[3];
+        System.out.println("ONCREATE");
 
         setContentView(R.layout.ui_common);
 
@@ -154,19 +159,37 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         return null;
     }
 
-    @Override
-    public void onNewFrame(HeadTransform headTransform) {
+    private void setMessage(HeadTransform headTransform)
+    {
         String msg = "absolute/";
         float[] rot = new float[3];
-
         headTransform.getEulerAngles(rot, 0);
-
         msg = msg + rot[0] + "/" + rot[1] + "/" +rot[2];
-
         networkThread.setData(msg);
+    }
+
+    private void updatePosition()
+    {
+        // TODO: replace example translation code with estimated translation
+        float radius = 20.f;
+
+        exampleState = (exampleState + 0.5);
+        if( exampleState > 100) exampleState = 0.0;
+        double exampleAngle = (2.0 * Math.PI) * (exampleState/100.0);
+
+        position[0] = (float)(Math.sin(exampleAngle) * radius);
+        position[2] = (float)(Math.cos(exampleAngle) * radius);
+
+    }
+
+    @Override
+    public void onNewFrame(HeadTransform headTransform) {
+
+        setMessage(headTransform);
+        updatePosition();
 
         // Build the camera matrix and apply it to the ModelView.
-        Matrix.setLookAtM(camera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
 
         //headTransform.getHeadView(headView, 0);
 
