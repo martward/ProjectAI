@@ -25,7 +25,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.0.110";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
@@ -163,7 +163,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/" + quaternion[3];
 
-        networkThread.setData(msg);
+        while(!networkThread.setData(msg));
+
 
         // Build the camera matrix and apply it to the ModelView.
         Matrix.setLookAtM(camera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
@@ -318,6 +319,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
     class NetworkThread extends Thread
     {
+
+        public boolean writing = false;
         private Socket socket;
         private DataOutputStream outputStream;
         private boolean running;
@@ -334,9 +337,12 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
             running = false;
         }
 
-        public void setData(String data)
+        public boolean setData(String data)
         {
+            if (writing) return false;
+
             this.data = data;
+            return true;
         }
 
         @Override
@@ -368,8 +374,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
                 if (data != null && outputStream != null ) {
                     try {
+                        writing = true;
                         log("Send data: " + data);
-                        outputStream.writeUTF(data);
+                        outputStream.writeChars(data+'\n');
+                        outputStream.flush();
+                        writing = false;
                         data = null;
                     } catch (IOException e) {
                         log("Connection lost");

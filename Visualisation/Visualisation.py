@@ -36,19 +36,24 @@ class Visualizer:
             s.listen(1)
 
             c, address = s.accept()
-            print c
             print "Connected"
             while 1:
                 try:
                     while 1:
-                        msg, address = c.recvfrom(1024)
-                        msg = msg[2:]
+                        buf = ''
+                        char = 0
+                        while not char == '\n' and not char == "\n" and not char == "":
+                            if char != 0 and ord(char) != 0:
+                                buf = buf + char
+                            char = c.recv(1)
+
+                        msg = buf
                         msg = msg.split("/")
                         if msg[0] == "stop":
                             print "Receiving messages stopped."
                             break
                         else:
-                            self.data = msg;
+                            self.data = msg
                 except:
                     print "Connection Lost"
                     c.shutdown()
