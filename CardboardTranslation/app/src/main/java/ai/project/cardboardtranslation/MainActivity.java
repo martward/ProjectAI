@@ -1,9 +1,14 @@
 package ai.project.cardboardtranslation;
 
+import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Bundle;
 import android.util.Log;
+import android.hardware.SensorEvent;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrActivity;
@@ -20,10 +25,11 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
-public class MainActivity extends GvrActivity implements GvrView.StereoRenderer {
+public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
     public static String IP = "192.168.0.105";
     private float floorDepth = 20f;
@@ -71,15 +77,23 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     private float[] view;
     private float[] camera;
 
+
     private float[] position;
     private double exampleState;
 
-    private float[] headRotation;
     private float[] headView;
-    private float[] tempPosition;
+
+    private float[] translation = new float[3];
+    private float[] velocity = new float[3];
+    private long time;
+    private float[] quaternion = new float[4];
+
+    SensorManager sMgr;
+    Sensor translationSensor;
+
 
     // We keep the light always position just above the user.
-    private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[] {0.0f, 2.0f, 0.0f, 1.0f};
+    private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[]{0.0f, 2.0f, 0.0f, 1.0f};
 
     private static final int COORDS_PER_VERTEX = 3;
 
@@ -101,14 +115,14 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         camera = new float[16];
         position = new float[3];
         modelPosition = new float[] {0.0f, 0.0f, -MAX_MODEL_DISTANCE / 2.0f};
-        tempPosition = new float[4];
-        headRotation = new float[4];
         headView = new float[16];
         System.out.println("ONCREATE");
 
+        time = System.currentTimeMillis();
+
         setContentView(R.layout.ui_common);
 
-        GvrView gvrView = (GvrView)findViewById(R.id.gvr_view);
+        GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
 
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
 
@@ -118,6 +132,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         setGvrView(gvrView);
 
         updateModelPosition();
+
+        sMgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
+        translationSensor = sMgr.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        sMgr.registerListener(this, translationSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
 
         networkThread = new NetworkThread();
@@ -141,7 +159,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     /**
      * Converts a raw text file, saved as a resource, into an OpenGL ES shader.
      *
-     * @param type The type of shader we will be creating.
+     * @param type  The type of shader we will be creating.
      * @param resId The resource ID of the raw text file about to be turned into a shader.
      * @return The shader object handler.
      */
@@ -195,23 +213,31 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
     private void setMessage(HeadTransform headTransform)
     {
         String msg = "absolute/";
-        float[] rot = new float[3];
-        headTransform.getEulerAngles(rot, 0);
-        msg = msg + rot[0] + "/" + rot[1] + "/" +rot[2];
+
+        headTransform.getQuaternion(quaternion, 0);
+
+        // Translation based on accelerometer
+        msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
+                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
+                + translation[2];
+
         networkThread.setData(msg);
     }
 
     private void updatePosition()
     {
-        // TODO: replace example translation code with estimated translation
-        float radius = 20.f;
+        float scale = 50.f;
+        position[0] = scale * translation[0];
+        position[2] = scale * translation[2];
 
-        exampleState = (exampleState + 0.5);
-        if( exampleState > 100) exampleState = 0.0;
-        double exampleAngle = (2.0 * Math.PI) * (exampleState/100.0);
+        System.out.print("Trans: ");
+        for( int i = 0; i < 3; i++ ) {System.out.print(translation[i] + ", ");}
+        System.out.println("");
 
-        position[0] = (float)(Math.sin(exampleAngle) * radius);
-        position[2] = (float)(Math.cos(exampleAngle) * radius);
+        System.out.print("Pos: ");
+        System.out.println(position[0] + ", " + position[2]);
+        for( int i = 0; i < 3; i++ ) {System.out.print(position[i] + ", ");}
+        System.out.println("\n----");
 
     }
 
@@ -227,7 +253,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
 
         headTransform.getHeadView(headView, 0);
-
 
         checkGLError("onReadyToDraw");
 
@@ -357,7 +382,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
 
     /**
      * Draw the floor.
-     *
+     * <p/>
      * <p>This feeds in data for the floor into the shader. Note that this doesn't feed in data about
      * position of the light, so if we rewrite our code to draw the floor first, the lighting might
      * look strange.
@@ -430,46 +455,124 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
         networkThread.shutdown();
     }
 
-    private void log(String s)
-    {
+    private void log(String s) {
         System.out.println(s);
     }
 
-    class NetworkThread extends Thread
-    {
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float accX = event.values[0];
+        float accY = event.values[1];
+        float accZ = event.values[2];
+        float[] acc = {accX, accY, accZ};
+
+        float x = quaternion[0];
+        float y = quaternion[1];
+        float z = quaternion[2];
+        float w = quaternion[3];
+
+        float n = x*x + y*y + z*z + w*w;
+        float s = 0;
+        if (n != 0) {
+            s = 2 / n;
+        }
+        //s = 1.0f;
+        float wx = s * x * w;
+        float wy = s * y * w;
+        float wz = s * z * w;
+        float xx = s * x * x;
+        float xy = s * x * y;
+        float xz = s * x * z;
+        float yy = s * y * y;
+        float yz = s * y * z;
+        float zz = s * z * z;
+        float[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
+                {xy + wz, 1 - (xx + zz), yz - wx},
+                {xz - wy, yz + wx, 1 - (xx + yy)}};
+        acc = dot(R, acc);
+        //System.out.println(acc[0]);
+        //System.out.println(acc[1]);
+        //System.out.println(acc[2]);
+
+        long currentTime = System.currentTimeMillis();
+        float dt = (float)(currentTime - time) / (float)1000.0;
+        time = currentTime;
+
+        if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
+            velocity[0] = velocity[0] + acc[0] * dt;
+            velocity[1] = velocity[1] + acc[1] * dt;
+            velocity[2] = velocity[2] + acc[2] * dt;
+        } else {
+            velocity[0] = 0;
+            velocity[1] = 0;
+            velocity[2] = 0;
+        }
+
+        float max = 2.0f;
+        if( velocity[0] < max && velocity[1] < max && velocity[2] < max )
+        {
+            translation[0] = translation[0] + velocity[0] * dt;
+            translation[1] = translation[1] + velocity[1] * dt;
+            translation[2] = translation[2] + velocity[2] * dt;
+        }
+        //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
+    }
+
+    public float[] dot(float[][] R, float[] acc) {
+        float[] result = new float[acc.length];
+        for(int i = 0; i < 3; i++){
+            float entry = 0;
+            for(int j = 0; j < 3; j++){
+                entry += R[j][i]*acc[i];
+            }
+            result[i] = entry;
+        }
+        return result;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    class NetworkThread extends Thread {
         private Socket socket;
         private DataOutputStream outputStream;
         private boolean running;
 
         String data;
 
-        public NetworkThread()
-        {
+        public NetworkThread() {
             running = true;
         }
 
-        public void shutdown()
-        {
+        public void shutdown() {
             running = false;
         }
 
-        public void setData(String data)
-        {
+        public void setData(String data) {
             this.data = data;
         }
 
         @Override
-        public void start()
-        {
+        public void start() {
             super.start();
         }
 
         @Override
-        public void run()
-        {
+        public void run() {
             log("Trying to connect");
-            while(running)
-            {
+            while (running) {
                 if (outputStream == null || socket == null) {
                     try {
                         socket = new Socket(IP, 9090);
@@ -485,7 +588,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer 
                     }
                 }
 
-                if (data != null && outputStream != null ) {
+                if (data != null && outputStream != null) {
                     try {
                         log("Send data: " + data);
                         outputStream.writeUTF(data);
