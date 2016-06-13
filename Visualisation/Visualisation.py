@@ -44,6 +44,7 @@ class Visualizer:
                         msg, address = c.recvfrom(1024)
                         msg = msg[2:]
                         msg = msg.split("/")
+
                         if msg[0] == "stop":
                             print "Receiving messages stopped."
                             break
@@ -94,7 +95,8 @@ class Visualizer:
                         fig.canvas.draw()
                         self.data = []
                     except ValueError:
-                        print "Non float value in message"
+                        #  print "Non float value in message"
+                        pass
                 else:
                     continue
             else:
@@ -124,7 +126,7 @@ class Visualizer:
                       [xy + wz, 1 - (xx + zz), yz - wx],
                       [xz - wy, yz + wx, 1 - (xx + yy)]])
         transformed = points.dot(R)
-        print translation * 100
+        print translation
         xs = np.squeeze(np.asarray(transformed[:, 0]))
         ys = np.squeeze(np.asarray(transformed[:, 1]))
         zs = np.squeeze(np.asarray(transformed[:, 2]))
