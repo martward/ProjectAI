@@ -31,7 +31,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.0.110";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
@@ -210,8 +210,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         return null;
     }
 
-    private void setMessage(HeadTransform headTransform)
-    {
+    private void setMessage(HeadTransform headTransform) {
         String msg = "absolute/";
 
         headTransform.getQuaternion(quaternion, 0);
@@ -221,8 +220,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                 + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
                 + translation[2];
 
-        networkThread.setData(msg);
+        while (!networkThread.setData(msg));
+
     }
+
 
     private void updatePosition()
     {
@@ -546,6 +547,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     }
 
     class NetworkThread extends Thread {
+
+        public boolean writing = false;
+
         private Socket socket;
         private DataOutputStream outputStream;
         private boolean running;
@@ -560,8 +564,13 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             running = false;
         }
 
-        public void setData(String data) {
+
+        public boolean setData(String data)
+        {
+            if (writing) return false;
+
             this.data = data;
+            return true;
         }
 
         @Override
@@ -590,8 +599,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
                 if (data != null && outputStream != null) {
                     try {
+                        writing = true;
                         log("Send data: " + data);
-                        outputStream.writeUTF(data);
+                        outputStream.writeChars(data+'\n');
+                        outputStream.flush();
+                        writing = false;
                         data = null;
                     } catch (IOException e) {
                         log("Connection lost");
