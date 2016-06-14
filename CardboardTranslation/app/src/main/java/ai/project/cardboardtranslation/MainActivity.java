@@ -32,7 +32,7 @@ import Jama.*;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.107";
+    public static String IP = "192.168.0.105";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
@@ -238,7 +238,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         System.out.println("");
 
         System.out.print("Pos: ");
-        System.out.println(position[0] + ", " + position[2]);
         for( int i = 0; i < 3; i++ ) {System.out.print(position[i] + ", ");}
         System.out.println("\n----");
 
@@ -477,9 +476,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
-        rawData[0] = accX;
-        rawData[1] = accY;
-        rawData[2] = accZ;
 
         long currentTime = System.currentTimeMillis();
         float dt = (float)(currentTime - time) / (float)1000.0;
@@ -514,9 +510,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             Jama.Matrix Acc = new Jama.Matrix(acc);
             Jama.Matrix accel = Acc.times(Rot);
             double [][] acceleration = accel.getArrayCopy();
-            System.out.println(acceleration[0][0]);
-            System.out.println(acceleration[0][1]);
-            System.out.println(acceleration[0][2]);
+
+            rawData[0] = (float)acceleration[0][0];
+            rawData[1] = (float)acceleration[0][1];
+            rawData[2] = (float)acceleration[0][2];
 
             velocity[0] = velocity[0] + (float)acceleration[0][0] * dt;
             velocity[1] = velocity[1] + (float)acceleration[0][1] * dt;
