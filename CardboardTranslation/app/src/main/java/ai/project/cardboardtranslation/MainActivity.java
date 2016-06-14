@@ -1,6 +1,5 @@
 package ai.project.cardboardtranslation;
 
-import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Bundle;
@@ -28,12 +27,9 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
-import Jama.*;
-
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
     public static String IP = "192.168.0.105";
-    private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -49,7 +45,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     private FloatBuffer cubeVertices;
     private FloatBuffer cubeColors;
-    private FloatBuffer cubeFoundColors;
     private FloatBuffer cubeNormals;
 
     private int cubeProgram;
@@ -77,11 +72,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float[] modelView;
     private float[] view;
     private float[] camera;
-
-
     private float[] position;
-    private double exampleState;
-
     private float[] headView;
 
     private float[] translation = new float[3];
@@ -99,9 +90,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     private static final int COORDS_PER_VERTEX = 3;
 
-    private static final float MIN_MODEL_DISTANCE = 3.0f;
     private static final float MAX_MODEL_DISTANCE = 7.0f;
-    private float objectDistance = MAX_MODEL_DISTANCE / 2.0f;
 
     NetworkThread networkThread;
 
@@ -220,7 +209,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-
                 + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
                 + translation[2]  + "/" + rawData[0]  + "/" + rawData[1]
                 + "/" + rawData[2];
@@ -378,7 +366,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         checkGLError("Floor program params");
 
         Matrix.setIdentityM(modelFloor, 0);
-        Matrix.translateM(modelFloor, 0, 0, -floorDepth, 0); // Floor appears below user.
+        Matrix.translateM(modelFloor, 0, 0, -20f, 0); // Floor appears below user.
 
     }
 
@@ -534,18 +522,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             translation[2] = translation[2] + velocity[2] * dt;
         }
         //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
-    }
-
-    public float[] dot(float[][] R, float[] acc) {
-        float[] result = new float[acc.length];
-        for(int i = 0; i < 3; i++){
-            float entry = 0;
-            for(int j = 0; j < 3; j++){
-                entry += R[j][i]*acc[i];
-            }
-            result[i] = entry;
-        }
-        return result;
     }
 
     @Override
