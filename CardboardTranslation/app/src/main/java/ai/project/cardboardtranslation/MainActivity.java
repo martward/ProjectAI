@@ -1,5 +1,6 @@
 package ai.project.cardboardtranslation;
 
+import android.content.Context;
 import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
@@ -9,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.Toast;
 
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrActivity;
@@ -90,6 +92,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private long time;
     private float[] quaternion = new float[4];
 
+    private long calibrationTime = 3000;
+
     SensorManager sMgr;
     Sensor translationSensor;
 
@@ -109,6 +113,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        Context context = getApplicationContext();
+        CharSequence text = "Please wait 3 seconds until calibration is finished";
+        Toast toast = Toast.makeText(context,text,Toast.LENGTH_LONG);
+        toast.show();
         modelCube = new float[16];
         modelFloor = new float[16];
         modelViewProjection = new float[16];
