@@ -34,7 +34,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.43.86";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
@@ -64,6 +64,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float[] camera;
 
     private float[] translation = new float[3];
+    private float[] rawData = new float[3];
     private float[] velocity = new float[3];
     private long time;
     private float[] quaternion = new float[4];
@@ -192,8 +193,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
-                + translation[2];
+                + quaternion[3] + "/" + rawData[0] + "/" + rawData[1] + "/"
+                + rawData[2];
         networkThread.setData(msg);
 
         // Build the camera matrix and apply it to the ModelView.
@@ -390,6 +391,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
+        rawData[0] = accX;
+        rawData[1] = accY;
+        rawData[2] = accZ;
         float[] acc = {accX, accY, accZ};
 
         float x = quaternion[0];
@@ -432,10 +436,14 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             velocity[1] = 0;
             velocity[2] = 0;
         }
+        System.out.println(velocity[1] + " "  + velocity[1] + " " + velocity[2]);
+
 
         translation[0] = translation[0] + velocity[0] * dt;
         translation[1] = translation[1] + velocity[1] * dt;
         translation[2] = translation[2] + velocity[2] * dt;
+        System.out.println(translation[1] + " "  + translation[1] + " " + translation[2]);
+        System.out.println("======");
     }
 
     public float[] dot(float[][] R, float[] acc) {

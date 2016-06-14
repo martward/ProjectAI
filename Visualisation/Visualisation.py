@@ -9,6 +9,9 @@ from mpl_toolkits.mplot3d import Axes3D
 class Visualizer:
 
     data = []
+    transX = []
+    transY = []
+    transZ = []
 
     def __init__(self):
         thread.start_new_thread(self.updateGUI, ())
@@ -70,7 +73,7 @@ class Visualizer:
         points = np.array([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
 
         plt.ion()
-        fig = plt.figure(figsize=(22, 15))
+        fig = plt.figure(1,figsize=(22, 15))
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter([], [], [])
         colors = "black"
@@ -80,8 +83,28 @@ class Visualizer:
 
         [xs, ys, zs] = self.rotatePoint(points, np.array([0, 0, 0, 0]), np.array([0, 0, 0]))
 
-        plot = ax.scatter(xs, zs, ys, c=colors)
+        pl = ax.scatter(xs, zs, ys, c=colors)
         fig.canvas.draw()
+
+        plt.ion()
+        fig2 = plt.figure(figsize=(10,10))
+        ax2 = fig2.add_subplot(3,1,1)
+        ax3 = fig2.add_subplot(3,1,2)
+        ax4 = fig2.add_subplot(3,1,3)
+        ax2.set_xlim(0,100)
+        ax2.set_ylim(-50,50)
+        ax3.set_xlim(0,100)
+        ax3.set_ylim(-50,50)
+        ax4.set_xlim(0,100)
+        ax4.set_ylim(-50,50)
+        self.transX.append(float(0))
+        self.transY.append(float(0))
+        self.transZ.append(float(0))
+        x = [float(0)]
+        pl2 = ax2.plot(x,self.transX)
+        pl3 = ax3.plot(x,self.transY)
+        pl4 = ax4.plot(x,self.transZ)
+        fig2.canvas.draw()
 
         while True:
             if self.data:
@@ -91,9 +114,33 @@ class Visualizer:
                                                -float(self.data[3]), float(self.data[4])])
                         translation = np.array([float(self.data[5]), float(self.data[6]), float(self.data[7])])
                         [xs, ys, zs] = self.rotatePoint(points, quaternion, translation)
-                        plot._offsets3d = (xs, zs, ys)
+                        pl._offsets3d = (xs, zs, ys)
                         fig.canvas.draw()
+
+                        self.transX.append(float(self.data[5]))
+                        self.transY.append(float(self.data[6]))
+                        self.transZ.append(float(self.data[7]))
+                        x = np.arange(0,len(self.transX))
+                        x.astype(float)
+                        pl2[0].set_ydata(np.array(self.transX))
+                        pl2[0].set_xdata(np.array(x))
+                        pl3[0].set_ydata(np.array(self.transY))
+                        pl3[0].set_xdata(np.array(x))
+                        pl4[0].set_ydata(np.array(self.transZ))
+                        pl4[0].set_xdata(np.array(x))
+
+                        #pl2[0].set_data(np.array(self.transX),x)
+                        if len(x) > 100:
+                            ax2.set_xlim(len(x)-100,len(x))
+                            ax3.set_xlim(len(x)-100,len(x))
+                            ax4.set_xlim(len(x)-100,len(x))
+                        ax2.set_ylim(min(self.transX),max(self.transX))
+                        ax3.set_ylim(min(self.transY),max(self.transY))
+                        ax4.set_ylim(min(self.transZ),max(self.transZ))
+                        fig2.canvas.draw()
+
                         self.data = []
+
                     except ValueError:
                         #  print "Non float value in message"
                         pass
