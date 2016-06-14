@@ -12,6 +12,9 @@ class Visualizer:
     transX = []
     transY = []
     transZ = []
+    accX = []
+    accY = []
+    accZ = []
 
     def __init__(self):
         thread.start_new_thread(self.updateGUI, ())
@@ -52,6 +55,7 @@ class Visualizer:
 
                         msg = buf
                         msg = msg.split("/")
+                        print msg
 
                         if msg[0] == "stop":
                             print "Receiving messages stopped."
@@ -92,23 +96,45 @@ class Visualizer:
         fig.canvas.draw()
 
         plt.ion()
-        fig2 = plt.figure(figsize=(10,10))
-        ax2 = fig2.add_subplot(3,1,1)
-        ax3 = fig2.add_subplot(3,1,2)
-        ax4 = fig2.add_subplot(3,1,3)
-        ax2.set_xlim(0,100)
-        ax2.set_ylim(-50,50)
-        ax3.set_xlim(0,100)
-        ax3.set_ylim(-50,50)
-        ax4.set_xlim(0,100)
-        ax4.set_ylim(-50,50)
+        fig2 = plt.figure(figsize=(22,15 ))
+        sf1 = fig2.add_subplot(3,2,1)
+        sf1.set_title('translation X')
+        sf3 = fig2.add_subplot(3,2,2)
+        sf3.set_title('accelerometer X')
+        sf5 = fig2.add_subplot(3,2,3)
+        sf5.set_title('translation Y')
+        sf2 = fig2.add_subplot(3,2,4)
+        sf2.set_title('accelerometer Y')
+        sf4 = fig2.add_subplot(3,2,5)
+        sf4.set_title('translation Z')
+        sf6 = fig2.add_subplot(3,2,6)
+        sf6.set_title('accelerometer Z')
+        sf1.set_xlim(0,100)
+        sf1.set_ylim(-50,50)
+        sf2.set_xlim(0,100)
+        sf2.set_ylim(-50,50)
+        sf3.set_xlim(0,100)
+        sf3.set_ylim(-50,50)
+        sf4.set_xlim(0,100)
+        sf4.set_ylim(-50,50)
+        sf5.set_xlim(0,100)
+        sf5.set_ylim(-50,50)
+        sf6.set_xlim(0,100)
+        sf6.set_ylim(-50,50)
         self.transX.append(float(0))
         self.transY.append(float(0))
         self.transZ.append(float(0))
+        self.accX.append(float(0))
+        self.accY.append(float(0))
+        self.accZ.append(float(0))
+
         x = [float(0)]
-        pl2 = ax2.plot(x,self.transX)
-        pl3 = ax3.plot(x,self.transY)
-        pl4 = ax4.plot(x,self.transZ)
+        pl1 = sf1.plot(x,self.transX)
+        pl2 = sf2.plot(x,self.accX)
+        pl3 = sf3.plot(x,self.transY)
+        pl4 = sf4.plot(x,self.accY)
+        pl5 = sf5.plot(x,self.transZ)
+        pl6 = sf6.plot(x,self.accZ)
         fig2.canvas.draw()
 
         while True:
@@ -125,23 +151,39 @@ class Visualizer:
                         self.transX.append(float(self.data[5]))
                         self.transY.append(float(self.data[6]))
                         self.transZ.append(float(self.data[7]))
+                        self.accX.append(float(self.data[8]))
+                        self.accY.append(float(self.data[9]))
+                        self.accZ.append(float(self.data[10]))
                         x = np.arange(0,len(self.transX))
                         x.astype(float)
-                        pl2[0].set_ydata(np.array(self.transX))
+                        pl1[0].set_ydata(np.array(self.transX))
+                        pl1[0].set_xdata(np.array(x))
+                        pl2[0].set_ydata(np.array(self.accX))
                         pl2[0].set_xdata(np.array(x))
                         pl3[0].set_ydata(np.array(self.transY))
                         pl3[0].set_xdata(np.array(x))
-                        pl4[0].set_ydata(np.array(self.transZ))
+                        pl4[0].set_ydata(np.array(self.accY))
                         pl4[0].set_xdata(np.array(x))
+                        pl5[0].set_ydata(np.array(self.transZ))
+                        pl5[0].set_xdata(np.array(x))
+                        pl6[0].set_ydata(np.array(self.accZ))
+                        pl6[0].set_xdata(np.array(x))
+
 
                         #pl2[0].set_data(np.array(self.transX),x)
                         if len(x) > 100:
-                            ax2.set_xlim(len(x)-100,len(x))
-                            ax3.set_xlim(len(x)-100,len(x))
-                            ax4.set_xlim(len(x)-100,len(x))
-                        ax2.set_ylim(min(self.transX),max(self.transX))
-                        ax3.set_ylim(min(self.transY),max(self.transY))
-                        ax4.set_ylim(min(self.transZ),max(self.transZ))
+                            sf1.set_xlim(len(x)-100,len(x))
+                            sf2.set_xlim(len(x)-100,len(x))
+                            sf3.set_xlim(len(x)-100,len(x))
+                            sf4.set_xlim(len(x)-100,len(x))
+                            sf5.set_xlim(len(x)-100,len(x))
+                            sf6.set_xlim(len(x)-100,len(x))
+                        sf1.set_ylim(min(self.transX),max(self.transX))
+                        sf3.set_ylim(min(self.transY),max(self.transY))
+                        sf5.set_ylim(min(self.transZ),max(self.transZ))
+                        sf2.set_ylim(min(self.accX),max(self.accX))
+                        sf4.set_ylim(min(self.accY),max(self.accY))
+                        sf6.set_ylim(min(self.accZ),max(self.accZ))
                         fig2.canvas.draw()
 
                         self.data = []
