@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import thread
 from time import sleep
+from mpl_toolkits.mplot3d import Axes3D
 
 
 class Visualizer:

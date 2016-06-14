@@ -2,7 +2,6 @@ package ai.project.cardboardtranslation;
 
 
 import android.content.Context;
-import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
@@ -87,13 +85,11 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private long startTIme;
     private float[] quaternion = new float[4];
 
-    private long calibrationTime = 3000;
     private float[] calibration = new float[3];
-    float sumX = 0.0f;
-    float sumY = 0.0f;
-    float sumZ = 0.0f;
-    float indexCalibration = 0.0f;
-
+    private float sumX = 0.0f;
+    private float sumY = 0.0f;
+    private float sumZ = 0.0f;
+    private float indexCalibration = 0.0f;
     private boolean calibrated = false;
 
     SensorManager sMgr;
@@ -484,68 +480,64 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accY = event.values[1];
         float accZ = event.values[2];
 
-
         long currentTime = System.currentTimeMillis();
         float dt = (float) (currentTime - time) / (float) 1000.0;
         time = currentTime;
-        if (System.currentTimeMillis() - startTIme < calibrationTime) {
+
+        if (System.currentTimeMillis() - startTIme < 3000) {
+            System.out.println("Calibrating...");
             indexCalibration++;
             sumX += accX;
             sumY += accY;
             sumZ += accZ;
         } else {
-            if(calibrated == false) {
-
-                calibration[0] = sumX / indexCalibration;
-                calibration[1] = sumY / indexCalibration;
-                calibration[2] = sumZ / indexCalibration;
+            if(!calibrated) {
+                double calX = sumX / indexCalibration;
+                double calY = sumY / indexCalibration;
+                double calZ = sumZ / indexCalibration;
                 calibrated = true;
+
+                double[][] R = getRotationMatrix();
+                Jama.Matrix Rot = new Jama.Matrix(R).inverse();
+                double[][] calTemp = {{calX, calY, calZ}};
+                Jama.Matrix cal = new Jama.Matrix(calTemp);
+                double[][] orientedCalibration = cal.times(Rot.transpose()).getArray();
+                calibration[0] = (float)orientedCalibration[0][0];
+                calibration[1] = (float)orientedCalibration[0][1];
+                calibration[2] = (float)orientedCalibration[0][2];
+
+                System.out.println("Calibration Done");
+                System.out.println(calibration[0]);
+                System.out.println(calibration[1]);
+                System.out.println(calibration[2]);
+                Context context = getApplicationContext();
+                CharSequence text = "Calibration is finished.";
+                Toast toast = Toast.makeText(context,text,Toast.LENGTH_LONG);
+                toast.show();
             }
 
-            if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
-                double[][] acc = {{accX, accY, accZ}};
-                float x = quaternion[0];
-                float y = quaternion[1];
-                float z = quaternion[2];
-                float w = quaternion[3];
+            double[][] acc = {{accX, accY, accZ}};
+            double [][] R = getRotationMatrix();
+            Jama.Matrix Rot = new Jama.Matrix(R).inverse();
+            Jama.Matrix Acc = new Jama.Matrix(acc);
+            Jama.Matrix accel = Acc.times(Rot.transpose());
 
-                float n = x * x + y * y + z * z + w * w;
-                float s = 0;
-                if (n != 0) {
-                    s = 2 / n;
-                }
-                float wx = s * x * w;
-                float wy = s * y * w;
-                float wz = s * z * w;
-                float xx = s * x * x;
-                float xy = s * x * y;
-                float xz = s * x * z;
-                float yy = s * y * y;
-                float yz = s * y * z;
-                float zz = s * z * z;
-                double[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
-                        {xy + wz, 1 - (xx + zz), yz - wx},
-                        {xz - wy, yz + wx, 1 - (xx + yy)}};
-                Jama.Matrix Rot = new Jama.Matrix(R).inverse();
-                Jama.Matrix Acc = new Jama.Matrix(acc);
-                Jama.Matrix accel = Acc.times(Rot);
+            double[][] acceleration = accel.getArrayCopy();
+            rawData[0] = (float)acceleration[0][0] - calibration[0];
+            rawData[1] = (float)acceleration[0][1] - calibration[1];
+            rawData[2] = (float)acceleration[0][2] - calibration[2];
 
-                double[][] acceleration = accel.getArrayCopy();
-                rawData[0] = (float) acceleration[0][0];
-                rawData[1] = (float) acceleration[0][1];
-                rawData[2] = (float) acceleration[0][2];
-
-                velocity[0] = velocity[0] + (float) acceleration[0][0] * dt;
-                velocity[1] = velocity[1] + (float) acceleration[0][1] * dt;
-                velocity[2] = velocity[2] + (float) acceleration[0][2] * dt;
+            if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
+                          rawData[2] * rawData[2]) > 0.1) {
+                velocity[0] = velocity[0] + rawData[0] * dt;
+                velocity[1] = velocity[1] + rawData[1] * dt;
+                velocity[2] = velocity[2] + rawData[2] * dt;
             } else {
                 velocity[0] = 0;
                 velocity[1] = 0;
                 velocity[2] = 0;
             }
             //System.out.println(velocity[1] + " "  + velocity[1] + " " + velocity[2]);
-
-
             float max = 2.0f;
             if (velocity[0] < max && velocity[1] < max && velocity[2] < max) {
                 translation[0] = translation[0] + velocity[0] * dt;
@@ -554,6 +546,32 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             }
             //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
         }
+    }
+
+    public double [][] getRotationMatrix() {
+        float x = quaternion[0];
+        float y = quaternion[1];
+        float z = quaternion[2];
+        float w = quaternion[3];
+
+        float n = x * x + y * y + z * z + w * w;
+        float s = 0;
+        if (n != 0) {
+            s = 2 / n;
+        }
+        float wx = s * x * w;
+        float wy = s * y * w;
+        float wz = s * z * w;
+        float xx = s * x * x;
+        float xy = s * x * y;
+        float xz = s * x * z;
+        float yy = s * y * y;
+        float yz = s * y * z;
+        float zz = s * z * z;
+        double[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
+                {xy + wz, 1 - (xx + zz), yz - wx},
+                {xz - wy, yz + wx, 1 - (xx + yy)}};
+        return R;
     }
 
     @Override
@@ -609,10 +627,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                     }
                 }
 
-                if (data != null && outputStream != null) {
+                if (data != null && outputStream != null && calibrated) {
                     try {
                         writing = true;
-                        log("Send data: " + data);
+                        //log("Send data: " + data);
                         outputStream.writeChars(data+'\n');
                         outputStream.flush();
                         writing = false;
