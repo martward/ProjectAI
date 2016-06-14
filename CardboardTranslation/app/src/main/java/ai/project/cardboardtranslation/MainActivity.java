@@ -10,9 +10,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrActivity;
 import com.google.vr.sdk.base.GvrView;
@@ -42,11 +39,28 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     private static final String TAG = "MainActivity";
 
+    protected float[] modelCube;
+    protected float[] modelPosition;
+
     private FloatBuffer floorVertices;
     private FloatBuffer floorColors;
     private FloatBuffer floorNormals;
 
+    private FloatBuffer cubeVertices;
+    private FloatBuffer cubeColors;
+    private FloatBuffer cubeFoundColors;
+    private FloatBuffer cubeNormals;
+
+    private int cubeProgram;
     private int floorProgram;
+
+    private int cubePositionParam;
+    private int cubeNormalParam;
+    private int cubeColorParam;
+    private int cubeModelParam;
+    private int cubeModelViewParam;
+    private int cubeModelViewProjectionParam;
+    private int cubeLightPosParam;
 
     private int floorPositionParam;
     private int floorNormalParam;
@@ -63,6 +77,12 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float[] view;
     private float[] camera;
 
+
+    private float[] position;
+    private double exampleState;
+
+    private float[] headView;
+
     private float[] translation = new float[3];
     private float[] rawData = new float[3];
     private float[] velocity = new float[3];
@@ -72,27 +92,32 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     SensorManager sMgr;
     Sensor translationSensor;
 
+
     // We keep the light always position just above the user.
     private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[]{0.0f, 2.0f, 0.0f, 1.0f};
 
     private static final int COORDS_PER_VERTEX = 3;
 
+    private static final float MIN_MODEL_DISTANCE = 3.0f;
+    private static final float MAX_MODEL_DISTANCE = 7.0f;
+    private float objectDistance = MAX_MODEL_DISTANCE / 2.0f;
+
     NetworkThread networkThread;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        modelCube = new float[16];
         modelFloor = new float[16];
         modelViewProjection = new float[16];
         modelView = new float[16];
         view = new float[16];
         camera = new float[16];
+        position = new float[3];
+        modelPosition = new float[] {0.0f, 0.0f, -MAX_MODEL_DISTANCE / 2.0f};
+        headView = new float[16];
+        System.out.println("ONCREATE");
 
         time = System.currentTimeMillis();
 
@@ -107,16 +132,16 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         setGvrView(gvrView);
 
+        updateModelPosition();
+
         sMgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
         translationSensor = sMgr.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         sMgr.registerListener(this, translationSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+
         networkThread = new NetworkThread();
         networkThread.start();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -186,23 +211,49 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         return null;
     }
 
-    @Override
-    public void onNewFrame(HeadTransform headTransform) {
+    private void setMessage(HeadTransform headTransform)
+    {
         String msg = "absolute/";
+
         headTransform.getQuaternion(quaternion, 0);
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + rawData[0] + "/" + rawData[1] + "/"
-                + rawData[2];
-        networkThread.setData(msg);
 
+                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
+                + translation[2];
         while(!networkThread.setData(msg));
+    }
+
+    private void updatePosition()
+    {
+        float scale = 50.f;
+        position[0] = scale * translation[0];
+        position[2] = scale * translation[2];
+
+        System.out.print("Trans: ");
+        for( int i = 0; i < 3; i++ ) {System.out.print(translation[i] + ", ");}
+        System.out.println("");
+
+        System.out.print("Pos: ");
+        System.out.println(position[0] + ", " + position[2]);
+        for( int i = 0; i < 3; i++ ) {System.out.print(position[i] + ", ");}
+        System.out.println("\n----");
+
+    }
+
+    @Override
+    public void onNewFrame(HeadTransform headTransform) {
+
+        Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
+
+        setMessage(headTransform);
+        updatePosition();
 
         // Build the camera matrix and apply it to the ModelView.
-        Matrix.setLookAtM(camera, 0, 0.0f, 0.0f, CAMERA_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
 
-        //headTransform.getHeadView(headView, 0);
+        headTransform.getHeadView(headView, 0);
 
         checkGLError("onReadyToDraw");
 
@@ -223,6 +274,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
 
         float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
+        Matrix.multiplyMM(modelView, 0, view, 0, modelCube, 0);
+        Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
+        drawCube();
+
         // Set modelView for the floor, so we draw floor in the correct location
         Matrix.multiplyMM(modelView, 0, view, 0, modelFloor, 0);
         Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
@@ -241,6 +296,24 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
+
+        ByteBuffer bbVertices = ByteBuffer.allocateDirect(World.CUBE_COORDS.length * 4);
+        bbVertices.order(ByteOrder.nativeOrder());
+        cubeVertices = bbVertices.asFloatBuffer();
+        cubeVertices.put(World.CUBE_COORDS);
+        cubeVertices.position(0);
+
+        ByteBuffer bbColors = ByteBuffer.allocateDirect(World.CUBE_COLORS.length * 4);
+        bbColors.order(ByteOrder.nativeOrder());
+        cubeColors = bbColors.asFloatBuffer();
+        cubeColors.put(World.CUBE_COLORS);
+        cubeColors.position(0);
+
+        ByteBuffer bbNormals = ByteBuffer.allocateDirect(World.CUBE_NORMALS.length * 4);
+        bbNormals.order(ByteOrder.nativeOrder());
+        cubeNormals = bbNormals.asFloatBuffer();
+        cubeNormals.put(World.CUBE_NORMALS);
+        cubeNormals.position(0);
 
         // make a floor
         ByteBuffer bbFloorVertices = ByteBuffer.allocateDirect(World.FLOOR_COORDS.length * 4);
@@ -263,28 +336,26 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         int vertexShader = loadGLShader(GLES20.GL_VERTEX_SHADER, R.raw.light_vertex);
         int gridShader = loadGLShader(GLES20.GL_FRAGMENT_SHADER, R.raw.grid_fragment);
+        int passthroughShader = loadGLShader(GLES20.GL_FRAGMENT_SHADER, R.raw.passthrough_fragment);
 
-        floorProgram = GLES20.glCreateProgram();
-        GLES20.glAttachShader(floorProgram, vertexShader);
-        GLES20.glAttachShader(floorProgram, gridShader);
-        GLES20.glLinkProgram(floorProgram);
-        GLES20.glUseProgram(floorProgram);
+        cubeProgram = GLES20.glCreateProgram();
+        GLES20.glAttachShader(cubeProgram, vertexShader);
+        GLES20.glAttachShader(cubeProgram, passthroughShader);
+        GLES20.glLinkProgram(cubeProgram);
+        GLES20.glUseProgram(cubeProgram);
 
-        checkGLError("Floor program");
+        checkGLError("Cube program");
 
-        floorModelParam = GLES20.glGetUniformLocation(floorProgram, "u_Model");
-        floorModelViewParam = GLES20.glGetUniformLocation(floorProgram, "u_MVMatrix");
-        floorModelViewProjectionParam = GLES20.glGetUniformLocation(floorProgram, "u_MVP");
-        floorLightPosParam = GLES20.glGetUniformLocation(floorProgram, "u_LightPos");
+        cubePositionParam = GLES20.glGetAttribLocation(cubeProgram, "a_Position");
+        cubeNormalParam = GLES20.glGetAttribLocation(cubeProgram, "a_Normal");
+        cubeColorParam = GLES20.glGetAttribLocation(cubeProgram, "a_Color");
 
-        floorPositionParam = GLES20.glGetAttribLocation(floorProgram, "a_Position");
-        floorNormalParam = GLES20.glGetAttribLocation(floorProgram, "a_Normal");
-        floorColorParam = GLES20.glGetAttribLocation(floorProgram, "a_Color");
+        cubeModelParam = GLES20.glGetUniformLocation(cubeProgram, "u_Model");
+        cubeModelViewParam = GLES20.glGetUniformLocation(cubeProgram, "u_MVMatrix");
+        cubeModelViewProjectionParam = GLES20.glGetUniformLocation(cubeProgram, "u_MVP");
+        cubeLightPosParam = GLES20.glGetUniformLocation(cubeProgram, "u_LightPos");
 
-        checkGLError("Floor program params");
-
-        Matrix.setIdentityM(modelFloor, 0);
-        Matrix.translateM(modelFloor, 0, 0, -floorDepth, 0); // Floor appears below user.
+        checkGLError("Cube program params");
 
         floorProgram = GLES20.glCreateProgram();
         GLES20.glAttachShader(floorProgram, vertexShader);
@@ -339,6 +410,47 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         checkGLError("drawing floor");
     }
 
+    public void drawCube() {
+        GLES20.glUseProgram(cubeProgram);
+
+        GLES20.glUniform3fv(cubeLightPosParam, 1, lightPosInEyeSpace, 0);
+
+        // Set the Model in the shader, used to calculate lighting
+        GLES20.glUniformMatrix4fv(cubeModelParam, 1, false, modelCube, 0);
+
+        // Set the ModelView in the shader, used to calculate lighting
+        GLES20.glUniformMatrix4fv(cubeModelViewParam, 1, false, modelView, 0);
+
+        // Set the position of the cube
+        GLES20.glVertexAttribPointer(
+                cubePositionParam, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, cubeVertices);
+
+        // Set the ModelViewProjection matrix in the shader.
+        GLES20.glUniformMatrix4fv(cubeModelViewProjectionParam, 1, false, modelViewProjection, 0);
+
+        // Set the normal positions of the cube, again for shading
+        GLES20.glVertexAttribPointer(cubeNormalParam, 3, GLES20.GL_FLOAT, false, 0, cubeNormals);
+        GLES20.glVertexAttribPointer(cubeColorParam, 4, GLES20.GL_FLOAT, false, 0, cubeColors);
+
+        // Enable vertex arrays
+        GLES20.glEnableVertexAttribArray(cubePositionParam);
+        GLES20.glEnableVertexAttribArray(cubeNormalParam);
+        GLES20.glEnableVertexAttribArray(cubeColorParam);
+
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
+        checkGLError("Drawing cube");
+    }
+
+    /**
+     * Updates the cube model position.
+     */
+    protected void updateModelPosition() {
+        Matrix.setIdentityM(modelCube, 0);
+        Matrix.translateM(modelCube, 0, modelPosition[0], modelPosition[1], modelPosition[2]);
+
+        checkGLError("updateCubePosition");
+    }
+
     @Override
     public void onRendererShutdown() {
         networkThread.shutdown();
@@ -346,6 +458,16 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     private void log(String s) {
         System.out.println(s);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -368,6 +490,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         if (n != 0) {
             s = 2 / n;
         }
+        //s = 1.0f;
         float wx = s * x * w;
         float wy = s * y * w;
         float wz = s * z * w;
@@ -401,11 +524,14 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         System.out.println(velocity[1] + " "  + velocity[1] + " " + velocity[2]);
 
 
-        translation[0] = translation[0] + velocity[0] * dt;
-        translation[1] = translation[1] + velocity[1] * dt;
-        translation[2] = translation[2] + velocity[2] * dt;
-        System.out.println(translation[1] + " "  + translation[1] + " " + translation[2]);
-        System.out.println("======");
+        float max = 2.0f;
+        if( velocity[0] < max && velocity[1] < max && velocity[2] < max )
+        {
+            translation[0] = translation[0] + velocity[0] * dt;
+            translation[1] = translation[1] + velocity[1] * dt;
+            translation[2] = translation[2] + velocity[2] * dt;
+        }
+        //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
     }
 
     public float[] dot(float[][] R, float[] acc) {
@@ -413,7 +539,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         for(int i = 0; i < 3; i++){
             float entry = 0;
             for(int j = 0; j < 3; j++){
-                entry += R[i][j]*acc[i];
+                entry += R[j][i]*acc[i];
             }
             result[i] = entry;
         }
