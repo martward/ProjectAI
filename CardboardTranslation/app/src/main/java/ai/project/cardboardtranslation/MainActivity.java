@@ -28,9 +28,10 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
+
+import Jama.*;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
@@ -390,43 +391,47 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
-        float[] acc = {accX, accY, accZ};
-
-        float x = quaternion[0];
-        float y = quaternion[1];
-        float z = quaternion[2];
-        float w = quaternion[3];
-
-        float n = x*x + y*y + z*z + w*w;
-        float s = 0;
-        if (n != 0) {
-            s = 2 / n;
-        }
-        float wx = s * x * w;
-        float wy = s * y * w;
-        float wz = s * z * w;
-        float xx = s * x * x;
-        float xy = s * x * y;
-        float xz = s * x * z;
-        float yy = s * y * y;
-        float yz = s * y * z;
-        float zz = s * z * z;
-        float[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
-                {xy + wz, 1 - (xx + zz), yz - wx},
-                {xz - wy, yz + wx, 1 - (xx + yy)}};
-        acc = dot(R, acc);
-        //System.out.println(acc[0]);
-        //System.out.println(acc[1]);
-        //System.out.println(acc[2]);
 
         long currentTime = System.currentTimeMillis();
         float dt = (float)(currentTime - time) / (float)1000.0;
         time = currentTime;
 
         if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
-            velocity[0] = velocity[0] + acc[0] * dt;
-            velocity[1] = velocity[1] + acc[1] * dt;
-            velocity[2] = velocity[2] + acc[2] * dt;
+            double[][] acc = {{accX, accY, accZ}};
+
+            float x = quaternion[0];
+            float y = quaternion[1];
+            float z = quaternion[2];
+            float w = quaternion[3];
+
+            float n = x*x + y*y + z*z + w*w;
+            float s = 0;
+            if (n != 0) {
+                s = 2 / n;
+            }
+            float wx = s * x * w;
+            float wy = s * y * w;
+            float wz = s * z * w;
+            float xx = s * x * x;
+            float xy = s * x * y;
+            float xz = s * x * z;
+            float yy = s * y * y;
+            float yz = s * y * z;
+            float zz = s * z * z;
+            double[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
+                    {xy + wz, 1 - (xx + zz), yz - wx},
+                    {xz - wy, yz + wx, 1 - (xx + yy)}};
+            Jama.Matrix Rot = new Jama.Matrix(R).inverse();
+            Jama.Matrix Acc = new Jama.Matrix(acc);
+            Jama.Matrix accel = Acc.times(Rot);
+            double [][] acceleration = accel.getArrayCopy();
+            System.out.println(acceleration[0][0]);
+            System.out.println(acceleration[0][1]);
+            System.out.println(acceleration[0][2]);
+
+            velocity[0] = velocity[0] + (float)acceleration[0][0] * dt;
+            velocity[1] = velocity[1] + (float)acceleration[0][1] * dt;
+            velocity[2] = velocity[2] + (float)acceleration[0][2] * dt;
         } else {
             velocity[0] = 0;
             velocity[1] = 0;

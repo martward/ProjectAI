@@ -26,4 +26,5 @@ dependencies {
     compile project(':base')
     compile project(':common')
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile files('libs/Jama-1.0.3.jar')
 }
