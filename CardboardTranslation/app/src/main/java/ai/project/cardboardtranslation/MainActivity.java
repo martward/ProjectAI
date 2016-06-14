@@ -28,6 +28,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 
@@ -83,9 +84,17 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float[] rawData = new float[3];
     private float[] velocity = new float[3];
     private long time;
+    private long startTIme;
     private float[] quaternion = new float[4];
 
     private long calibrationTime = 3000;
+    private float[] calibration = new float[3];
+    float sumX = 0.0f;
+    float sumY = 0.0f;
+    float sumZ = 0.0f;
+    float indexCalibration = 0.0f;
+
+    private boolean calibrated = false;
 
     SensorManager sMgr;
     Sensor translationSensor;
@@ -121,6 +130,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         System.out.println("ONCREATE");
 
         time = System.currentTimeMillis();
+        startTIme = time;
 
         setContentView(R.layout.ui_common);
 
@@ -138,8 +148,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         sMgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
         translationSensor = sMgr.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         sMgr.registerListener(this, translationSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-
         networkThread = new NetworkThread();
         networkThread.start();
 
@@ -231,7 +239,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float scale = 50.f;
         position[0] = scale * translation[0];
         position[2] = scale * translation[2];
-
+        /*
         System.out.print("Trans: ");
         for( int i = 0; i < 3; i++ ) {System.out.print(translation[i] + ", ");}
         System.out.println("");
@@ -239,7 +247,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         System.out.print("Pos: ");
         for( int i = 0; i < 3; i++ ) {System.out.print(position[i] + ", ");}
         System.out.println("\n----");
-
+        */
     }
 
     @Override
@@ -476,63 +484,76 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accY = event.values[1];
         float accZ = event.values[2];
 
+
         long currentTime = System.currentTimeMillis();
-        float dt = (float)(currentTime - time) / (float)1000.0;
+        float dt = (float) (currentTime - time) / (float) 1000.0;
         time = currentTime;
-
-        if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
-            double[][] acc = {{accX, accY, accZ}};
-
-            float x = quaternion[0];
-            float y = quaternion[1];
-            float z = quaternion[2];
-            float w = quaternion[3];
-
-            float n = x*x + y*y + z*z + w*w;
-            float s = 0;
-            if (n != 0) {
-                s = 2 / n;
-            }
-            float wx = s * x * w;
-            float wy = s * y * w;
-            float wz = s * z * w;
-            float xx = s * x * x;
-            float xy = s * x * y;
-            float xz = s * x * z;
-            float yy = s * y * y;
-            float yz = s * y * z;
-            float zz = s * z * z;
-            double[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
-                    {xy + wz, 1 - (xx + zz), yz - wx},
-                    {xz - wy, yz + wx, 1 - (xx + yy)}};
-            Jama.Matrix Rot = new Jama.Matrix(R).inverse();
-            Jama.Matrix Acc = new Jama.Matrix(acc);
-            Jama.Matrix accel = Acc.times(Rot);
-            double [][] acceleration = accel.getArrayCopy();
-
-            rawData[0] = (float)acceleration[0][0];
-            rawData[1] = (float)acceleration[0][1];
-            rawData[2] = (float)acceleration[0][2];
-
-            velocity[0] = velocity[0] + (float)acceleration[0][0] * dt;
-            velocity[1] = velocity[1] + (float)acceleration[0][1] * dt;
-            velocity[2] = velocity[2] + (float)acceleration[0][2] * dt;
+        if (System.currentTimeMillis() - startTIme < calibrationTime) {
+            indexCalibration++;
+            sumX += accX;
+            sumY += accY;
+            sumZ += accZ;
         } else {
-            velocity[0] = 0;
-            velocity[1] = 0;
-            velocity[2] = 0;
-        }
-        System.out.println(velocity[1] + " "  + velocity[1] + " " + velocity[2]);
+            if(calibrated == false) {
+
+                calibration[0] = sumX / indexCalibration;
+                calibration[1] = sumY / indexCalibration;
+                calibration[2] = sumZ / indexCalibration;
+                calibrated = true;
+            }
+
+            if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
+                double[][] acc = {{accX, accY, accZ}};
+                float x = quaternion[0];
+                float y = quaternion[1];
+                float z = quaternion[2];
+                float w = quaternion[3];
+
+                float n = x * x + y * y + z * z + w * w;
+                float s = 0;
+                if (n != 0) {
+                    s = 2 / n;
+                }
+                float wx = s * x * w;
+                float wy = s * y * w;
+                float wz = s * z * w;
+                float xx = s * x * x;
+                float xy = s * x * y;
+                float xz = s * x * z;
+                float yy = s * y * y;
+                float yz = s * y * z;
+                float zz = s * z * z;
+                double[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
+                        {xy + wz, 1 - (xx + zz), yz - wx},
+                        {xz - wy, yz + wx, 1 - (xx + yy)}};
+                Jama.Matrix Rot = new Jama.Matrix(R).inverse();
+                Jama.Matrix Acc = new Jama.Matrix(acc);
+                Jama.Matrix accel = Acc.times(Rot);
+
+                double[][] acceleration = accel.getArrayCopy();
+                rawData[0] = (float) acceleration[0][0];
+                rawData[1] = (float) acceleration[0][1];
+                rawData[2] = (float) acceleration[0][2];
+
+                velocity[0] = velocity[0] + (float) acceleration[0][0] * dt;
+                velocity[1] = velocity[1] + (float) acceleration[0][1] * dt;
+                velocity[2] = velocity[2] + (float) acceleration[0][2] * dt;
+            } else {
+                velocity[0] = 0;
+                velocity[1] = 0;
+                velocity[2] = 0;
+            }
+            //System.out.println(velocity[1] + " "  + velocity[1] + " " + velocity[2]);
 
 
-        float max = 2.0f;
-        if( velocity[0] < max && velocity[1] < max && velocity[2] < max )
-        {
-            translation[0] = translation[0] + velocity[0] * dt;
-            translation[1] = translation[1] + velocity[1] * dt;
-            translation[2] = translation[2] + velocity[2] * dt;
+            float max = 2.0f;
+            if (velocity[0] < max && velocity[1] < max && velocity[2] < max) {
+                translation[0] = translation[0] + velocity[0] * dt;
+                translation[1] = translation[1] + velocity[1] * dt;
+                translation[2] = translation[2] + velocity[2] * dt;
+            }
+            //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
         }
-        //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
     }
 
     @Override
