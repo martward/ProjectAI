@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="base-unspecified">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res" />
+      <root url="jar://$PROJECT_DIR$/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
