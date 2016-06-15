@@ -501,7 +501,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                 Jama.Matrix Rot = new Jama.Matrix(R).inverse();
                 double[][] calTemp = {{calX, calY, calZ}};
                 Jama.Matrix cal = new Jama.Matrix(calTemp);
-                double[][] orientedCalibration = cal.times(Rot.transpose()).getArray();
+                double[][] orientedCalibration = cal.times(Rot).getArray();
                 calibration[0] = (float)orientedCalibration[0][0];
                 calibration[1] = (float)orientedCalibration[0][1];
                 calibration[2] = (float)orientedCalibration[0][2];
@@ -520,7 +520,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             double [][] R = getRotationMatrix();
             Jama.Matrix Rot = new Jama.Matrix(R).inverse();
             Jama.Matrix Acc = new Jama.Matrix(acc);
-            Jama.Matrix accel = Acc.times(Rot.transpose());
+            Jama.Matrix accel = Acc.times(Rot);
 
             double[][] acceleration = accel.getArrayCopy();
             rawData[0] = (float)acceleration[0][0] - calibration[0];
@@ -528,7 +528,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             rawData[2] = (float)acceleration[0][2] - calibration[2];
 
             if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
-                          rawData[2] * rawData[2]) > 0.1) {
+                          rawData[2] * rawData[2]) > 0.05) {
                 velocity[0] = velocity[0] + rawData[0] * dt;
                 velocity[1] = velocity[1] + rawData[1] * dt;
                 velocity[2] = velocity[2] + rawData[2] * dt;
