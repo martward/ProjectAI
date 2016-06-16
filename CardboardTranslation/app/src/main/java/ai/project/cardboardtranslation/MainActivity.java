@@ -32,7 +32,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.43.101";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -516,18 +516,20 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                 toast.show();
             }
 */
-        //double[][] acc = {{accX, accY, accZ}};
-        //double [][] R = getRotationMatrix();
-        //Jama.Matrix Rot = new Jama.Matrix(R).inverse().transpose();
-        //Jama.Matrix Acc = new Jama.Matrix(acc);
-        //Jama.Matrix accel = Acc.times(Rot);
-        //double[][] acceleration = accel.getArrayCopy();
         rawData[0] = accX;
         rawData[1] = accY;
         rawData[2] = accZ;
-//        rawData[0] = (float)acceleration[0][0];
-//        rawData[1] = (float)acceleration[0][1];
-//        rawData[2] = (float)acceleration[0][2];
+/*
+        double[][] acc = {{accX, accY, accZ}};
+        double [][] R = getRotationMatrix();
+        Jama.Matrix Rot = new Jama.Matrix(R).inverse().transpose();
+        Jama.Matrix Acc = new Jama.Matrix(acc);
+        Jama.Matrix accel = Acc.times(Rot);
+        double[][] acceleration = accel.getArrayCopy();
+        rawData[0] = (float)acceleration[0][0];
+        rawData[1] = (float)acceleration[0][1];
+        rawData[2] = (float)acceleration[0][2];
+*/
 //        rawData[0] = (float)acceleration[0][0] - calibration[0];
 //        rawData[1] = (float)acceleration[0][1] - calibration[1];
 //        rawData[2] = (float)acceleration[0][2] - calibration[2];
