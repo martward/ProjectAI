@@ -90,7 +90,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float sumY = 0.0f;
     private float sumZ = 0.0f;
     private float indexCalibration = 0.0f;
-    private boolean calibrated = false;
+    private boolean calibrated = true;
 
     SensorManager sMgr;
     Sensor translationSensor;
@@ -484,7 +484,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float dt = (float) (currentTime - time) / (float) 1000.0;
         time = currentTime;
 
-        if (System.currentTimeMillis() - startTIme < 3000) {
+/*        if (System.currentTimeMillis() - startTIme < 3000) {
             System.out.println("Calibrating...");
             indexCalibration++;
             sumX += accX;
@@ -515,36 +515,38 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                 Toast toast = Toast.makeText(context,text,Toast.LENGTH_LONG);
                 toast.show();
             }
+*/
+        //double[][] acc = {{accX, accY, accZ}};
+        //double [][] R = getRotationMatrix();
+        //Jama.Matrix Rot = new Jama.Matrix(R).inverse().transpose();
+        //Jama.Matrix Acc = new Jama.Matrix(acc);
+        //Jama.Matrix accel = Acc.times(Rot);
+        //double[][] acceleration = accel.getArrayCopy();
+        rawData[0] = accX;
+        rawData[1] = accY;
+        rawData[2] = accZ;
+//        rawData[0] = (float)acceleration[0][0];
+//        rawData[1] = (float)acceleration[0][1];
+//        rawData[2] = (float)acceleration[0][2];
+//        rawData[0] = (float)acceleration[0][0] - calibration[0];
+//        rawData[1] = (float)acceleration[0][1] - calibration[1];
+//        rawData[2] = (float)acceleration[0][2] - calibration[2];
 
-            double[][] acc = {{accX, accY, accZ}};
-            double [][] R = getRotationMatrix();
-            Jama.Matrix Rot = new Jama.Matrix(R).inverse();
-            Jama.Matrix Acc = new Jama.Matrix(acc);
-            Jama.Matrix accel = Acc.times(Rot);
-
-            double[][] acceleration = accel.getArrayCopy();
-            rawData[0] = (float)acceleration[0][0] - calibration[0];
-            rawData[1] = (float)acceleration[0][1] - calibration[1];
-            rawData[2] = (float)acceleration[0][2] - calibration[2];
-
-            if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
-                          rawData[2] * rawData[2]) > 0.05) {
-                velocity[0] = velocity[0] + rawData[0] * dt;
-                velocity[1] = velocity[1] + rawData[1] * dt;
-                velocity[2] = velocity[2] + rawData[2] * dt;
-            } else {
-                velocity[0] = 0;
-                velocity[1] = 0;
-                velocity[2] = 0;
-            }
-            //System.out.println(velocity[1] + " "  + velocity[1] + " " + velocity[2]);
-            float max = 2.0f;
-            if (velocity[0] < max && velocity[1] < max && velocity[2] < max) {
-                translation[0] = translation[0] + velocity[0] * dt;
-                translation[1] = translation[1] + velocity[1] * dt;
-                translation[2] = translation[2] + velocity[2] * dt;
-            }
-            //System.out.println(translation[0] + " " + translation[1] + " " + translation[2] + " ");
+        if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
+                      rawData[2] * rawData[2]) > 0.5) {
+            velocity[0] = velocity[0] + rawData[0] * dt;
+            velocity[1] = velocity[1] + rawData[1] * dt;
+            velocity[2] = velocity[2] + rawData[2] * dt;
+        } else {
+            velocity[0] = 0;
+            velocity[1] = 0;
+            velocity[2] = 0;
+        }
+        float max = 2.0f;
+        if (Math.abs(velocity[0]) < max && Math.abs(velocity[1]) < max && Math.abs(velocity[2]) < max) {
+            translation[0] = translation[0] + velocity[0] * dt;
+            translation[1] = translation[1] + velocity[1] * dt;
+            translation[2] = translation[2] + velocity[2] * dt;
         }
     }
 
@@ -568,10 +570,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float yy = s * y * y;
         float yz = s * y * z;
         float zz = s * z * z;
-        double[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
-                {xy + wz, 1 - (xx + zz), yz - wx},
-                {xz - wy, yz + wx, 1 - (xx + yy)}};
-        return R;
+        return new double[][]{{1 - (yy + zz), xy - wz, xz + wy},
+                              {xy + wz, 1 - (xx + zz), yz - wx},
+                              {xz - wy, yz + wx, 1 - (xx + yy)}};
     }
 
     @Override

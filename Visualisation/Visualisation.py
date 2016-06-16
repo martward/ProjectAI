@@ -86,6 +86,9 @@ class Visualizer:
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter([], [], [])
         colors = "black"
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
+        ax.set_zlabel("Z")
         ax.set_xlim([-10, 10])
         ax.set_ylim([-10, 10])
         ax.set_zlim([-10, 10])
@@ -141,10 +144,10 @@ class Visualizer:
                 if self.data[0] == "absolute":
                     try:
                         quaternion = np.array([float(self.data[1]), float(self.data[2]),
-                                               -float(self.data[3]), float(self.data[4])])
+                                               float(self.data[3]), float(self.data[4])])
                         translation = np.array([float(self.data[5]), float(self.data[6]), float(self.data[7])])
                         [xs, ys, zs] = self.rotatePoint(points, quaternion, translation)
-                        pl._offsets3d = (xs, zs, ys)
+                        pl._offsets3d = (-xs, zs, -ys)
                         fig.canvas.draw()
 
                         self.transX.append(float(self.data[5]))
@@ -218,7 +221,7 @@ class Visualizer:
         R = np.array([[1 - (yy + zz), xy - wz, xz + wy],
                       [xy + wz, 1 - (xx + zz), yz - wx],
                       [xz - wy, yz + wx, 1 - (xx + yy)]])
-        transformed = points.dot(R)
+        transformed = points.dot(np.transpose(R))
         print translation
         xs = np.squeeze(np.asarray(transformed[:, 0]))
         ys = np.squeeze(np.asarray(transformed[:, 1]))
