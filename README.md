@@ -11,4 +11,7 @@ To run the code:
 
 You will see two figures, one containing 4 points representing the corners of the phone, 
 the other shows six line plots which are the translation values in the x, y and z axes and 
-the accelerometer values in the x, y and z values.
+the accelerometer values in the x, y and z axis.
+
+DEPENDENCIES:
+matplotlib 1.3.1
