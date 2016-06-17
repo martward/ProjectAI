@@ -1,6 +1,5 @@
 package ai.project.cardboardtranslation;
 
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
@@ -32,7 +31,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.0.118";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -101,10 +100,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Context context = getApplicationContext();
-        CharSequence text = "Please wait 3 seconds until calibration is finished";
-        Toast toast = Toast.makeText(context,text,Toast.LENGTH_LONG);
-        toast.show();
         modelCube = new float[16];
         modelFloor = new float[16];
         modelViewProjection = new float[16];
@@ -114,17 +109,13 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         position = new float[3];
         modelPosition = new float[] {0.0f, 0.0f, -MAX_MODEL_DISTANCE / 2.0f};
         headView = new float[16];
-        System.out.println("ONCREATE");
 
         setContentView(R.layout.ui_common);
 
         GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
-
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
-
         gvrView.setRenderer(this);
         gvrView.setTransitionViewEnabled(true);
-
         setGvrView(gvrView);
 
         updateModelPosition();
@@ -205,15 +196,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     private void setMessage(HeadTransform headTransform)
     {
-        String msg = "absolute/";
-
         headTransform.getQuaternion(quaternion, 0);
-
-        // Translation based on accelerometer
-        msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
-                + translation[2]  + "/" + position[0]  + "/" + position[1]
-                + "/" + position[2];
+        String msg = quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
+                + quaternion[3] + "/" + position[0] + "/" + position[1] + "/" + position[2];
         while(!networkThread.setData(msg));
     }
 
@@ -226,17 +211,13 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
-
         Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
-
         setMessage(headTransform);
         updatePosition();
 
         // Build the camera matrix and apply it to the ModelView.
         Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
-
         headTransform.getHeadView(headView, 0);
-
         checkGLError("onReadyToDraw");
     }
 
@@ -426,7 +407,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     protected void updateModelPosition() {
         Matrix.setIdentityM(modelCube, 0);
         Matrix.translateM(modelCube, 0, modelPosition[0], modelPosition[1], modelPosition[2]);
-
         checkGLError("updateCubePosition");
     }
 
@@ -459,8 +439,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         accelerometer[2] = accZ;
 
         if (time == 0) {
-            long currentTime = System.currentTimeMillis();
-            time = currentTime;
+            time = System.currentTimeMillis();
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -543,8 +522,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             running = false;
         }
 
-        public boolean setData(String data)
-        {
+        public boolean setData(String data) {
             if (writing) return false;
             this.data = data;
             return true;
@@ -563,7 +541,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                     try {
                         socket = new Socket(IP, 9090);
                         outputStream = new DataOutputStream(socket.getOutputStream());
-
                         log("Connected");
                     } catch (IOException e) {
                         try {
@@ -573,7 +550,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                         }
                     }
                 }
-
                 if (data != null && outputStream != null) {
                     try {
                         writing = true;
@@ -584,7 +560,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                         data = null;
                     } catch (IOException e) {
                         log("Connection lost");
-
                         socket = null;
                         outputStream = null;
                     }
