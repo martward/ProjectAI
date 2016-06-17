@@ -32,7 +32,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.43.101";
+    public static String IP = "192.168.0.107";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -80,6 +80,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
     private float[] translation = new float[3];
     private float[] rawData = new float[3];
+    private float[] unRotated = new float[3];
     private float[] velocity = new float[3];
     private long time;
     private long startTIme;
@@ -224,8 +225,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
-                + translation[2]  + "/" + rawData[0]  + "/" + rawData[1]
+                + quaternion[3] + "/" + unRotated[0] + "/" + unRotated[1] + "/"
+                + unRotated[2]  + "/" + rawData[0]  + "/" + rawData[1]
                 + "/" + rawData[2];
         while(!networkThread.setData(msg));
     }
@@ -479,6 +480,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
+        unRotated[0] = accX;
+        unRotated[1] = accY;
+        unRotated[2] = accZ;
 
         long currentTime = System.currentTimeMillis();
         float dt = (float) (currentTime - time) / (float) 1000.0;
@@ -519,25 +523,20 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             }
             */
 
-        rawData[0] = accX;
-        rawData[1] = accY;
-        rawData[2] = accZ;
 
-        // UNCOMMENT FOR (FAULT) ROTATION
-        /*
         double[][] acc = {{accX, accY, accZ}};
         double [][] R = getRotationMatrix();
-        Jama.Matrix Rot = new Jama.Matrix(R).inverse().transpose();
+        Jama.Matrix Rot = new Jama.Matrix(R).inverse();
         Jama.Matrix Acc = new Jama.Matrix(acc);
-        Jama.Matrix accel = Acc.times(Rot);
+        Jama.Matrix accel = Rot.times(Acc.transpose());
         double[][] acceleration = accel.getArrayCopy();
         rawData[0] = (float)acceleration[0][0];
-        rawData[1] = (float)acceleration[0][1];
-        rawData[2] = (float)acceleration[0][2];
-        */
+        rawData[1] = (float)acceleration[1][0];
+        rawData[2] = (float)acceleration[2][0];
+
 
         if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
-                      rawData[2] * rawData[2]) > 0.5) {
+                      rawData[2] * rawData[2]) > 0.3) {
             velocity[0] = velocity[0] + rawData[0] * dt;
             velocity[1] = velocity[1] + rawData[1] * dt;
             velocity[2] = velocity[2] + rawData[2] * dt;
@@ -546,7 +545,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             velocity[1] = 0;
             velocity[2] = 0;
         }
-        float max = 2.0f;
+        float max = 3.0f;
         if (Math.abs(velocity[0]) < max && Math.abs(velocity[1]) < max && Math.abs(velocity[2]) < max) {
             translation[0] = translation[0] + velocity[0] * dt;
             translation[1] = translation[1] + velocity[1] * dt;
@@ -555,8 +554,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     }
 
     public double [][] getRotationMatrix() {
-        float x = quaternion[0];
-        float y = quaternion[1];
+        float x = quaternion[1];
+        float y = quaternion[0];
         float z = quaternion[2];
         float w = quaternion[3];
 
