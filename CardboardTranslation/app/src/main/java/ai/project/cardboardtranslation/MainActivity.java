@@ -32,7 +32,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.107";
+    public static String IP = "192.168.0.105";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -78,24 +78,15 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float[] position;
     private float[] headView;
 
-    private float[] translation = new float[3];
-    private float[] rawData = new float[3];
-    private float[] unRotated = new float[3];
-    private float[] velocity = new float[3];
-    private long time;
-    private long startTIme;
+    private float[] accelerometer = new float[3];
     private float[] quaternion = new float[4];
-
-    private float[] calibration = new float[3];
-    private float sumX = 0.0f;
-    private float sumY = 0.0f;
-    private float sumZ = 0.0f;
-    private float indexCalibration = 0.0f;
-    private boolean calibrated = true;
+    private float[] rot_accelerometer = new float[3];
+    private float[] velocity = new float[3];
+    private float[] translation = new float[3];
+    private long time = 0;
 
     SensorManager sMgr;
     Sensor translationSensor;
-
 
     // We keep the light always position just above the user.
     private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[]{0.0f, 2.0f, 0.0f, 1.0f};
@@ -109,7 +100,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         Context context = getApplicationContext();
         CharSequence text = "Please wait 3 seconds until calibration is finished";
@@ -125,9 +115,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         modelPosition = new float[] {0.0f, 0.0f, -MAX_MODEL_DISTANCE / 2.0f};
         headView = new float[16];
         System.out.println("ONCREATE");
-
-        time = System.currentTimeMillis();
-        startTIme = time;
 
         setContentView(R.layout.ui_common);
 
@@ -147,7 +134,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         sMgr.registerListener(this, translationSensor, SensorManager.SENSOR_DELAY_NORMAL);
         networkThread = new NetworkThread();
         networkThread.start();
-
     }
 
     /**
@@ -225,9 +211,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + unRotated[0] + "/" + unRotated[1] + "/"
-                + unRotated[2]  + "/" + rawData[0]  + "/" + rawData[1]
-                + "/" + rawData[2];
+                + quaternion[3] + "/" + accelerometer[0] + "/" + accelerometer[1] + "/"
+                + accelerometer[2]  + "/" + rot_accelerometer[0]  + "/" + rot_accelerometer[1]
+                + "/" + rot_accelerometer[2];
         while(!networkThread.setData(msg));
     }
 
@@ -236,15 +222,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float scale = 50.f;
         position[0] = scale * translation[0];
         position[2] = scale * translation[2];
-        /*
-        System.out.print("Trans: ");
-        for( int i = 0; i < 3; i++ ) {System.out.print(translation[i] + ", ");}
-        System.out.println("");
-
-        System.out.print("Pos: ");
-        for( int i = 0; i < 3; i++ ) {System.out.print(position[i] + ", ");}
-        System.out.println("\n----");
-        */
     }
 
     @Override
@@ -261,7 +238,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         headTransform.getHeadView(headView, 0);
 
         checkGLError("onReadyToDraw");
-
     }
 
     @Override
@@ -276,7 +252,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Set the position of the light
         Matrix.multiplyMV(lightPosInEyeSpace, 0, view, 0, LIGHT_POS_IN_WORLD_SPACE, 0);
-
 
         float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
         Matrix.multiplyMM(modelView, 0, view, 0, modelCube, 0);
@@ -383,7 +358,6 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         Matrix.setIdentityM(modelFloor, 0);
         Matrix.translateM(modelFloor, 0, 0, -20f, 0); // Floor appears below user.
-
     }
 
     /**
@@ -480,49 +454,18 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
-        unRotated[0] = accX;
-        unRotated[1] = accY;
-        unRotated[2] = accZ;
+        accelerometer[0] = accX;
+        accelerometer[1] = accY;
+        accelerometer[2] = accZ;
 
+        if (time == 0) {
+            long currentTime = System.currentTimeMillis();
+            time = currentTime;
+            return;
+        }
         long currentTime = System.currentTimeMillis();
         float dt = (float) (currentTime - time) / (float) 1000.0;
         time = currentTime;
-
-        // SINGLE A PRIORI CALIBRATION
-        /*
-        if (System.currentTimeMillis() - startTIme < 3000) {
-            System.out.println("Calibrating...");
-            indexCalibration++;
-            sumX += accX;
-            sumY += accY;
-            sumZ += accZ;
-        } else {
-            if(!calibrated) {
-                double calX = sumX / indexCalibration;
-                double calY = sumY / indexCalibration;
-                double calZ = sumZ / indexCalibration;
-                calibrated = true;
-
-                double[][] R = getRotationMatrix();
-                Jama.Matrix Rot = new Jama.Matrix(R).inverse();
-                double[][] calTemp = {{calX, calY, calZ}};
-                Jama.Matrix cal = new Jama.Matrix(calTemp);
-                double[][] orientedCalibration = cal.times(Rot).getArray();
-                calibration[0] = (float)orientedCalibration[0][0];
-                calibration[1] = (float)orientedCalibration[0][1];
-                calibration[2] = (float)orientedCalibration[0][2];
-
-                System.out.println("Calibration Done");
-                System.out.println(calibration[0]);
-                System.out.println(calibration[1]);
-                System.out.println(calibration[2]);
-                Context context = getApplicationContext();
-                CharSequence text = "Calibration is finished.";
-                Toast toast = Toast.makeText(context,text,Toast.LENGTH_LONG);
-                toast.show();
-            }
-            */
-
 
         double[][] acc = {{accX, accY, accZ}};
         double [][] R = getRotationMatrix();
@@ -530,21 +473,21 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         Jama.Matrix Acc = new Jama.Matrix(acc);
         Jama.Matrix accel = Rot.times(Acc.transpose());
         double[][] acceleration = accel.getArrayCopy();
-        rawData[0] = (float)acceleration[0][0];
-        rawData[1] = (float)acceleration[1][0];
-        rawData[2] = (float)acceleration[2][0];
+        rot_accelerometer[0] = (float)acceleration[0][0];
+        rot_accelerometer[1] = (float)acceleration[1][0];
+        rot_accelerometer[2] = (float)acceleration[2][0];
 
-
-        if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
-                      rawData[2] * rawData[2]) > 0.3) {
-            velocity[0] = velocity[0] + rawData[0] * dt;
-            velocity[1] = velocity[1] + rawData[1] * dt;
-            velocity[2] = velocity[2] + rawData[2] * dt;
+        if (Math.sqrt(rot_accelerometer[0] * rot_accelerometer[0] + rot_accelerometer[1] * rot_accelerometer[1] +
+                      rot_accelerometer[2] * rot_accelerometer[2]) > 0.3) {
+            velocity[0] = velocity[0] + rot_accelerometer[0] * dt;
+            velocity[1] = velocity[1] + rot_accelerometer[1] * dt;
+            velocity[2] = velocity[2] + rot_accelerometer[2] * dt;
         } else {
             velocity[0] = 0;
             velocity[1] = 0;
             velocity[2] = 0;
         }
+
         float max = 3.0f;
         if (Math.abs(velocity[0]) < max && Math.abs(velocity[1]) < max && Math.abs(velocity[2]) < max) {
             translation[0] = translation[0] + velocity[0] * dt;
@@ -631,7 +574,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
                     }
                 }
 
-                if (data != null && outputStream != null && calibrated) {
+                if (data != null && outputStream != null) {
                     try {
                         writing = true;
                         //log("Send data: " + data);
