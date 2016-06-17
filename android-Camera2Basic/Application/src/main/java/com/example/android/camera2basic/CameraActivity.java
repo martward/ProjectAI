@@ -58,7 +58,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     private static final String TAG = "MainActivity";
 
-    private static final int GL_TEXTURE_EXTERNAL_OES = 0x8D65;
+
+    //private static final int GLES20.GL_TEXTURE0 = 0x8D65;
 
     protected float[] modelCube;
     protected float[] modelPosition;
@@ -115,22 +116,13 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     private SurfaceTexture surface;
     private int texture;
     static float squareVertices[] = { // in counterclockwise order:
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f
     };
     static float textureVertices[] = {
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f
     };
-    private short drawOrder[] =  {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17, }; // order to draw vertices
+    private short drawOrder[] =  {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 }; // order to draw vertices
+    //private short drawOrder[] =  {17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1 }; // order to draw vertices
     private short drawOrder2[] = {2, 0, 3, 3, 0, 1}; // order to draw vertices
     private FloatBuffer vertexBuffer, textureVerticesBuffer, vertexBuffer2;
     private ShortBuffer drawListBuffer, buf2;
@@ -169,7 +161,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
                     .replace(R.id.container, Camera2BasicFragment.newInstance(surface))
                     .commit();
         }
-
 
         modelCube = new float[16];
         modelFloor = new float[16];
@@ -210,11 +201,12 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     @Override
     public void onNewFrame(HeadTransform headTransform) {
 
-        /*
+
         Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
 
+
         //setMessage(headTransform);
-        updatePosition();
+        //updatePosition();
 
         // Build the camera matrix and apply it to the ModelView.
         Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
@@ -222,7 +214,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         headTransform.getHeadView(headView, 0);
 
         checkGLError("onReadyToDraw");
-        */
+
 
         float[] mtx = new float[16];
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -234,10 +226,14 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     public void onDrawEye(Eye eye) {
 
 
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        //GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        //checkGLError("colorParam");
+        checkGLError("colorParam");
+
+        // Camera
+        drawCamera();
+        Matrix.multiplyMM(mView, 0, eye.getEyeView(), 0, mCamera, 0);
 
 
         // Apply the eye transformation to the camera.
@@ -250,16 +246,12 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
         Matrix.multiplyMM(modelView, 0, view, 0, modelCube, 0);
         Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
-        //drawCube();
+        drawCube();
 
         // Set modelView for the floor, so we draw floor in the correct location
         Matrix.multiplyMM(modelView, 0, view, 0, modelFloor, 0);
         Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
         //drawFloor();
-
-        // Camera
-        drawCamera();
-        Matrix.multiplyMM(mView, 0, eye.getEyeView(), 0, mCamera, 0);
 
     }
 
@@ -276,10 +268,9 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     @Override
     public void onSurfaceCreated(EGLConfig eglConfig) {
 
-
-        GLES20.glClearColor(1,1,1,0);
+        GLES20.glClearColor(1.0f,1.0f,1.0f,0);
         GLES20.glEnable(GL10.GL_CULL_FACE);
-        GLES20.glEnable(GL10.GL_DEPTH_TEST);
+        //GLES20.glEnable(GL10.GL_DEPTH_TEST);
 
         ByteBuffer bbVertices = ByteBuffer.allocateDirect(World.CUBE_COORDS.length * 4);
         bbVertices.order(ByteOrder.nativeOrder());
@@ -363,8 +354,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         Matrix.setIdentityM(modelFloor, 0);
         Matrix.translateM(modelFloor, 0, 0, -floorDepth, 0); // Floor appears below user.
 
-
-
         // Camera
 
         ByteBuffer bb = ByteBuffer.allocateDirect(World.CUBE_COORDS.length * 4);
@@ -373,12 +362,15 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         vertexBuffer.put(World.CUBE_COORDS);
         vertexBuffer.position(0);
 
+        checkGLError("Camera bb");
 
         ByteBuffer dlb = ByteBuffer.allocateDirect(drawOrder.length * 2);
         dlb.order(ByteOrder.nativeOrder());
         drawListBuffer = dlb.asShortBuffer();
         drawListBuffer.put(drawOrder);
         drawListBuffer.position(0);
+
+        checkGLError("Camera dlb");
 
 
         ByteBuffer bb2 = ByteBuffer.allocateDirect(World.CUBE_COORDS.length * 4);
@@ -387,14 +379,22 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         textureVerticesBuffer.put(World.CUBE_COORDS);
         textureVerticesBuffer.position(0);
 
+        checkGLError("Camera bb2");
+
         int vertexShader2 = loadGLShader(GLES20.GL_VERTEX_SHADER, R.raw.cameravertex);
         int fragmentShader = loadGLShader(GLES20.GL_FRAGMENT_SHADER, R.raw.fragment);
 
+        checkGLError("Camera shader");
+
         mProgram = GLES20.glCreateProgram();             // create empty OpenGL ES Program
         GLES20.glAttachShader(mProgram, vertexShader2);   // add the vertex shader to program
+        checkGLError("Camera vertex");
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+        checkGLError("Camera fragment");
         GLES20.glLinkProgram(mProgram);
+        checkGLError("Camera link");
         GLES20.glUseProgram(mProgram);
+        checkGLError("Camera use");
 
 
 
@@ -469,6 +469,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     protected void updateModelPosition() {
         Matrix.setIdentityM(modelCube, 0);
         Matrix.translateM(modelCube, 0, modelPosition[0], modelPosition[1], modelPosition[2]);
+        Matrix.scaleM(modelCube,0,0.3f, 0.3f, 0.3f);
 
         checkGLError("updateCubePosition");
     }
@@ -580,33 +581,49 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     public void drawCamera()
     {
-        //GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        surface.updateTexImage();
+        GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+        checkGLError("Camera update");
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        checkGLError("Camera bits");
 
         GLES20.glUseProgram(mProgram);
-        GLES20.glActiveTexture(GL_TEXTURE_EXTERNAL_OES);
-        GLES20.glBindTexture(GL_TEXTURE_EXTERNAL_OES, texture);
+        checkGLError("Camera use prog");
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        checkGLError("Camera active tex");
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture);
+        checkGLError("Camera bind");
 
 
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "position");
+        checkGLError("Camera get pos");
         GLES20.glEnableVertexAttribArray(mPositionHandle);
+        checkGLError("Camera enable poshandle");
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false,vertexStride, vertexBuffer);
+        checkGLError("Camera attr points poshandle");
 
 
         mTextureCoordHandle = GLES20.glGetAttribLocation(mProgram, "inputTextureCoordinate");
+        checkGLError("Camera get inputtex");
         GLES20.glEnableVertexAttribArray(mTextureCoordHandle);
+        checkGLError("Camera enable vertex coord");
         GLES20.glVertexAttribPointer(mTextureCoordHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT,
                 false,vertexStride, textureVerticesBuffer);
+        checkGLError("Camera attr points tex handle");
 //
         mColorHandle = GLES20.glGetAttribLocation(mProgram, "s_texture");
 //
 //
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrder.length,
                 GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+        checkGLError("Camera draw el");
 //
 
 //        // Disable vertex array
-//        GLES20.glDisableVertexAttribArray(mPositionHandle);
-//        GLES20.glDisableVertexAttribArray(mTextureCoordHandle);
+        GLES20.glDisableVertexAttribArray(mPositionHandle);
+        checkGLError("Camera disable poshandle");
+        GLES20.glDisableVertexAttribArray(mTextureCoordHandle);
+        checkGLError("Camera disable tex handle");
     }
 
     /**
@@ -640,6 +657,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     public void drawCube() {
         GLES20.glUseProgram(cubeProgram);
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         GLES20.glUniform3fv(cubeLightPosParam, 1, lightPosInEyeSpace, 0);
 
@@ -674,11 +692,11 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         int[] texture = new int[1];
 
         GLES20.glGenTextures(1,texture, 0);
-        GLES20.glBindTexture(GL_TEXTURE_EXTERNAL_OES, texture[0]);
-        GLES20.glTexParameterf(GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_MIN_FILTER,GL10.GL_LINEAR);
-        GLES20.glTexParameterf(GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-        GLES20.glTexParameteri(GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameteri(GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE0, texture[0] );
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE0, GL10.GL_TEXTURE_MIN_FILTER,GL10.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE0, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE0, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE0, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
 
         return texture[0];
     }

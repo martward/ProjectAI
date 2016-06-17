@@ -4,39 +4,39 @@
     api-level="22"
     density="xhdpi"
     format="7"
-    timestamp="35304788689135" >
+    timestamp="35382603018324" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="101" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="16" />
     <task
         name="verifier"
-        duration="0" />
+        duration="1" />
 
     <artifact
-        location="/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/resources-debug.ap_"
-        type="RESOURCES" />
+        location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+        type="DEX" />
 
-    <build timestamp="28948091084978" >
+    <build timestamp="35217962032279" >
         <artifact
-            location="/home/sebastien/Documents/android-Camera2Basic/Application/build/outputs/apk/Application-debug.apk"
-            type="MAIN" />
-    </build>
-    <build timestamp="35278259239739" >
-        <artifact
-            location="/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+            location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
             type="DEX" />
     </build>
-    <build timestamp="35304788689135" >
+    <build timestamp="35382603018324" >
         <artifact
-            location="/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/resources-debug.ap_"
-            type="RESOURCES" />
+            location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+            type="DEX" />
+    </build>
+    <build timestamp="48746618894260" >
+        <artifact
+            location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/outputs/apk/Application-debug.apk"
+            type="MAIN" />
     </build>
 
 </instant-run>

@@ -438,11 +438,6 @@ public class Camera2BasicFragment extends Fragment
 
     private static Camera2BasicFragment instance;
 
-    public static Camera2BasicFragment getInstance()
-    {
-        return instance;
-    }
-
     public static Camera2BasicFragment newInstance(SurfaceTexture texture) {
         instance = new Camera2BasicFragment(texture);
         return instance;
@@ -778,7 +773,9 @@ public class Camera2BasicFragment extends Fragment
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
         float centerX = viewRect.centerX();
         float centerY = viewRect.centerY();
+
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            System.out.println("orientation 90 or 270");
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
             float scale = Math.max(
@@ -787,8 +784,10 @@ public class Camera2BasicFragment extends Fragment
             matrix.postScale(scale, scale, centerX, centerY);
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         } else if (Surface.ROTATION_180 == rotation) {
+            System.out.println( "orientation 180" );
             matrix.postRotate(180, centerX, centerY);
         }
+
         mTextureView.setTransform(matrix);
     }
 

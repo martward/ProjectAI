@@ -2,5 +2,9 @@
     {
         "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/layout-ldrtl-v17/back_button.xml",
         "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/layout-ldrtl-v17/back_button.xml"
+    },
+    {
+        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/layout-ldrtl-v17/back_button.xml",
+        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/layout-ldrtl-v17/back_button.xml"
     }
 ]
