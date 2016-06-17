@@ -211,16 +211,16 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + accelerometer[0] + "/" + accelerometer[1] + "/"
-                + accelerometer[2]  + "/" + rot_accelerometer[0]  + "/" + rot_accelerometer[1]
-                + "/" + rot_accelerometer[2];
+                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
+                + translation[2]  + "/" + position[0]  + "/" + position[1]
+                + "/" + position[2];
         while(!networkThread.setData(msg));
     }
 
     private void updatePosition()
     {
         float scale = 50.f;
-        position[0] = scale * translation[0];
+        position[0] = scale * translation[1];
         position[2] = scale * translation[2];
     }
 
