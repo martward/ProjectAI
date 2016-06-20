@@ -177,6 +177,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         setContentView(R.layout.activity_camera);
 
         GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
+        gvrView.setSettingsButtonEnabled(false);
+        gvrView.setVRModeEnabled(false);
 
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
 
