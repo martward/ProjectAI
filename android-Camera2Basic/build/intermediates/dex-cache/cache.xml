@@ -1,2 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.3.0_b71e26389fd6659e4e2ee9a7707d4f0e8530d63d/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.3.0_68270b875d3b3f98cf80d1a62b58b77096d90b8a/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3c0e0206bcab96f5b2851a827ea496c0f2de44da">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_15936fd78d91fd5d033f3c8a64d43f2018ee0bc5/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v13/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8813bdcf7583107c4873150075d17c8072ec50cf">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.3.0_00c75f2599c0ee75cdd9de0a310d88d8d30d7533/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.0.0_fef2d4956a9b514140481923c781b618adb06f69/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ae17260ce73274e67b8d3ed3a43c16b869a406ef">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_bdc3ba5dbb90a13af85539769b7a6060b63df90e/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="82ce13fd19cdfde0e392f03c27edeba8d4333648">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-23.3.0_b36e9a0ac60bc8f383f21380b93ec450391d808d/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.3.0_757dca8767eafe7723b4997c007a64e1451bd950/classes.dex" />
+    </item>
+    <item
+        jar="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/support-v13/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="a809555a2599054c3dcd1bf82b089315ac3a11df">
+        <dex dex="/home/joost/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v13-23.3.0_c9eaaee9da687eaf00cd102f8052f99baaaa98f5/classes.dex" />
+    </item>
+
+</items>

@@ -54,7 +54,7 @@ import java.nio.ShortBuffer;
 public class CameraActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
 
-    public static String IP = "192.168.43.86";
+    public static String IP = "192.168.0.105";
     private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;

@@ -82,7 +82,7 @@ class Visualizer:
         points = np.array([[5, 2.5, 0], [-5, 2.5, 0], [-5, -2.5, 0], [5, -2.5, 0]])
 
         plt.ion()
-        fig = plt.figure(1,figsize=(22, 15))
+        fig = plt.figure(1, figsize=(22, 15))
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter([], [], [])
         colors = "black"
@@ -145,8 +145,8 @@ class Visualizer:
                     try:
                         quaternion = np.array([float(self.data[1]), float(self.data[2]),
                                                float(self.data[3]), float(self.data[4])])
-                        translation = np.array([float(self.data[5]), float(self.data[6]), float(self.data[7])])
-                        [xs, ys, zs] = self.rotatePoint(points, quaternion, translation)
+                        position = np.array([float(self.data[5]), float(self.data[6]), float(self.data[7])])
+                        [xs, ys, zs] = self.rotatePoint(points, quaternion, position)
                         pl._offsets3d = (-xs, zs, -ys)
                         fig.canvas.draw()
 
@@ -199,7 +199,7 @@ class Visualizer:
                 sleep(0.01)
         plt.show()
 
-    def rotatePoint(self, points, quaternion, translation):
+    def rotatePoint(self, points, quaternion, position):
         x = quaternion[0]
         y = quaternion[1]
         z = quaternion[2]
@@ -222,10 +222,9 @@ class Visualizer:
                       [xy + wz, 1 - (xx + zz), yz - wx],
                       [xz - wy, yz + wx, 1 - (xx + yy)]])
         transformed = points.dot(np.transpose(R))
-        print translation
-        xs = np.squeeze(np.asarray(transformed[:, 0]))
+        xs = np.squeeze(np.asarray(transformed[:, 0])) + position[0]
         ys = np.squeeze(np.asarray(transformed[:, 1]))
-        zs = np.squeeze(np.asarray(transformed[:, 2]))
+        zs = np.squeeze(np.asarray(transformed[:, 2])) - position[2]
         return [xs, ys, zs]
 
 if __name__ == '__main__':
