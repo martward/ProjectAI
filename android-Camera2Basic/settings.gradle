@@ -1,1 +1,1 @@
-include 'Application', ':base', ':common', ':Jama-1.0.3'
+include 'Application', ':base', ':common', ':Jama-1.0.3', ':libraries:opencv'

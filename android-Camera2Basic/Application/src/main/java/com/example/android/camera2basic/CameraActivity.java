@@ -20,6 +20,8 @@ import com.google.vr.sdk.base.GvrView;
 import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.Viewport;
 
+import org.opencv.android.CameraBridgeViewBase;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
