@@ -90,7 +90,7 @@ class Visualizer:
                                            float(self.data[2]), float(self.data[3])])
                     position = np.array([float(self.data[4]), float(self.data[5]), float(self.data[6])])
                     [xs, ys, zs] = self.rotatePoints(points, quaternion, position)
-                    pl._offsets3d = (-xs, zs, ys)
+                    pl._offsets3d = (-xs, zs, -ys)
                     fig.canvas.draw()
                     self.data = []
                 except ValueError:
@@ -123,9 +123,9 @@ class Visualizer:
                       [xy + wz, 1 - (xx + zz), yz - wx],
                       [xz - wy, yz + wx, 1 - (xx + yy)]])
         transformed = points.dot(np.transpose(R))
-        xs = np.squeeze(np.asarray(transformed[:, 0])) + position[2]
-        ys = np.squeeze(np.asarray(transformed[:, 1])) + position[1]
-        zs = np.squeeze(np.asarray(transformed[:, 2])) + position[0]
+        xs = np.squeeze(np.asarray(transformed[:, 0])) + position[0]
+        ys = np.squeeze(np.asarray(transformed[:, 1]))
+        zs = np.squeeze(np.asarray(transformed[:, 2])) - position[2]
         return [xs, ys, zs]
 
 if __name__ == '__main__':
