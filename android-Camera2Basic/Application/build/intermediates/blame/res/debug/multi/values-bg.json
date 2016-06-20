@@ -1,0 +1,653 @@
+[
+    {
+        "outputFile": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/values-bg/values-bg.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 105,
+                    "endColumn": 114,
+                    "endOffset": 215
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 276,
+                        "endColumn": 114,
+                        "endOffset": 386
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 220,
+                    "endColumn": 110,
+                    "endOffset": 326
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 391,
+                        "endColumn": 110,
+                        "endOffset": 497
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 331,
+                    "endColumn": 127,
+                    "endOffset": 454
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 502,
+                        "endColumn": 127,
+                        "endOffset": 625
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 459,
+                    "endColumn": 106,
+                    "endOffset": 561
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 630,
+                        "endColumn": 106,
+                        "endOffset": 732
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 566,
+                    "endColumn": 104,
+                    "endOffset": 666
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 737,
+                        "endColumn": 104,
+                        "endOffset": 837
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 671,
+                    "endColumn": 85,
+                    "endOffset": 752
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 842,
+                        "endColumn": 85,
+                        "endOffset": 923
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 757,
+                    "endColumn": 104,
+                    "endOffset": 857
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 928,
+                        "endColumn": 104,
+                        "endOffset": 1028
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 862,
+                    "endColumn": 120,
+                    "endOffset": 978
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1033,
+                        "endColumn": 120,
+                        "endOffset": 1149
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 983,
+                    "endColumn": 82,
+                    "endOffset": 1061
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1154,
+                        "endColumn": 82,
+                        "endOffset": 1232
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 1066,
+                    "endColumn": 113,
+                    "endOffset": 1175
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1237,
+                        "endColumn": 113,
+                        "endOffset": 1346
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 1180,
+                    "endColumn": 108,
+                    "endOffset": 1284
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1351,
+                        "endColumn": 108,
+                        "endOffset": 1455
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 1289,
+                    "endColumn": 99,
+                    "endOffset": 1384
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 1460,
+                        "endColumn": 99,
+                        "endOffset": 1555
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 1389,
+                    "endColumn": 113,
+                    "endOffset": 1498
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1560,
+                        "endColumn": 113,
+                        "endOffset": 1669
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 1503,
+                    "endColumn": 105,
+                    "endOffset": 1604
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1674,
+                        "endColumn": 105,
+                        "endOffset": 1775
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 1609,
+                    "endColumn": 107,
+                    "endOffset": 1712
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1780,
+                        "endColumn": 107,
+                        "endOffset": 1883
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 1717,
+                    "endColumn": 122,
+                    "endOffset": 1835
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1888,
+                        "endColumn": 122,
+                        "endOffset": 2006
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1840,
+                    "endColumn": 98,
+                    "endOffset": 1934
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 2011,
+                        "endColumn": 98,
+                        "endOffset": 2105
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1939,
+                    "endColumn": 95,
+                    "endOffset": 2030
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 315,
+                        "endColumn": 95,
+                        "endOffset": 406
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 2035,
+                    "endColumn": 77,
+                    "endOffset": 2108
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 411,
+                        "endColumn": 77,
+                        "endOffset": 484
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 2113,
+                    "endColumn": 151,
+                    "endOffset": 2260
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 489,
+                        "endColumn": 151,
+                        "endOffset": 636
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 2265,
+                    "endColumn": 120,
+                    "endOffset": 2381
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 641,
+                        "endColumn": 120,
+                        "endOffset": 757
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 2386,
+                    "endColumn": 84,
+                    "endOffset": 2466
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 762,
+                        "endColumn": 84,
+                        "endOffset": 842
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 2471,
+                    "endColumn": 104,
+                    "endOffset": 2571
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 847,
+                        "endColumn": 104,
+                        "endOffset": 947
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 2576,
+                    "endColumn": 71,
+                    "endOffset": 2643
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 952,
+                        "endColumn": 71,
+                        "endOffset": 1019
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 2648,
+                    "endColumn": 110,
+                    "endOffset": 2754
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1024,
+                        "endColumn": 110,
+                        "endOffset": 1130
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 2759,
+                    "endColumn": 134,
+                    "endOffset": 2889
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1135,
+                        "endColumn": 134,
+                        "endOffset": 1265
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 2894,
+                    "endColumn": 164,
+                    "endOffset": 3054
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1270,
+                        "endColumn": 164,
+                        "endOffset": 1430
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 3059,
+                    "endColumn": 103,
+                    "endOffset": 3158
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1435,
+                        "endColumn": 103,
+                        "endOffset": 1534
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 3163,
+                    "endColumn": 82,
+                    "endOffset": 3241
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 1539,
+                        "endColumn": 82,
+                        "endOffset": 1617
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 31,
+                    "startColumn": 4,
+                    "startOffset": 3246,
+                    "endColumn": 100,
+                    "endOffset": 3342
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-bg/values-bg.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 2110,
+                        "endColumn": 100,
+                        "endOffset": 2206
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 32,
+                    "startColumn": 4,
+                    "startOffset": 3347,
+                    "endColumn": 84,
+                    "endOffset": 3427
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1622,
+                        "endColumn": 84,
+                        "endOffset": 1702
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 33,
+                    "startColumn": 4,
+                    "startOffset": 3432,
+                    "endColumn": 103,
+                    "endOffset": 3531
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1707,
+                        "endColumn": 103,
+                        "endOffset": 1806
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 34,
+                    "startColumn": 4,
+                    "startOffset": 3536,
+                    "endColumn": 114,
+                    "endOffset": 3646
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1811,
+                        "endColumn": 114,
+                        "endOffset": 1921
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 35,
+                    "startColumn": 4,
+                    "startOffset": 3651,
+                    "endColumn": 167,
+                    "endOffset": 3814
+                },
+                "from": {
+                    "file": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/values-bg/values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1926,
+                        "endColumn": 167,
+                        "endOffset": 2089
+                    }
+                }
+            }
+        ]
+    }
+]

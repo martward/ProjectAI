@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/raw/fragment.shader",
+        "source": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/raw/fragment.shader"
+    },
+    {
+        "merged": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/raw/cameravertex.shader",
+        "source": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/raw/cameravertex.shader"
+    },
+    {
+        "merged": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/raw/light_vertex.shader",
+        "source": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/raw/light_vertex.shader"
+    },
+    {
+        "merged": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/raw/passthrough_fragment.shader",
+        "source": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/raw/passthrough_fragment.shader"
+    },
+    {
+        "merged": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/raw/grid_fragment.shader",
+        "source": "/home/martijn/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/raw/grid_fragment.shader"
+    }
+]
