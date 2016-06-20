@@ -4,39 +4,34 @@
     api-level="22"
     density="xhdpi"
     format="7"
-    timestamp="35382603018324" >
+    timestamp="106515474039937" >
 
     <task
         name="javac"
-        duration="101" />
+        duration="166" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="16" />
+        duration="21" />
     <task
         name="verifier"
-        duration="1" />
+        duration="2" />
 
     <artifact
         location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
         type="DEX" />
 
-    <build timestamp="35217962032279" >
-        <artifact
-            location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
-            type="DEX" />
-    </build>
-    <build timestamp="35382603018324" >
-        <artifact
-            location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
-            type="DEX" />
-    </build>
-    <build timestamp="48746618894260" >
+    <build timestamp="105794963054078" >
         <artifact
             location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/outputs/apk/Application-debug.apk"
             type="MAIN" />
+    </build>
+    <build timestamp="106515474039937" >
+        <artifact
+            location="/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+            type="DEX" />
     </build>
 
 </instant-run>

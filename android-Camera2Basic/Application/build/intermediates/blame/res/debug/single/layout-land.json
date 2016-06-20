@@ -12,12 +12,12 @@
         "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/layout-land/back_button.xml"
     },
     {
-        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/layout-land/fragment_camera2_basic.xml",
-        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/layout-land/fragment_camera2_basic.xml"
-    },
-    {
         "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/layout-land/back_button.xml",
         "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/android-Camera2Basic/base/unspecified/res/layout-land/back_button.xml"
+    },
+    {
+        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/layout-land/fragment_camera2_basic.xml",
+        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/src/main/res/layout-land/fragment_camera2_basic.xml"
     },
     {
         "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/layout-land/fragment_camera2_basic.xml",

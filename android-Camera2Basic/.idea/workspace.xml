@@ -5,16 +5,68 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdee8e00-2522-4779-98fc-5b664dee3f4e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/build.gradle" afterPath="$PROJECT_DIR$/Application/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/Application/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/AutoFitTextureView.java" afterPath="$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/AutoFitTextureView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java" afterPath="$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java" afterPath="$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/res/layout-land/fragment_camera2_basic.xml" afterPath="$PROJECT_DIR$/Application/src/main/res/layout-land/fragment_camera2_basic.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/res/layout/activity_camera.xml" afterPath="$PROJECT_DIR$/Application/src/main/res/layout/activity_camera.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/src/main/res/layout/fragment_camera2_basic.xml" afterPath="$PROJECT_DIR$/Application/src/main/res/layout/fragment_camera2_basic.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/Jama_1_0_3_Jama_1_0_3.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android-Camera2Basic/Jama-1.0.3/build.gradle" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/appcompat_v7_23_0_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/base_unspecified.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/cardview_v7_23_3_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/common_unspecified.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/support_annotations_23_3_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/support_v13_23_3_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/libraries/support_v4_23_3_0.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraActivity.class" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraActivity.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental-runtime-classes/debug/instant-run.jar" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental-runtime-classes/debug/instant-run.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental-verifier/debug/com/example/android/camera2basic/CameraActivity.class" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental-verifier/debug/com/example/android/camera2basic/CameraActivity.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/instant-run-support/debug/classes.zip" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/instant-run-support/debug/classes.zip" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/instant-run-support/debug/resources.zip" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/instant-run-support/debug/resources.zip" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/res/resources-debug-androidTest.ap_" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/res/resources-debug-androidTest.ap_" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/res/resources-debug.ap_" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/res/resources-debug.ap_" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_3/classes.dex" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_3/classes.dex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8/classes.dex" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8/classes.dex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRun/debug/folders/1/5/main/com/example/android/camera2basic/CameraActivity.class" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRun/debug/folders/1/5/main/com/example/android/camera2basic/CameraActivity.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/example/android/camera2basic/CameraActivity$override.class" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/example/android/camera2basic/CameraActivity$override.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRunSlicer/debug/folders/1/5/slice_1/com/example/android/camera2basic/CameraActivity.class" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRunSlicer/debug/folders/1/5/slice_1/com/example/android/camera2basic/CameraActivity.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/outputs/apk/Application-debug-unaligned.apk" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/outputs/apk/Application-debug-unaligned.apk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/outputs/apk/Application-debug.apk" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/outputs/apk/Application-debug.apk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/gradle.xml" afterPath="$PROJECT_DIR$/android-Camera2Basic/.idea/gradle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/modules.xml" afterPath="$PROJECT_DIR$/android-Camera2Basic/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/.idea/workspace.xml" afterPath="$PROJECT_DIR$/android-Camera2Basic/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build.gradle" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-fr-rCA.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-fr-rCA.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-hi.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-hi.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-hr.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-hr.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-id.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-id.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-ka-rGE.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-ka-rGE.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-lv.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-lv.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-my-rMM.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-my-rMM.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-sw.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-sw.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-v23.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/multi/values-v23.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/anim.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/anim.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/color.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/color.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-hdpi-v4.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-hdpi-v4.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-hdpi-v17.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-hdpi-v17.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-mdpi-v17.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-mdpi-v17.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-xhdpi-v17.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-xhdpi-v17.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-xxhdpi-v17.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-xxhdpi-v17.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-xxxhdpi-v17.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-ldrtl-xxxhdpi-v17.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-mdpi-v4.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-mdpi-v4.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-v21.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-v21.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-v23.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-v23.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-xhdpi-v4.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-xhdpi-v4.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-xxhdpi-v4.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-xxhdpi-v4.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-xxxhdpi-v4.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable-xxxhdpi-v4.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/drawable.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/layout-land.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/layout-land.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/layout.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/layout.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/raw.json" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/blame/res/debug/single/raw.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental/mergeDebugResources/merger.xml" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/incremental/mergeDebugResources/merger.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/restart-dex/debug/build-info.xml" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/restart-dex/debug/build-info.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRunSlicer/debug/folders/1/5/slice_1/buildId.txt" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/build/intermediates/transforms/instantRunSlicer/debug/folders/1/5/slice_1/buildId.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java" afterPath="$PROJECT_DIR$/android-Camera2Basic/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android-Camera2Basic/settings.gradle" afterPath="$PROJECT_DIR$/android-Camera2Basic/settings.gradle" />
     </list>
     <ignored path="android-Camera2Basic.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,15 +86,25 @@
     <favorites_list name="android-Camera2Basic" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="CameraActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6149826">
-              <caret line="562" column="28" selection-start-line="562" selection-start-column="28" selection-end-line="562" selection-end-column="28" />
+            <state vertical-scroll-proportion="16.108475">
+              <caret line="528" column="49" selection-start-line="528" selection-start-column="38" selection-end-line="528" selection-end-column="49" />
               <folding>
-                <element signature="e#0#27206#0" expanded="true" />
+                <element signature="e#0#28024#0" expanded="true" />
                 <element signature="imports" expanded="true" />
+                <element signature="e#14212#14213#0" expanded="true" />
+                <element signature="e#14252#14253#0" expanded="true" />
+                <element signature="e#26287#26288#0" expanded="true" />
+                <element signature="e#26325#26326#0" expanded="true" />
+                <element signature="e#26359#26360#0" expanded="true" />
+                <element signature="e#26398#26399#0" expanded="true" />
+                <element signature="e#26436#26437#0" expanded="true" />
+                <element signature="e#26481#26482#0" expanded="true" />
+                <element signature="e#26690#26691#0" expanded="true" />
+                <element signature="e#26727#26728#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -111,9 +173,22 @@
       <file leaf-file-name="Camera2BasicFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.290322">
+            <state vertical-scroll-proportion="0.0">
               <caret line="774" column="29" selection-start-line="774" selection-start-column="24" selection-end-line="774" selection-end-column="32" />
-              <folding />
+              <folding>
+                <element signature="e#0#40955#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#4863#4864#0" expanded="false" />
+                <element signature="e#4898#4899#0" expanded="false" />
+                <element signature="e#5089#5090#0" expanded="false" />
+                <element signature="e#5127#5128#0" expanded="false" />
+                <element signature="e#5196#5197#0" expanded="false" />
+                <element signature="e#5234#5235#0" expanded="false" />
+                <element signature="e#12540#12541#0" expanded="false" />
+                <element signature="e#12637#12638#0" expanded="false" />
+                <element signature="e#30878#30879#0" expanded="false" />
+                <element signature="e#30905#30906#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -138,6 +213,10 @@
               <ExternalProjectPojo>
                 <option name="name" value="android-Camera2Basic" />
                 <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+              <ExternalProjectPojo>
+                <option name="name" value=":Jama-1.0.3" />
+                <option name="path" value="$PROJECT_DIR$/Jama-1.0.3" />
               </ExternalProjectPojo>
               <ExternalProjectPojo>
                 <option name="name" value=":common" />
@@ -1464,6 +1543,57 @@
             </list>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/Jama-1.0.3">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in project ':Jama-1.0.3'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="buildEnvironment" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by project ':Jama-1.0.3'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in project ':Jama-1.0.3'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in project ':Jama-1.0.3'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of project ':Jama-1.0.3'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of project ':Jama-1.0.3'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of project ':Jama-1.0.3'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from project ':Jama-1.0.3'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/Jama-1.0.3" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/base">
           <value>
             <list>
@@ -1570,7 +1700,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="7329564442739" />
+        <entry key="$PROJECT_DIR$" value="8798465624234" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1678,6 +1808,13 @@
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/Application" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                  <entry key="$PROJECT_DIR$/Jama-1.0.3">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="path" value="$PROJECT_DIR$/Jama-1.0.3" />
                       </ExternalModuleBuildClasspathPojo>
                     </value>
                   </entry>
@@ -1841,9 +1978,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
+    <option name="x" value="992" />
     <option name="y" value="24" />
-    <option name="width" value="1855" />
+    <option name="width" value="927" />
     <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -1871,7 +2008,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1880,90 +2018,18 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-Camera2Basic" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-Camera2Basic" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="raw" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-Camera2Basic" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-Camera2Basic" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="camera2basic" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-Camera2Basic" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
     <property name="device.picker.selection" value="TA4750IUP3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Application/libs/Jama-1.0.3.jar" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.Application">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -2239,7 +2305,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="992" y="24" width="927" height="1056" extended-state="4" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2248,7 +2314,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31866953" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25938568" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2256,7 +2322,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2498618" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51305336" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2270,6 +2336,35 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33788395" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39914164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.52497095" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -2279,11 +2374,114 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#28024#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#14212#14213#0" expanded="true" />
+            <element signature="e#14252#14253#0" expanded="true" />
+            <element signature="e#26287#26288#0" expanded="true" />
+            <element signature="e#26325#26326#0" expanded="true" />
+            <element signature="e#26359#26360#0" expanded="true" />
+            <element signature="e#26398#26399#0" expanded="true" />
+            <element signature="e#26436#26437#0" expanded="true" />
+            <element signature="e#26481#26482#0" expanded="true" />
+            <element signature="e#26690#26691#0" expanded="true" />
+            <element signature="e#26727#26728#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/World.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="104" column="29" selection-start-line="104" selection-start-column="29" selection-end-line="104" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/grid_fragment.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/light_vertex.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="36" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/passthrough_fragment.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/fragment.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/raw/cameravertex.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="49" selection-start-line="5" selection-start-column="49" selection-end-line="5" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.290322">
+        <state vertical-scroll-proportion="0.0">
           <caret line="774" column="29" selection-start-line="774" selection-start-column="24" selection-end-line="774" selection-end-column="32" />
-          <folding />
+          <folding>
+            <element signature="e#0#40955#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#4863#4864#0" expanded="false" />
+            <element signature="e#4898#4899#0" expanded="false" />
+            <element signature="e#5089#5090#0" expanded="false" />
+            <element signature="e#5127#5128#0" expanded="false" />
+            <element signature="e#5196#5197#0" expanded="false" />
+            <element signature="e#5234#5235#0" expanded="false" />
+            <element signature="e#12540#12541#0" expanded="false" />
+            <element signature="e#12637#12638#0" expanded="false" />
+            <element signature="e#30878#30879#0" expanded="false" />
+            <element signature="e#30905#30906#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="774" column="29" selection-start-line="774" selection-start-column="24" selection-end-line="774" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#40955#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#4863#4864#0" expanded="false" />
+            <element signature="e#4898#4899#0" expanded="false" />
+            <element signature="e#5089#5090#0" expanded="false" />
+            <element signature="e#5127#5128#0" expanded="false" />
+            <element signature="e#5196#5197#0" expanded="false" />
+            <element signature="e#5234#5235#0" expanded="false" />
+            <element signature="e#12540#12541#0" expanded="false" />
+            <element signature="e#12637#12638#0" expanded="false" />
+            <element signature="e#30878#30879#0" expanded="false" />
+            <element signature="e#30905#30906#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2337,11 +2535,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6149826">
-          <caret line="562" column="28" selection-start-line="562" selection-start-column="28" selection-end-line="562" selection-end-column="28" />
+        <state vertical-scroll-proportion="16.108475">
+          <caret line="528" column="49" selection-start-line="528" selection-start-column="38" selection-end-line="528" selection-end-column="49" />
           <folding>
-            <element signature="e#0#27206#0" expanded="true" />
+            <element signature="e#0#28024#0" expanded="true" />
             <element signature="imports" expanded="true" />
+            <element signature="e#14212#14213#0" expanded="true" />
+            <element signature="e#14252#14253#0" expanded="true" />
+            <element signature="e#26287#26288#0" expanded="true" />
+            <element signature="e#26325#26326#0" expanded="true" />
+            <element signature="e#26359#26360#0" expanded="true" />
+            <element signature="e#26398#26399#0" expanded="true" />
+            <element signature="e#26436#26437#0" expanded="true" />
+            <element signature="e#26481#26482#0" expanded="true" />
+            <element signature="e#26690#26691#0" expanded="true" />
+            <element signature="e#26727#26728#0" expanded="true" />
           </folding>
         </state>
       </provider>

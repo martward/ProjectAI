@@ -1,0 +1,34 @@
+import socket
+import matplotlib.pyplot as plt
+import numpy as np
+import thread
+from time import sleep
+from mpl_toolkits.mplot3d import Axes3D
+
+
+def main():
+
+    V = np.array([3.0, 2.0, 3.0]).T
+    M = [[0.8055793642997742, -0.0666780024766922, 0.5887240171432495],
+         [-0.10443933308124542, 0.9621074795722961, 0.25187623500823975],
+         [-0.5832103490829468, -0.26439225673675537, 0.7680901288986206 ]]
+
+    Rot = np.dot(M,V)
+
+    mInv = np.linalg.inv(M)
+    Back = np.dot(mInv,Rot)
+    print Back
+
+    #print mInv
+
+
+'''
+Answer
+0.8055793545145252-0.10443935212317411-0.5832103630342289
+ -0.066678003680048490.9621074618717127-0.26439223125958694
+ 0.58872396829415040.251876237929514970.7680900973764438
+'''
+
+
+if __name__ == '__main__':
+    main()

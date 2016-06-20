@@ -100,7 +100,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
 
     private float[] position;
-    private double exampleState;
 
     private float[] headView;
 
@@ -123,7 +122,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     };
     private short drawOrder[] =  {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 }; // order to draw vertices
     //private short drawOrder[] =  {17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1 }; // order to draw vertices
-    private short drawOrder2[] = {2, 0, 3, 3, 0, 1}; // order to draw vertices
+    //private short drawOrder2[] = {2, 0, 3, 3, 0, 1}; // order to draw vertices
     private FloatBuffer vertexBuffer, textureVerticesBuffer, vertexBuffer2;
     private ShortBuffer drawListBuffer, buf2;
     private int mProgram;
@@ -145,7 +144,10 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     private static final float MAX_MODEL_DISTANCE = 7.0f;
     private float objectDistance = MAX_MODEL_DISTANCE / 2.0f;
 
-    //NetworkThread networkThread;
+    private float[] accelerometer = new float[3];
+    private float[] rot_accelerometer = new float[3];
+
+    NetworkThread networkThread;
 
     Camera2BasicFragment cameraInstance;
 
@@ -192,21 +194,18 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         mCamera = new float[16];
         mView = new float[16];
 
-        /*
         networkThread = new NetworkThread();
         networkThread.start();
-        */
+
     }
 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
 
-
         Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
 
-
-        //setMessage(headTransform);
-        //updatePosition();
+        setMessage(headTransform);
+        updatePosition();
 
         // Build the camera matrix and apply it to the ModelView.
         Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
@@ -214,7 +213,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         headTransform.getHeadView(headView, 0);
 
         checkGLError("onReadyToDraw");
-
 
         float[] mtx = new float[16];
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -225,8 +223,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     @Override
     public void onDrawEye(Eye eye) {
 
-
-        //GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         checkGLError("colorParam");
@@ -402,7 +398,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     @Override
     public void onRendererShutdown() {
-        //networkThread.shutdown();
+        networkThread.shutdown();
     }
 
     /**
@@ -474,20 +470,24 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         checkGLError("updateCubePosition");
     }
 
+    private void setMessage(HeadTransform headTransform) {
+        String msg = "absolute/";
+
+        headTransform.getQuaternion(quaternion, 0);
+
+        // Translation based on accelerometer
+        msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
+                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
+                + translation[2];
+
+        while (!networkThread.setData(msg));
+    }
+
     private void updatePosition()
     {
         float scale = 50.f;
         position[0] = scale * translation[0];
         position[2] = scale * translation[2];
-
-        //System.out.print("Trans: ");
-        //for( int i = 0; i < 3; i++ ) {System.out.print(translation[i] + ", ");}
-        //System.out.println("");
-
-        //System.out.print("Pos: ");
-        //System.out.println(position[0] + ", " + position[2]);
-        //for( int i = 0; i < 3; i++ ) {System.out.print(position[i] + ", ");}
-        //System.out.println("\n----");
 
     }
 
@@ -521,19 +521,59 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
-        float[] acc = {accX, accY, accZ};
+        accelerometer[0] = accX;
+        accelerometer[1] = accY;
+        accelerometer[2] = accZ;
 
-        float x = quaternion[0];
-        float y = quaternion[1];
+        if (time == 0) {
+            long currentTime = System.currentTimeMillis();
+            time = currentTime;
+            return;
+        }
+        long currentTime = System.currentTimeMillis();
+        float dt = (float) (currentTime - time) / (float) 1000.0;
+        time = currentTime;
+
+        double[][] acc = {{accX, accY, accZ}};
+        double [][] R = getRotationMatrix();
+        Jama.Matrix Rot = new Jama.Matrix(R).inverse();
+        Jama.Matrix Acc = new Jama.Matrix(acc);
+        Jama.Matrix accel = Rot.times(Acc.transpose());
+        double[][] acceleration = accel.getArrayCopy();
+        rot_accelerometer[0] = (float)acceleration[0][0];
+        rot_accelerometer[1] = (float)acceleration[1][0];
+        rot_accelerometer[2] = (float)acceleration[2][0];
+
+        if (Math.sqrt(rot_accelerometer[0] * rot_accelerometer[0] + rot_accelerometer[1] * rot_accelerometer[1] +
+                rot_accelerometer[2] * rot_accelerometer[2]) > 0.3) {
+            velocity[0] = velocity[0] + rot_accelerometer[0] * dt;
+            velocity[1] = velocity[1] + rot_accelerometer[1] * dt;
+            velocity[2] = velocity[2] + rot_accelerometer[2] * dt;
+        } else {
+            velocity[0] = 0;
+            velocity[1] = 0;
+            velocity[2] = 0;
+        }
+
+        float max = 3.0f;
+        if (Math.abs(velocity[0]) < max && Math.abs(velocity[1]) < max && Math.abs(velocity[2]) < max) {
+            translation[0] = translation[0] + velocity[0] * dt;
+            translation[1] = translation[1] + velocity[1] * dt;
+            translation[2] = translation[2] + velocity[2] * dt;
+        }
+    }
+
+    public double [][] getRotationMatrix() {
+        float x = quaternion[1];
+        float y = quaternion[0];
         float z = quaternion[2];
         float w = quaternion[3];
 
-        float n = x*x + y*y + z*z + w*w;
+        float n = x * x + y * y + z * z + w * w;
         float s = 0;
         if (n != 0) {
             s = 2 / n;
         }
-        //s = 1.0f;
         float wx = s * x * w;
         float wy = s * y * w;
         float wz = s * z * w;
@@ -543,35 +583,9 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         float yy = s * y * y;
         float yz = s * y * z;
         float zz = s * z * z;
-        float[][] R = {{1 - (yy + zz), xy - wz, xz + wy},
+        return new double[][]{{1 - (yy + zz), xy - wz, xz + wy},
                 {xy + wz, 1 - (xx + zz), yz - wx},
                 {xz - wy, yz + wx, 1 - (xx + yy)}};
-        acc = dot(R, acc);
-        //System.out.println(acc[0]);
-        //System.out.println(acc[1]);
-        //System.out.println(acc[2]);
-
-        long currentTime = System.currentTimeMillis();
-        float dt = (float)(currentTime - time) / (float)1000.0;
-        time = currentTime;
-
-        if (Math.sqrt(accX * accX + accY * accY + accZ * accZ) > 0.5) {
-            velocity[0] = velocity[0] + acc[0] * dt;
-            velocity[1] = velocity[1] + acc[1] * dt;
-            velocity[2] = velocity[2] + acc[2] * dt;
-        } else {
-            velocity[0] = 0;
-            velocity[1] = 0;
-            velocity[2] = 0;
-        }
-
-        float max = 2.0f;
-        if( velocity[0] < max && velocity[1] < max && velocity[2] < max )
-        {
-            translation[0] = translation[0] + velocity[0] * dt;
-            translation[1] = translation[1] + velocity[1] * dt;
-            translation[2] = translation[2] + velocity[2] * dt;
-        }
     }
 
     @Override
@@ -701,7 +715,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         return texture[0];
     }
 
-    /*
+
     class NetworkThread extends Thread {
 
         public boolean writing = false;
@@ -774,5 +788,4 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             }
         }
     }
-    */
 }

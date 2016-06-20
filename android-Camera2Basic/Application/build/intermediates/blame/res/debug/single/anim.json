@@ -16,16 +16,16 @@
         "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_grow_fade_in_from_bottom.xml"
     },
     {
-        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_fade_in.xml",
-        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_fade_in.xml"
+        "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_in_bottom.xml",
+        "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_slide_in_bottom.xml"
     },
     {
         "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_fade_in.xml",
         "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_fade_in.xml"
     },
     {
-        "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_in_bottom.xml",
-        "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_slide_in_bottom.xml"
+        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_fade_in.xml",
+        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_fade_in.xml"
     },
     {
         "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_popup_exit.xml",
@@ -44,12 +44,12 @@
         "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_popup_enter.xml"
     },
     {
-        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_out_top.xml",
-        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_slide_out_top.xml"
-    },
-    {
         "merged": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_popup_exit.xml",
         "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_out_top.xml",
+        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_slide_out_top.xml"
     },
     {
         "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_popup_enter.xml",
@@ -68,12 +68,12 @@
         "source": "/home/sebastien/Documents/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_shrink_fade_out_from_bottom.xml"
     },
     {
-        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_out_bottom.xml",
-        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_slide_out_bottom.xml"
-    },
-    {
         "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_shrink_fade_out_from_bottom.xml",
         "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_out_bottom.xml",
+        "source": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/anim/abc_slide_out_bottom.xml"
     },
     {
         "merged": "/home/sebastien/Documents/ProjectAI/android-Camera2Basic/Application/build/intermediates/res/merged/debug/anim/abc_slide_in_bottom.xml",
