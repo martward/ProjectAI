@@ -10,6 +10,8 @@ import android.hardware.SensorEvent;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.vr.sdk.base.Eye;
@@ -32,7 +34,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class MainActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.107";
+    public static String IP = "192.168.43.86";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -82,6 +84,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float[] rawData = new float[3];
     private float[] unRotated = new float[3];
     private float[] velocity = new float[3];
+    private float[] staticPosition = new float[3];
+    private float[] staticTranslation = new float[3];
     private long time;
     private long startTIme;
     private float[] quaternion = new float[4];
@@ -91,8 +95,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
     private float sumY = 0.0f;
     private float sumZ = 0.0f;
     private float indexCalibration = 0.0f;
-    private boolean calibrated = true;
-
+    private boolean calibrated = false;
+    Button resetButton;
+    Button translationButton;
+    private boolean doTranslation = false;
     SensorManager sMgr;
     Sensor translationSensor;
 
@@ -130,8 +136,36 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         startTIme = time;
 
         setContentView(R.layout.ui_common);
+        translationButton = (Button) findViewById(R.id.toggleTranslation);
+        resetButton = (Button) findViewById(R.id.resetButton);
+
+        translationButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(doTranslation == false) {
+                    doTranslation = true;
+                    position = staticPosition;
+                    translation = staticTranslation;
+                    velocity = new float[3];
+                }else{
+                    doTranslation = false;
+                    staticPosition = position.clone();
+                    staticTranslation = translation.clone();
+                }
+                // Perform action on click
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                translation = new float[3];
+                velocity = new float[3];
+            }
+        });
 
         GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
+        gvrView.setSettingsButtonEnabled(false);
+        gvrView.setVRModeEnabled(false);
 
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
 
@@ -225,9 +259,9 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         // Translation based on accelerometer
         msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + unRotated[0] + "/" + unRotated[1] + "/"
-                + unRotated[2]  + "/" + rawData[0]  + "/" + rawData[1]
-                + "/" + rawData[2];
+                + quaternion[3] + "/" + rawData[0] + "/" + rawData[1] + "/"
+                + rawData[2]  + "/" + translation[0]  + "/" + translation[1]
+                + "/" + translation[2];
         while(!networkThread.setData(msg));
     }
 
@@ -252,12 +286,13 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
 
         Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
 
-        setMessage(headTransform);
-        updatePosition();
 
+        setMessage(headTransform);
+        if(doTranslation == true){
+            updatePosition();
+        }
         // Build the camera matrix and apply it to the ModelView.
         Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
-
         headTransform.getHeadView(headView, 0);
 
         checkGLError("onReadyToDraw");
@@ -530,6 +565,8 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         Jama.Matrix Acc = new Jama.Matrix(acc);
         Jama.Matrix accel = Rot.times(Acc.transpose());
         double[][] acceleration = accel.getArrayCopy();
+
+        float[] previous = rawData;
         rawData[0] = (float)acceleration[0][0];
         rawData[1] = (float)acceleration[1][0];
         rawData[2] = (float)acceleration[2][0];
@@ -545,7 +582,7 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
             velocity[1] = 0;
             velocity[2] = 0;
         }
-        float max = 3.0f;
+        float max = 2.0f;
         if (Math.abs(velocity[0]) < max && Math.abs(velocity[1]) < max && Math.abs(velocity[2]) < max) {
             translation[0] = translation[0] + velocity[0] * dt;
             translation[1] = translation[1] + velocity[1] * dt;
