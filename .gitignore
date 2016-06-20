@@ -56,4 +56,6 @@ fabric.properties
 
 /Visualisation/.idea/vcs.xml
 /Visualisation/.idea/workspace.xml
-/build/
+
+/android-Camera2Basic/.idea/vcs.xml
+/android-Camera2Basic/.idea/workspace.xml
