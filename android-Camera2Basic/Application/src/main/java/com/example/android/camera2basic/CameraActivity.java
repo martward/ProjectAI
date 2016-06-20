@@ -166,6 +166,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             public void onClick(View v) {
                 translation = new float[3];
                 velocity = new float[3];
+                position = new float[3];
             }
         });
 
