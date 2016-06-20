@@ -565,12 +565,10 @@ public class MainActivity extends GvrActivity implements GvrView.StereoRenderer,
         Jama.Matrix Acc = new Jama.Matrix(acc);
         Jama.Matrix accel = Rot.times(Acc.transpose());
         double[][] acceleration = accel.getArrayCopy();
-
-        float[] previous = rawData;
+        
         rawData[0] = (float)acceleration[0][0];
         rawData[1] = (float)acceleration[1][0];
         rawData[2] = (float)acceleration[2][0];
-
 
         if (Math.sqrt(rawData[0] * rawData[0] + rawData[1] * rawData[1] +
                       rawData[2] * rawData[2]) > 0.3) {
