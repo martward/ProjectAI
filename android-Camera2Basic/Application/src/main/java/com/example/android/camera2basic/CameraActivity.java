@@ -1,19 +1,3 @@
-/*
- * Copyright 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.android.camera2basic;
 
 import android.app.Activity;
@@ -53,17 +37,12 @@ import java.nio.ShortBuffer;
 
 public class CameraActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-
     public static String IP = "192.168.0.105";
-    private float floorDepth = 20f;
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
 
     private static final String TAG = "MainActivity";
-
-
-    //private static final int GLES20.GL_TEXTURE0 = 0x8D65;
 
     protected float[] modelCube;
     protected float[] modelPosition;
@@ -101,70 +80,43 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     private float[] modelView;
     private float[] view;
     private float[] camera;
-
-
-    private float[] position;
-
     private float[] headView;
 
-    private float[] translation = new float[3];
+    private float[] accelerometer = new float[3];
+    private float[] quaternion = new float[4];
+    private float[] rot_accelerometer = new float[3];
     private float[] velocity = new float[3];
+    private float[] translation = new float[3];
+    private float[] position = new float[3];
     private float[] staticPosition = new float[3];
     private float[] staticTranslation = new float[3];
     private long time;
-    private float[] quaternion = new float[4];
 
-    private float[] calibration = new float[3];
-    private float sumX = 0.0f;
-    private float sumY = 0.0f;
-    private float sumZ = 0.0f;
-    private float indexCalibration = 0.0f;
-    private boolean calibrated = false;
     Button resetButton;
     Button translationButton;
     private boolean doTranslation = false;
+
     SensorManager sMgr;
     Sensor translationSensor;
 
     // Display camera on surface
     private SurfaceTexture surface;
     private int texture;
-    static float squareVertices[] = { // in counterclockwise order:
-            1.0f, -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f
-    };
-    static float textureVertices[] = {
-            1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f
-    };
-    private short drawOrder[] =  {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 }; // order to draw vertices
-    //private short drawOrder[] =  {17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1 }; // order to draw vertices
-    //private short drawOrder2[] = {2, 0, 3, 3, 0, 1}; // order to draw vertices
-    private FloatBuffer vertexBuffer, textureVerticesBuffer, vertexBuffer2;
-    private ShortBuffer drawListBuffer, buf2;
+    private short drawOrder[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17}; // order to draw vertices
+    private FloatBuffer vertexBuffer, textureVerticesBuffer;
+    private ShortBuffer drawListBuffer;
     private int mProgram;
-    private int mPositionHandle, mPositionHandle2;
-    private int mColorHandle;
-    private int mTextureCoordHandle;
 
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
     private float[] mCamera;
     private float[] mView;
-
 
     // We keep the light always position just above the user.
     private static final float[] LIGHT_POS_IN_WORLD_SPACE = new float[]{0.0f, 2.0f, 0.0f, 1.0f};
 
     private static final int COORDS_PER_VERTEX = 3;
-
-    private static final float MIN_MODEL_DISTANCE = 3.0f;
     private static final float MAX_MODEL_DISTANCE = 7.0f;
-    private float objectDistance = MAX_MODEL_DISTANCE / 2.0f;
-
-    private float[] accelerometer = new float[3];
-    private float[] rot_accelerometer = new float[3];
 
     NetworkThread networkThread;
-
-    Camera2BasicFragment cameraInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +147,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
         translationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(doTranslation == false) {
+                if(!doTranslation) {
                     doTranslation = true;
                     position = staticPosition;
                     translation = staticTranslation;
@@ -220,12 +172,9 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
         gvrView.setSettingsButtonEnabled(false);
         gvrView.setVRModeEnabled(false);
-
         gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
-
         gvrView.setRenderer(this);
         gvrView.setTransitionViewEnabled(true);
-
         setGvrView(gvrView);
 
         updateModelPosition();
@@ -239,17 +188,14 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
         networkThread = new NetworkThread();
         networkThread.start();
-
     }
 
     @Override
     public void onNewFrame(HeadTransform headTransform) {
-
         Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
 
-
         setMessage(headTransform);
-        if(doTranslation == true){
+        if(doTranslation){
             updatePosition();
         }
         // Build the camera matrix and apply it to the ModelView.
@@ -266,22 +212,18 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     @Override
     public void onDrawEye(Eye eye) {
-
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-
         checkGLError("colorParam");
 
         // Camera
         drawCamera();
         Matrix.multiplyMM(mView, 0, eye.getEyeView(), 0, mCamera, 0);
 
-
         // Apply the eye transformation to the camera.
         Matrix.multiplyMM(view, 0, eye.getEyeView(), 0, camera, 0);
 
         // Set the position of the light
         Matrix.multiplyMV(lightPosInEyeSpace, 0, view, 0, LIGHT_POS_IN_WORLD_SPACE, 0);
-
 
         float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
         Matrix.multiplyMM(modelView, 0, view, 0, modelCube, 0);
@@ -292,7 +234,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         Matrix.multiplyMM(modelView, 0, view, 0, modelFloor, 0);
         Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
         //drawFloor();
-
     }
 
     @Override
@@ -392,7 +333,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         checkGLError("Floor program params");
 
         Matrix.setIdentityM(modelFloor, 0);
-        Matrix.translateM(modelFloor, 0, 0, -floorDepth, 0); // Floor appears below user.
+        Matrix.translateM(modelFloor, 0, 0, -20, 0); // Floor appears below user.
 
         // Camera
 
@@ -411,7 +352,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         drawListBuffer.position(0);
 
         checkGLError("Camera dlb");
-
 
         ByteBuffer bb2 = ByteBuffer.allocateDirect(World.CUBE_COORDS.length * 4);
         bb2.order(ByteOrder.nativeOrder());
@@ -435,9 +375,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         checkGLError("Camera link");
         GLES20.glUseProgram(mProgram);
         checkGLError("Camera use");
-
-
-
     }
 
     @Override
@@ -508,31 +445,29 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
      */
     protected void updateModelPosition() {
         Matrix.setIdentityM(modelCube, 0);
-        Matrix.translateM(modelCube, 0, modelPosition[0], modelPosition[1], modelPosition[2]);
-        Matrix.scaleM(modelCube,0,0.3f, 0.3f, 0.3f);
+        Matrix.translateM(modelCube, 0, modelPosition[0], modelPosition[1], modelPosition[2]-15.f);
+        Matrix.rotateM(modelCube, 0, 0, 5.f, 0, 0);
+        //Matrix.scaleM(modelCube,0,0.3f, 0.3f, 0.3f);
 
         checkGLError("updateCubePosition");
     }
 
     private void setMessage(HeadTransform headTransform) {
-        String msg = "absolute/";
-
         headTransform.getQuaternion(quaternion, 0);
 
-        // Translation based on accelerometer
-        msg = msg + quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + translation[0] + "/" + translation[1] + "/"
-                + translation[2];
-
-        while (!networkThread.setData(msg));
+        String msg = quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
+                + quaternion[3] + "/" + rot_accelerometer[0] + "/" + rot_accelerometer[1] + "/"
+                + rot_accelerometer[2] + "/" + velocity[0] + "/" + velocity[1] + "/"
+                + velocity[2] + "/" + position[0] + "/" + position[1] + "/"
+                + position[2];
+        networkThread.setData(msg);
     }
 
     private void updatePosition()
     {
         float scale = 50.f;
-        position[0] = scale * translation[0];
+        position[0] = scale * translation[1];
         position[2] = scale * translation[2];
-
     }
 
     /**
@@ -548,18 +483,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         }
     }
 
-    public float[] dot(float[][] R, float[] acc) {
-        float[] result = new float[acc.length];
-        for(int i = 0; i < 3; i++){
-            float entry = 0;
-            for(int j = 0; j < 3; j++){
-                entry += R[j][i]*acc[i];
-            }
-            result[i] = entry;
-        }
-        return result;
-    }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         float accX = event.values[0];
@@ -570,8 +493,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         accelerometer[2] = accZ;
 
         if (time == 0) {
-            long currentTime = System.currentTimeMillis();
-            time = currentTime;
+            time = System.currentTimeMillis();
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -590,14 +512,10 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         rot_accelerometer[2] = (float)acceleration[2][0];
 
         if (Math.sqrt(rot_accelerometer[0] * rot_accelerometer[0] + rot_accelerometer[1] * rot_accelerometer[1] +
-                rot_accelerometer[2] * rot_accelerometer[2]) > 0.3) {
+                rot_accelerometer[2] * rot_accelerometer[2]) > 0.5) {
             velocity[0] = velocity[0] + rot_accelerometer[0] * dt;
             velocity[1] = velocity[1] + rot_accelerometer[1] * dt;
             velocity[2] = velocity[2] + rot_accelerometer[2] * dt;
-        } else {
-            velocity[0] = 0;
-            velocity[1] = 0;
-            velocity[2] = 0;
         }
 
         float max = 3.0f;
@@ -640,6 +558,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     public void drawCamera()
     {
+        int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+
         surface.updateTexImage();
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         checkGLError("Camera update");
@@ -653,32 +573,26 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture);
         checkGLError("Camera bind");
 
-
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "position");
+        int mPositionHandle = GLES20.glGetAttribLocation(mProgram, "position");
         checkGLError("Camera get pos");
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         checkGLError("Camera enable poshandle");
-        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false,vertexStride, vertexBuffer);
+        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
         checkGLError("Camera attr points poshandle");
 
-
-        mTextureCoordHandle = GLES20.glGetAttribLocation(mProgram, "inputTextureCoordinate");
+        int mTextureCoordHandle = GLES20.glGetAttribLocation(mProgram, "inputTextureCoordinate");
         checkGLError("Camera get inputtex");
         GLES20.glEnableVertexAttribArray(mTextureCoordHandle);
         checkGLError("Camera enable vertex coord");
         GLES20.glVertexAttribPointer(mTextureCoordHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT,
-                false,vertexStride, textureVerticesBuffer);
+                false, vertexStride, textureVerticesBuffer);
         checkGLError("Camera attr points tex handle");
-//
-        mColorHandle = GLES20.glGetAttribLocation(mProgram, "s_texture");
-//
-//
+
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrder.length,
                 GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
         checkGLError("Camera draw el");
-//
 
-//        // Disable vertex array
+        // Disable vertex array
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         checkGLError("Camera disable poshandle");
         GLES20.glDisableVertexAttribArray(mTextureCoordHandle);
