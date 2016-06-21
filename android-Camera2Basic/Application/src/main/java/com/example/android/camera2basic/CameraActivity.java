@@ -82,7 +82,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     private float[] camera;
     private float[] headView;
 
-    private float[] accelerometer = new float[3];
     private float[] quaternion = new float[4];
     private float[] rot_accelerometer = new float[3];
     private float[] velocity = new float[3];
@@ -489,9 +488,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
-        accelerometer[0] = accX;
-        accelerometer[1] = accY;
-        accelerometer[2] = accZ;
 
         if (time == 0) {
             time = System.currentTimeMillis();
