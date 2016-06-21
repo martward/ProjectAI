@@ -11,4 +11,9 @@
         android:layout_height="fill_parent"
         android:id="@+id/image_manipulations_activity_surface_view" />
 
+    <com.google.vr.sdk.base.GvrView
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:id="@+id/gvr_view"/>
+
 </RelativeLayout>
