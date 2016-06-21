@@ -31,9 +31,8 @@ class Visualizer:
 
             with open('datadump/%s.csv' % self.millis, 'wb') as csvfile:
                 datadump = csv.writer(csvfile)
-                datadump.writerow(['Acc X', 'Acc Y', 'Acc Z', 'Vel X', 'Vel Y', 'Vel Z', 'Tr X', 'Tr Y', 'Tr Z',
-                                   'Euler X', 'Euler Y', 'Euler Z', 'Rot-Acc X', 'Rot-Acc Y', 'Rot-Acc Z',
-                                   'Rot-Vel X', 'Rot-Vel Y', 'Rot-Vel Z', 'Rot-Tr X', 'Rot-Tr Y', 'Rot-Tr Z'])
+                datadump.writerow(['Acc X', 'Acc Y', 'Acc Z', 'Euler X', 'Euler Y', 'Euler Z', 'Rot-Acc X', 'Rot-Acc Y',
+                                   'Rot-Acc Z', 'Vel X', 'Vel Y', 'Vel Z', 'Tr X', 'Tr Y', 'Tr Z'])
 
             print "Waiting"
             s.listen(1)
@@ -73,10 +72,8 @@ class Visualizer:
     def writeToCSV(self, msg):
         with open('datadump/%s.csv' % self.millis, 'a') as csvfile:
             datadump = csv.writer(csvfile)
-            datadump.writerow([msg[0], msg[1], msg[2], msg[3], msg[4], msg[5],
-                               msg[6], msg[7], msg[8], msg[9], msg[10],
-                               msg[11], msg[12], msg[13], msg[14], msg[15],
-                               msg[16], msg[17], msg[18], msg[19], msg[20]])
+            datadump.writerow([msg[0], msg[1], msg[2], msg[3], msg[4], msg[5], msg[6], msg[7],
+                               msg[8], msg[9], msg[10], msg[11], msg[12], msg[13], msg[14]])
 
 if __name__ == '__main__':
     vis = Visualizer()

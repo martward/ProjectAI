@@ -82,8 +82,11 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     private float[] camera;
     private float[] headView;
 
+    private float[] accelerometer = new float[3];
+    private float[] euler = new float[3];
     private float[] quaternion = new float[4];
     private float[] rot_accelerometer = new float[3];
+    private float[] previous_velocity = new float[3];
     private float[] velocity = new float[3];
     private float[] translation = new float[3];
     private float[] position = new float[3];
@@ -146,17 +149,16 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
         translationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(!doTranslation) {
+                if (!doTranslation) {
                     doTranslation = true;
                     position = staticPosition;
                     translation = staticTranslation;
                     velocity = new float[3];
-                }else{
+                } else {
                     doTranslation = false;
                     staticPosition = position.clone();
                     staticTranslation = translation.clone();
                 }
-                // Perform action on click
             }
         });
 
@@ -454,12 +456,13 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     private void setMessage(HeadTransform headTransform) {
         headTransform.getQuaternion(quaternion, 0);
+        headTransform.getEulerAngles(euler, 0);
 
-        String msg = quaternion[0] + "/" + quaternion[1] + "/" + quaternion[2] + "/"
-                + quaternion[3] + "/" + rot_accelerometer[0] + "/" + rot_accelerometer[1] + "/"
-                + rot_accelerometer[2] + "/" + velocity[0] + "/" + velocity[1] + "/"
-                + velocity[2] + "/" + position[0] + "/" + position[1] + "/"
-                + position[2];
+        String msg = accelerometer[0] + "/" + accelerometer[1] + "/" + accelerometer[2] + "/"
+                + euler[0] + "/" + euler[1] + "/" + euler[2] + "/"
+                + rot_accelerometer[0] + "/" + rot_accelerometer[1] + "/" + rot_accelerometer[2] + "/"
+                + velocity[0] + "/" + velocity[1] + "/" + velocity[2] + "/"
+                + translation[0] + "/" + translation[1] + "/" + translation[2];
         networkThread.setData(msg);
     }
 
@@ -488,6 +491,9 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         float accX = event.values[0];
         float accY = event.values[1];
         float accZ = event.values[2];
+        accelerometer[0] = accX;
+        accelerometer[1] = accY;
+        accelerometer[2] = accZ;
 
         if (time == 0) {
             time = System.currentTimeMillis();
@@ -510,17 +516,21 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
         if (Math.sqrt(rot_accelerometer[0] * rot_accelerometer[0] + rot_accelerometer[1] * rot_accelerometer[1] +
                 rot_accelerometer[2] * rot_accelerometer[2]) > 0.5) {
-            velocity[0] = velocity[0] + rot_accelerometer[0] * dt;
-            velocity[1] = velocity[1] + rot_accelerometer[1] * dt;
-            velocity[2] = velocity[2] + rot_accelerometer[2] * dt;
+            velocity[0] = previous_velocity[0] + rot_accelerometer[0] * dt;
+            velocity[1] = previous_velocity[1] + rot_accelerometer[1] * dt;
+            velocity[2] = previous_velocity[2] + rot_accelerometer[2] * dt;
         }
 
         float max = 3.0f;
         if (Math.abs(velocity[0]) < max && Math.abs(velocity[1]) < max && Math.abs(velocity[2]) < max) {
-            translation[0] = translation[0] + velocity[0] * dt;
-            translation[1] = translation[1] + velocity[1] * dt;
-            translation[2] = translation[2] + velocity[2] * dt;
+            translation[0] = translation[0] + ((previous_velocity[0] + velocity[0]) / 2) * dt;
+            translation[1] = translation[1] + ((previous_velocity[1] + velocity[1]) / 2) * dt;
+            translation[2] = translation[2] + ((previous_velocity[2] + velocity[2]) / 2) * dt;
         }
+
+        previous_velocity[0] = velocity[0];
+        previous_velocity[1] = velocity[1];
+        previous_velocity[2] = velocity[2];
     }
 
     public double [][] getRotationMatrix() {
