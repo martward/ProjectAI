@@ -71,7 +71,7 @@ public class OpenCVActivity extends Activity {
         base = (CameraBridgeViewBase)findViewById(R.id.image_manipulations_activity_surface_view);
         base.setVisibility(View.VISIBLE);
         pixelOnTouchListener = new PixelOnTouchListener();
-        processor = new ImageProcessor(pixelOnTouchListener);
+        processor = new ImageProcessor(pixelOnTouchListener, this);
         base.setCvCameraViewListener(processor);
         base.setOnTouchListener(pixelOnTouchListener);
     }
