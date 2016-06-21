@@ -202,7 +202,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         // Set modelView for the floor, so we draw floor in the correct location
         Matrix.multiplyMM(modelView, 0, view, 0, modelFloor, 0);
         Matrix.multiplyMM(modelViewProjection, 0, perspective, 0, modelView, 0);
-        //drawFloor();
+        drawFloor();
     }
 
     @Override
@@ -438,6 +438,10 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         float scale = 50.f;
         position[0] = scale * translation[1];
         position[2] = scale * translation[2];
+        System.out.print(position[0]);
+        System.out.print(", ");
+        System.out.print(position[2]);
+        System.out.println("-------");
     }
 
     /**
@@ -486,6 +490,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             velocity[0] = previous_velocity[0] + rot_accelerometer[0] * dt;
             velocity[1] = previous_velocity[1] + rot_accelerometer[1] * dt;
             velocity[2] = previous_velocity[2] + rot_accelerometer[2] * dt;
+        } else {
+            velocity = new float[]{0, 0, 0};
         }
 
         float max = 3.0f;
