@@ -90,13 +90,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
     private float[] velocity = new float[3];
     private float[] translation = new float[3];
     private float[] position = new float[3];
-    private float[] staticPosition = new float[3];
-    private float[] staticTranslation = new float[3];
     private long time;
-
-    Button resetButton;
-    Button translationButton;
-    private boolean doTranslation = false;
 
     SensorManager sMgr;
     Sensor translationSensor;
@@ -144,32 +138,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         headView = new float[16];
 
         setContentView(R.layout.activity_camera);
-        translationButton = (Button) findViewById(R.id.toggleTranslation);
-        resetButton = (Button) findViewById(R.id.resetButton);
-
-        translationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (!doTranslation) {
-                    doTranslation = true;
-                    position = staticPosition;
-                    translation = staticTranslation;
-                    velocity = new float[3];
-                } else {
-                    doTranslation = false;
-                    staticPosition = position.clone();
-                    staticTranslation = translation.clone();
-                }
-            }
-        });
-
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                translation = new float[3];
-                velocity = new float[3];
-                position = new float[3];
-            }
-        });
 
         GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
         gvrView.setSettingsButtonEnabled(false);
@@ -197,9 +165,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
         Matrix.rotateM(modelCube, 0, 0, 0.5f, 0.5f, 1.0f);
 
         setMessage(headTransform);
-        if(doTranslation){
-            updatePosition();
-        }
+        updatePosition();
+
         // Build the camera matrix and apply it to the ModelView.
         Matrix.setLookAtM(camera, 0, position[0], position[1], CAMERA_Z + position[2], position[0], position[1], position[2], 0.0f, 1.0f, 0.0f);
         headTransform.getHeadView(headView, 0);
