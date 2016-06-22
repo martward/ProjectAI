@@ -87,7 +87,7 @@ public class OpenCVActivity extends GvrActivity implements GvrView.StereoRendere
     public void onNewFrame(HeadTransform headTransform) {
         float[] angles = new float[3];
         headTransform.getEulerAngles(angles, 0);
-        System.out.println(angles[0] + ", " + angles[1] + ", " + angles[2]);
+        //System.out.println(angles[0] + ", " + angles[1] + ", " + angles[2]);
     }
 
     @Override
