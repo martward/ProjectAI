@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import thread
 from time import sleep
+import time
 from mpl_toolkits.mplot3d import Axes3D
 
 
 class Visualizer:
+
+    time = 0
 
     data = []
     accelerometer = [[float(0)], [float(0)], [float(0)]]
@@ -129,10 +132,30 @@ class Visualizer:
 
         fig2.canvas.draw()
 
+        N = 7
+        times = [0, 0, 0, 0, 0, 0, 0]
+
+        ind = np.arange(N)  # the x locations for the groups
+        width = 0.35       # the width of the bars
+
+        fig3, ax3 = plt.subplots()
+        rects1 = ax3.bar(ind, times, width, color='r')
+
+        # add some text for labels, title and axes ticks
+        ax3.set_ylabel('Times')
+        ax3.set_title('Time needed for vis')
+        ax3.set_xticks(ind + width)
+        ax3.set_xticklabels(('0', '1', '2', '3', '4'))
+
+        fig3.canvas.draw()
+
         while True:
             if self.data:
                 try:
                     print "1"
+
+                    self.time = time.time()
+                    '''
 
                     quaternion = np.array([float(self.data[0]), float(self.data[1]),
                                            float(self.data[2]), float(self.data[3])])
@@ -140,8 +163,10 @@ class Visualizer:
                     [xs, ys, zs] = self.rotatePoint(points, quaternion, read_position)
                     pl._offsets3d = (-xs, zs, -ys)
                     fig.canvas.draw()
-
+                    '''
                     print "2"
+                    times[0] = time.time() - self.time
+                    self.time = time.time()
 
                     self.accelerometer[0].append(float(self.data[4]))
                     self.accelerometer[1].append(float(self.data[5]))
@@ -156,6 +181,8 @@ class Visualizer:
                     self.position[2].append(float(self.data[12]))
 
                     print "3"
+                    times[1] = time.time() - self.time
+                    self.time = time.time()
 
                     x = np.arange(0, len(self.accelerometer[0]))
                     x.astype(float)
@@ -182,17 +209,19 @@ class Visualizer:
                     pl9[0].set_xdata(xnparray)
 
                     print "4"
+                    times[3] = time.time() - self.time
+                    self.time = time.time()
 
-                    if len(x) > 100:
-                        sf1.set_xlim(len(x)-100, len(x))
-                        sf2.set_xlim(len(x)-100, len(x))
-                        sf3.set_xlim(len(x)-100, len(x))
-                        sf4.set_xlim(len(x)-100, len(x))
-                        sf5.set_xlim(len(x)-100, len(x))
-                        sf6.set_xlim(len(x)-100, len(x))
-                        sf7.set_xlim(len(x)-100, len(x))
-                        sf8.set_xlim(len(x)-100, len(x))
-                        sf9.set_xlim(len(x)-100, len(x))
+                    if len(x) > 50:
+                        sf1.set_xlim(len(x)-50, len(x))
+                        sf2.set_xlim(len(x)-50, len(x))
+                        sf3.set_xlim(len(x)-50, len(x))
+                        sf4.set_xlim(len(x)-50, len(x))
+                        sf5.set_xlim(len(x)-50, len(x))
+                        sf6.set_xlim(len(x)-50, len(x))
+                        sf7.set_xlim(len(x)-50, len(x))
+                        sf8.set_xlim(len(x)-50, len(x))
+                        sf9.set_xlim(len(x)-50, len(x))
                     else:
                         sf1.set_xlim(0, len(x))
                         sf2.set_xlim(0, len(x))
@@ -206,87 +235,183 @@ class Visualizer:
                         sf9.set_xlim(0, len(x))
 
                     print "5"
-                    # accelerometer 
+                    times[4] = time.time() - self.time
+                    self.time = time.time()
+                    # accelerometer
                     if float(self.data[4]) < self.accelerometerLimits[0]:
                         self.accelerometerLimits[0] = float(self.data[4])
+                        sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
+                        sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
+                        sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
 
                     if float(self.data[5]) < self.accelerometerLimits[0]:
                         self.accelerometerLimits[0] = float(self.data[5])
+                        sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
+                        sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
+                        sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
 
                     if float(self.data[6]) < self.accelerometerLimits[0]:
                         self.accelerometerLimits[0] = float(self.data[6])
+                        sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
+                        sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
+                        sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
                         
                     if float(self.data[4]) > self.accelerometerLimits[1]:
                         self.accelerometerLimits[1] = float(self.data[4])
+                        sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
+                        sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
+                        sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
 
                     if float(self.data[5]) > self.accelerometerLimits[1]:
                         self.accelerometerLimits[1] = float(self.data[5])
+                        sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
+                        sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
+                        sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
 
                     if float(self.data[6]) > self.accelerometerLimits[1]:
                         self.accelerometerLimits[1] = float(self.data[6])
+                        sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
+                        sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
+                        sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
 
                     # velocity
                     if float(self.data[7]) < self.velocityLimits[0]:
                         self.velocityLimits[0] = float(self.data[7])
+                        sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
 
                     if float(self.data[8]) < self.velocityLimits[0]:
                         self.velocityLimits[0] = float(self.data[8])
+                        sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
 
                     if float(self.data[9]) < self.velocityLimits[0]:
                         self.velocityLimits[0] = float(self.data[9])
+                        sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
 
                     if float(self.data[7]) > self.velocityLimits[1]:
                         self.velocityLimits[1] = float(self.data[7])
+                        sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
 
                     if float(self.data[8]) > self.velocityLimits[1]:
                         self.velocityLimits[1] = float(self.data[8])
+                        sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
 
                     if float(self.data[9]) > self.velocityLimits[1]:
                         self.velocityLimits[1] = float(self.data[9])
+                        sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
+                        sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
 
                     # translation
                     if float(self.data[10]) < self.positionLimits[0]:
                         self.positionLimits[0] = float(self.data[10])
+                        sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
 
                     if float(self.data[11]) < self.positionLimits[0]:
                         self.positionLimits[0] = float(self.data[11])
+                        sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
 
                     if float(self.data[12]) < self.positionLimits[0]:
                         self.positionLimits[0] = float(self.data[12])
+                        sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
 
                     if float(self.data[10]) > self.positionLimits[1]:
                         self.positionLimits[1] = float(self.data[10])
+                        sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
 
                     if float(self.data[11]) > self.positionLimits[1]:
                         self.positionLimits[1] = float(self.data[11])
+                        sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
 
                     if float(self.data[12]) > self.positionLimits[1]:
                         self.positionLimits[1] = float(self.data[12])
+                        sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+                        sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
+
 
                     #print self.accelerometerLimits
                     #print self.velocityLimits
                     #print self.positionLimits
 
-                    sf1.set_ylim(self.accelerometerLimits[0], self.accelerometerLimits[1])
-                    sf2.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
-                    sf3.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
-                    sf4.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
-                    sf5.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
-                    sf6.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
-                    sf7.set_ylim((self.accelerometerLimits[0]), (self.accelerometerLimits[1]))
-                    sf8.set_ylim((self.velocityLimits[0]), (self.velocityLimits[1]))
-                    sf9.set_ylim((self.positionLimits[0]), (self.positionLimits[1]))
 
                     print "6"
+                    times[5] = time.time() - self.time
+                    self.time = time.time()
 
-                    fig2.canvas.draw()
+                    #fig2.canvas.update()
+
+                    sf1.draw_artist(sf1.patch)
+                    sf1.draw_artist(pl1[0])
+                    fig2.canvas.blit(sf1.bbox)
+
+                    sf2.draw_artist(sf2.patch)
+                    sf2.draw_artist(pl2[0])
+                    fig2.canvas.blit(sf2.bbox)
+
+                    sf3.draw_artist(sf3.patch)
+                    sf3.draw_artist(pl3[0])
+                    fig2.canvas.blit(sf3.bbox)
+
+                    sf4.draw_artist(sf4.patch)
+                    sf4.draw_artist(pl4[0])
+                    fig2.canvas.blit(sf4.bbox)
+
+                    sf5.draw_artist(sf5.patch)
+                    sf5.draw_artist(pl5[0])
+                    fig2.canvas.blit(sf5.bbox)
+
+                    sf6.draw_artist(sf6.patch)
+                    sf6.draw_artist(pl6[0])
+                    fig2.canvas.blit(sf6.bbox)
+
+                    sf7.draw_artist(sf7.patch)
+                    sf7.draw_artist(pl7[0])
+                    fig2.canvas.blit(sf7.bbox)
+                    fig2.canvas.flush_events()
+
+                    sf8.draw_artist(sf8.patch)
+                    sf8.draw_artist(pl8[0])
+                    fig2.canvas.blit(sf8.bbox)
+                    fig2.canvas.flush_events()
+
+                    sf9.draw_artist(sf9.patch)
+                    sf9.draw_artist(pl9[0])
+                    fig2.canvas.blit(sf9.bbox)
+                    fig2.canvas.flush_events()
 
                     print "7"
+                    times[6] = time.time() - self.time
+                    self.time = time.time()
+
+                    ax3.clear()
+                    ax3.bar(ind, times, width, color='r')
+                    fig3.canvas.draw()
 
                     self.data = []
 
                 except ValueError:
                     # print "Non float value in message"
+                    self.data = []
                     pass
             else:
                 sleep(0.01)
