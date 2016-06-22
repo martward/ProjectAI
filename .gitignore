@@ -62,3 +62,4 @@ fabric.properties
 /android-Camera2Basic/local.properties
 **/build/
 **/.idea/
+/android-Camera2Basic/local.properties
