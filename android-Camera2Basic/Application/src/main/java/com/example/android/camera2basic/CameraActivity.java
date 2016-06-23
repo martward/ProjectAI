@@ -37,7 +37,7 @@ import java.nio.ShortBuffer;
 
 public class CameraActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.105";
+    public static String IP = "192.168.0.111";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -553,6 +553,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
                 move_detection[i] = new float[2];
                 translated[i] = 100;
                 end_of_move[i] = false;
+            } else {
+                velocity[i] = 0;
             }
 
             translation[i] = translation[i] + ((previous_velocity[i] + velocity[i]) / 2) * dt;

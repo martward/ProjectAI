@@ -55,7 +55,8 @@ class Visualizer:
                         msg = buf
                         msg = msg.split("/")
                         #print msg
-                        self.data = msg
+                        if len(msg) == 13:
+                            self.data = msg
                 except:
                     print "Connection Lost"
                     c.shutdown()
@@ -106,14 +107,9 @@ class Visualizer:
                     pl3[0].set_ydata(np.array(self.position))
                     pl3[0].set_xdata(xnparray)
 
-                    if len(x) > 100:
-                        sf1.set_xlim(len(x)-100, len(x))
-                        sf2.set_xlim(len(x)-100, len(x))
-                        sf3.set_xlim(len(x)-100, len(x))
-                    else:
-                        sf1.set_xlim(0, len(x))
-                        sf2.set_xlim(0, len(x))
-                        sf3.set_xlim(0, len(x))
+                    sf1.set_xlim(0, len(x))
+                    sf2.set_xlim(0, len(x))
+                    sf3.set_xlim(0, len(x))
 
                     # accelerometer 
                     if float(self.data[6]) < self.accelerometerLimits[0]:
