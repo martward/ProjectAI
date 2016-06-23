@@ -37,7 +37,7 @@ import java.nio.ShortBuffer;
 
 public class CameraActivity extends GvrActivity implements GvrView.StereoRenderer, SensorEventListener {
 
-    public static String IP = "192.168.0.111";
+    public static String IP = "192.168.0.105";
     private static final float Z_NEAR = 0.1f;
     private static final float Z_FAR = 100.0f;
     private static final float CAMERA_Z = 0.01f;
@@ -519,8 +519,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             velocity[1] = previous_velocity[1] + rot_accelerometer[1] * dt;
             velocity[2] = previous_velocity[2] + rot_accelerometer[2] * dt;
         }
-        handleTranslation(0, dt);
-        handleTranslation(1, dt);
+        //handleTranslation(0, dt);
+        //handleTranslation(1, dt);
         handleTranslation(2, dt);
     }
 
@@ -529,7 +529,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             // MOVE DETECTION
             float move_threshold = 1.f;
             if (rot_accelerometer[i] > move_threshold) {
-                System.out.println("Upper Peak...");
                 if (rot_accelerometer[i] >= move_detection[i][1] && !end_of_move[i]) {
                     move_detection[i][1] = rot_accelerometer[i];
                 } else if (move_detection[i][0] != 0) {
