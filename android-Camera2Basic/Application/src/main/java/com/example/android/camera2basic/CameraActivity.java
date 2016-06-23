@@ -470,7 +470,7 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     private void updatePosition()
     {
-        float scale = 50.f;
+        float scale = 100.f;
         position[0] = scale * translation[1];
         position[2] = scale * translation[2];
     }
@@ -490,77 +490,76 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (translated[2] == 0) {
+        float accX = event.values[0];
+        float accY = event.values[1];
+        float accZ = event.values[2];
 
-            float accX = event.values[0];
-            float accY = event.values[1];
-            float accZ = event.values[2];
+        if (time == 0) {
+            time = System.currentTimeMillis();
+            return;
+        }
+        long currentTime = System.currentTimeMillis();
+        float dt = (float) (currentTime - time) / (float) 1000.0;
+        time = currentTime;
 
-            if (time == 0) {
-                time = System.currentTimeMillis();
-                return;
-            }
-            long currentTime = System.currentTimeMillis();
-            float dt = (float) (currentTime - time) / (float) 1000.0;
-            time = currentTime;
+        double[][] acc = {{accX, accY, accZ}};
+        double[][] R = getRotationMatrix();
+        Jama.Matrix Rot = new Jama.Matrix(R).inverse();
+        Jama.Matrix Acc = new Jama.Matrix(acc);
+        Jama.Matrix accel = Rot.times(Acc.transpose());
+        double[][] acceleration = accel.getArrayCopy();
 
-            double[][] acc = {{accX, accY, accZ}};
-            double [][] R = getRotationMatrix();
-            Jama.Matrix Rot = new Jama.Matrix(R).inverse();
-            Jama.Matrix Acc = new Jama.Matrix(acc);
-            Jama.Matrix accel = Rot.times(Acc.transpose());
-            double[][] acceleration = accel.getArrayCopy();
+        rot_accelerometer[0] = (float) acceleration[0][0];
+        rot_accelerometer[1] = (float) acceleration[1][0];
+        rot_accelerometer[2] = (float) acceleration[2][0];
 
-            rot_accelerometer[0] = (float)acceleration[0][0];
-            rot_accelerometer[1] = (float)acceleration[1][0];
-            rot_accelerometer[2] = (float)acceleration[2][0];
+        if (Math.sqrt(rot_accelerometer[0] * rot_accelerometer[0] + rot_accelerometer[1] * rot_accelerometer[1] +
+                rot_accelerometer[2] * rot_accelerometer[2]) > 0.5) {
+            velocity[0] = previous_velocity[0] + rot_accelerometer[0] * dt;
+            velocity[1] = previous_velocity[1] + rot_accelerometer[1] * dt;
+            velocity[2] = previous_velocity[2] + rot_accelerometer[2] * dt;
+        }
+        handleTranslation(0, dt);
+        handleTranslation(1, dt);
+        handleTranslation(2, dt);
+    }
 
-            if (Math.sqrt(rot_accelerometer[0] * rot_accelerometer[0] + rot_accelerometer[1] * rot_accelerometer[1] +
-                    rot_accelerometer[2] * rot_accelerometer[2]) > 0.5) {
-                velocity[0] = previous_velocity[0] + rot_accelerometer[0] * dt;
-                velocity[1] = previous_velocity[1] + rot_accelerometer[1] * dt;
-                velocity[2] = previous_velocity[2] + rot_accelerometer[2] * dt;
-            }
-
+    public void handleTranslation(int i, float dt) {
+        if (translated[i] == 0) {
             // MOVE DETECTION
             float move_threshold = 1.f;
-            if (rot_accelerometer[2] > move_threshold) {
+            if (rot_accelerometer[i] > move_threshold) {
                 System.out.println("Upper Peak...");
-                if (rot_accelerometer[2] >= move_detection[2][1] && !end_of_move[2]) {
-                    move_detection[2][1] = rot_accelerometer[2];
-                } else if (move_detection[2][0] != 0) {
-                    velocity[2] = 0;
-                    previous_velocity[2] = 0;
-                    end_of_move[2] = true;
+                if (rot_accelerometer[i] >= move_detection[i][1] && !end_of_move[i]) {
+                    move_detection[i][1] = rot_accelerometer[i];
+                } else if (move_detection[i][0] != 0) {
+                    velocity[i] = 0;
+                    previous_velocity[i] = 0;
+                    end_of_move[i] = true;
                     System.out.println("End of move...");
                 }
-            } else if (rot_accelerometer[2] < -move_threshold) {
+            } else if (rot_accelerometer[i] < -move_threshold) {
                 System.out.println("lower Peak...");
-                if (rot_accelerometer[2] <= move_detection[2][0] && !end_of_move[2]) {
-                    move_detection[2][0] = rot_accelerometer[2];
-                } else if (move_detection[2][1] != 0) {
-                    velocity[2] = 0;
-                    previous_velocity[2] = 0;
-                    end_of_move[2] = true;
+                if (rot_accelerometer[i] <= move_detection[i][0] && !end_of_move[i]) {
+                    move_detection[i][0] = rot_accelerometer[i];
+                } else if (move_detection[i][1] != 0) {
+                    velocity[i] = 0;
+                    previous_velocity[i] = 0;
+                    end_of_move[i] = true;
                     System.out.println("End of move...");
                 }
-            } else if (move_detection[2][0] != 0 && move_detection[2][1] != 0) {
-                previous_velocity[2] = 0;
-                velocity[2] = 0;
-                move_detection[2] = new float[2];
-                translated[2] = 100;
-                end_of_move[2] = false;
+            } else if (move_detection[i][0] != 0 && move_detection[i][1] != 0) {
+                previous_velocity[i] = 0;
+                velocity[i] = 0;
+                move_detection[i] = new float[2];
+                translated[i] = 100;
+                end_of_move[i] = false;
             }
 
-            translation[0] = translation[0] + ((previous_velocity[0] + velocity[0]) / 2) * dt;
-            translation[1] = translation[1] + ((previous_velocity[1] + velocity[1]) / 2) * dt;
-            translation[2] = translation[2] + ((previous_velocity[2] + velocity[2]) / 2) * dt;
-
-            previous_velocity[0] = velocity[0];
-            previous_velocity[1] = velocity[1];
-            previous_velocity[2] = velocity[2];
+            translation[i] = translation[i] + ((previous_velocity[i] + velocity[i]) / 2) * dt;
+            previous_velocity[i] = velocity[i];
         } else {
-            translated[2] -= 1;
+            translated[i] -= 1;
         }
     }
 
