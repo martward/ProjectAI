@@ -116,58 +116,22 @@ class Visualizer:
                         sf3.set_xlim(0, len(x))
 
                     # accelerometer 
-                    if float(self.data[4]) < self.accelerometerLimits[0]:
-                        self.accelerometerLimits[0] = float(self.data[4])
-
-                    if float(self.data[5]) < self.accelerometerLimits[0]:
-                        self.accelerometerLimits[0] = float(self.data[5])
-
                     if float(self.data[6]) < self.accelerometerLimits[0]:
                         self.accelerometerLimits[0] = float(self.data[6])
-                        
-                    if float(self.data[4]) > self.accelerometerLimits[1]:
-                        self.accelerometerLimits[1] = float(self.data[4])
-
-                    if float(self.data[5]) > self.accelerometerLimits[1]:
-                        self.accelerometerLimits[1] = float(self.data[5])
 
                     if float(self.data[6]) > self.accelerometerLimits[1]:
                         self.accelerometerLimits[1] = float(self.data[6])
 
                     # velocity
-                    if float(self.data[7]) < self.velocityLimits[0]:
-                        self.velocityLimits[0] = float(self.data[7])
-
-                    if float(self.data[8]) < self.velocityLimits[0]:
-                        self.velocityLimits[0] = float(self.data[8])
-
                     if float(self.data[9]) < self.velocityLimits[0]:
                         self.velocityLimits[0] = float(self.data[9])
-
-                    if float(self.data[7]) > self.velocityLimits[1]:
-                        self.velocityLimits[1] = float(self.data[7])
-
-                    if float(self.data[8]) > self.velocityLimits[1]:
-                        self.velocityLimits[1] = float(self.data[8])
 
                     if float(self.data[9]) > self.velocityLimits[1]:
                         self.velocityLimits[1] = float(self.data[9])
 
                     # translation
-                    if float(self.data[10]) < self.positionLimits[0]:
-                        self.positionLimits[0] = float(self.data[10])
-
-                    if float(self.data[11]) < self.positionLimits[0]:
-                        self.positionLimits[0] = float(self.data[11])
-
                     if float(self.data[12]) < self.positionLimits[0]:
                         self.positionLimits[0] = float(self.data[12])
-
-                    if float(self.data[10]) > self.positionLimits[1]:
-                        self.positionLimits[1] = float(self.data[10])
-
-                    if float(self.data[11]) > self.positionLimits[1]:
-                        self.positionLimits[1] = float(self.data[11])
 
                     if float(self.data[12]) > self.positionLimits[1]:
                         self.positionLimits[1] = float(self.data[12])
