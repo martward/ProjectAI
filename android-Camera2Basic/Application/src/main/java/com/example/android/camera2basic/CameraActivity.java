@@ -470,8 +470,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
 
     private void updatePosition()
     {
-        float scale = 100.f;
-        position[0] = scale * translation[1];
+        float scale = 75.f;
+        position[0] = -scale * translation[1];
         position[2] = scale * translation[2];
     }
 
@@ -519,8 +519,8 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             velocity[1] = previous_velocity[1] + rot_accelerometer[1] * dt;
             velocity[2] = previous_velocity[2] + rot_accelerometer[2] * dt;
         }
-        //handleTranslation(0, dt);
-        //handleTranslation(1, dt);
+        handleTranslation(0, dt);
+        handleTranslation(1, dt);
         handleTranslation(2, dt);
     }
 
@@ -556,7 +556,6 @@ public class CameraActivity extends GvrActivity implements GvrView.StereoRendere
             } else {
                 velocity[i] = 0;
             }
-
             translation[i] = translation[i] + ((previous_velocity[i] + velocity[i]) / 2) * dt;
             previous_velocity[i] = velocity[i];
         } else {
